@@ -12,6 +12,7 @@ import About from './sections/About';
 import Services from './sections/Services';
 import Work from './sections/Work';
 import Process from './sections/Process';
+import Stats from './sections/Stats';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -45,6 +46,7 @@ export default function App() {
         <Services />
         <Work />
         <Process />
+        <Stats />
       </main>
     </>
   );
