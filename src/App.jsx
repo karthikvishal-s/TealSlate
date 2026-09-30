@@ -9,6 +9,7 @@ import Hero from './sections/Hero';
 import Showreel from './sections/Showreel';
 import Clients from './sections/Clients';
 import About from './sections/About';
+import Services from './sections/Services';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -39,6 +40,7 @@ export default function App() {
         <Showreel />
         <Clients />
         <About />
+        <Services />
       </main>
     </>
   );
