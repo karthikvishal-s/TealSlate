@@ -1,0 +1,228 @@
+@import "tailwindcss";
+
+/* ───────────── Design tokens (single source of truth) ───────────── */
+@theme {
+  --color-night: #0b1215;
+  --color-deep: #111a1e;
+  --color-panel: #16232a;
+  --color-ink: #e6eeed;
+  --color-muted: #8a9ca1;
+  --color-teal: #14b8a6;
+  --color-teal-light: #2dd4bf;
+  --color-line: rgb(230 238 237 / 0.12);
+
+  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  /* expo.out / power4(quint).out / power4.inOut equivalents for CSS + Tailwind `ease-*` */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-power4: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+
+  /* Fluid display scale */
+  --text-mega: clamp(3rem, 10.5vw, 12rem);
+  --text-mega--line-height: 0.88;
+  --text-mega--letter-spacing: -0.045em;
+  --text-huge: clamp(2.4rem, 7vw, 7.5rem);
+  --text-huge--line-height: 0.92;
+  --text-huge--letter-spacing: -0.04em;
+  --text-display: clamp(1.9rem, 4.2vw, 4.5rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.03em;
+  --text-lead: clamp(1.55rem, 3.4vw, 3.4rem);
+  --text-lead--line-height: 1.12;
+  --text-lead--letter-spacing: -0.02em;
+}
+
+/* Horizontal page gutter: 16px on phones, scaling up on large screens */
+@utility gutter {
+  padding-inline: clamp(1rem, 4vw, 3.5rem);
+}
+
+@layer base {
+  html {
+    background: var(--color-night);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-night);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-teal-light);
+    color: var(--color-night);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal-light);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  button,
+  [role="button"],
+  select {
+    cursor: pointer;
+  }
+
+  html.is-loading {
+    overflow: hidden;
+  }
+
+  /* Native cursor hidden only while the custom cursor is active (fine pointers) */
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: none !important;
+  }
+  html.has-custom-cursor :is(input, textarea) {
+    cursor: text !important;
+  }
+}
+
+/* SplitText masks: pad so descenders aren't clipped by tight line-heights */
+.split-line-mask,
+.split-word-mask {
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+/* ───────────── Film grain ───────────── */
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 70;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1s steps(6) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-6%, 4%); }
+  40% { transform: translate(4%, -8%); }
+  60% { transform: translate(-3%, 9%); }
+  80% { transform: translate(8%, -2%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ───────────── Hero gradient mesh ───────────── */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+}
+.blob-a {
+  width: 70vmax;
+  height: 70vmax;
+  top: -30vmax;
+  left: -20vmax;
+  background: radial-gradient(circle at center, rgb(20 184 166 / 0.55), transparent 62%);
+  animation: blob-a 22s var(--ease-in-out-expo) infinite alternate;
+}
+.blob-b {
+  width: 60vmax;
+  height: 60vmax;
+  bottom: -35vmax;
+  right: -18vmax;
+  background: radial-gradient(circle at center, rgb(45 212 191 / 0.35), transparent 60%);
+  animation: blob-b 26s var(--ease-in-out-expo) infinite alternate;
+}
+.blob-c {
+  width: 42vmax;
+  height: 42vmax;
+  top: 20%;
+  left: 45%;
+  background: radial-gradient(circle at center, rgb(56 104 176 / 0.35), transparent 60%);
+  animation: blob-c 30s var(--ease-in-out-expo) infinite alternate;
+}
+
+@keyframes blob-a {
+  to { transform: translate3d(18vw, 14vh, 0) scale(1.15); }
+}
+@keyframes blob-b {
+  to { transform: translate3d(-22vw, -18vh, 0) scale(0.9); }
+}
+@keyframes blob-c {
+  to { transform: translate3d(-30vw, 12vh, 0) scale(1.25); }
+}
+
+@keyframes scroll-cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.scroll-cue-line {
+  animation: scroll-cue 2.2s var(--ease-in-out-expo) infinite;
+}
+
+/* Animated gradient used by media placeholders */
+@keyframes hue-drift {
+  to { transform: rotate(360deg); }
+}
+.hue-drift {
+  animation: hue-drift 18s linear infinite;
+}
+
+/* ───────────── Custom cursor ───────────── */
+.cursor-ring-inner {
+  transition:
+    transform 0.5s var(--ease-expo),
+    background-color 0.3s var(--ease-expo),
+    border-color 0.3s var(--ease-expo),
+    opacity 0.3s var(--ease-expo);
+}
+.cursor-label-inner {
+  transform: scale(0);
+  transition: transform 0.5s var(--ease-expo);
+}
+[data-state="link"] .cursor-ring-inner {
+  transform: scale(1.9);
+  background-color: #fff;
+}
+[data-state="view"] .cursor-ring-inner,
+[data-state="drag"] .cursor-ring-inner {
+  transform: scale(0);
+}
+[data-state="view"] .cursor-label-inner,
+[data-state="drag"] .cursor-label-inner {
+  transform: scale(1);
+}
+[data-state="text"] .cursor-ring-inner {
+  opacity: 0;
+}
+[data-hidden="true"] {
+  opacity: 0;
+}
+
+/* ───────────── Work list: dim siblings on hover ───────────── */
+@media (hover: hover) and (pointer: fine) {
+  .work-list:hover .work-row:not(:hover) .work-row-content {
+    opacity: 0.3;
+  }
+}
+
+/* ───────────── Reduced motion ───────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain {
+    animation: none;
+  }
+}
