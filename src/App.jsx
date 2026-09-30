@@ -11,6 +11,7 @@ import Clients from './sections/Clients';
 import About from './sections/About';
 import Services from './sections/Services';
 import Work from './sections/Work';
+import Process from './sections/Process';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -43,6 +44,7 @@ export default function App() {
         <About />
         <Services />
         <Work />
+        <Process />
       </main>
     </>
   );
