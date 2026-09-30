@@ -4,6 +4,7 @@ import { useLenis } from './hooks/useLenis';
 import Preloader from './components/Preloader';
 import CustomCursor from './components/CustomCursor';
 import Grain from './components/Grain';
+import Navbar from './components/Navbar';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -27,6 +28,7 @@ export default function App() {
       <Preloader onComplete={() => setLoaded(true)} />
       <CustomCursor />
       <Grain />
+      <Navbar ready={loaded} />
 
       <main id="main" className="relative z-10 bg-night">
       </main>
