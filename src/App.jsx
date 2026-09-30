@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScrollTrigger } from './lib/gsap';
 import { useLenis } from './hooks/useLenis';
 import Preloader from './components/Preloader';
@@ -15,10 +15,13 @@ import Process from './sections/Process';
 import Stats from './sections/Stats';
 import Testimonials from './sections/Testimonials';
 import Contact from './sections/Contact';
+import Footer from './sections/Footer';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const { lenis } = useLenis();
+  const footerRef = useRef(null);
+  const [footer, setFooter] = useState({ height: 0, fixed: false });
 
   // Scroll is locked until the preloader hands over.
   useEffect(() => {
@@ -33,6 +36,30 @@ export default function App() {
     ScrollTrigger.refresh();
   }, [loaded]);
 
+  // Sticky footer reveal: <main> gets a bottom margin equal to the footer height,
+  // unless the footer is taller than the viewport (then it just flows normally).
+  useEffect(() => {
+    const el = footerRef.current;
+    const measure = () => {
+      const height = el.offsetHeight;
+      const fixed = height < window.innerHeight * 0.95;
+      setFooter((prev) => (prev.height === height && prev.fixed === fixed ? prev : { height, fixed }));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    window.addEventListener('resize', measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, []);
+
+  // Page height changed, so trigger positions must be recalculated.
+  useEffect(() => {
+    ScrollTrigger.refresh();
+  }, [footer]);
+
   return (
     <>
       <Preloader onComplete={() => setLoaded(true)} />
@@ -40,7 +67,11 @@ export default function App() {
       <Grain />
       <Navbar ready={loaded} />
 
-      <main id="main" className="relative z-10 bg-night">
+      <main
+        id="main"
+        className={`relative z-10 bg-night ${footer.fixed ? 'rounded-b-[2rem] shadow-[0_30px_60px_rgb(0_0_0/0.45)] md:rounded-b-[3rem]' : ''}`}
+        style={{ marginBottom: footer.fixed ? footer.height : 0 }}
+      >
         <Hero ready={loaded} />
         <Showreel />
         <Clients />
@@ -52,6 +83,8 @@ export default function App() {
         <Testimonials />
         <Contact />
       </main>
+
+      <Footer ref={footerRef} fixed={footer.fixed} />
     </>
   );
 }
