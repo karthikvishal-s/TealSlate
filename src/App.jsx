@@ -7,6 +7,7 @@ import Grain from './components/Grain';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import Showreel from './sections/Showreel';
+import Clients from './sections/Clients';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -35,6 +36,7 @@ export default function App() {
       <main id="main" className="relative z-10 bg-night">
         <Hero ready={loaded} />
         <Showreel />
+        <Clients />
       </main>
     </>
   );
