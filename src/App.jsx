@@ -6,6 +6,7 @@ import CustomCursor from './components/CustomCursor';
 import Grain from './components/Grain';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
+import Showreel from './sections/Showreel';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -33,6 +34,7 @@ export default function App() {
 
       <main id="main" className="relative z-10 bg-night">
         <Hero ready={loaded} />
+        <Showreel />
       </main>
     </>
   );
