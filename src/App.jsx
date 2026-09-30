@@ -5,6 +5,7 @@ import Preloader from './components/Preloader';
 import CustomCursor from './components/CustomCursor';
 import Grain from './components/Grain';
 import Navbar from './components/Navbar';
+import Hero from './sections/Hero';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -31,6 +32,7 @@ export default function App() {
       <Navbar ready={loaded} />
 
       <main id="main" className="relative z-10 bg-night">
+        <Hero ready={loaded} />
       </main>
     </>
   );
