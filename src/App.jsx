@@ -14,6 +14,7 @@ import Work from './sections/Work';
 import Process from './sections/Process';
 import Stats from './sections/Stats';
 import Testimonials from './sections/Testimonials';
+import Contact from './sections/Contact';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -49,6 +50,7 @@ export default function App() {
         <Process />
         <Stats />
         <Testimonials />
+        <Contact />
       </main>
     </>
   );
