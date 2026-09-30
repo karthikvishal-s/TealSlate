@@ -10,6 +10,7 @@ import Showreel from './sections/Showreel';
 import Clients from './sections/Clients';
 import About from './sections/About';
 import Services from './sections/Services';
+import Work from './sections/Work';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -41,6 +42,7 @@ export default function App() {
         <Clients />
         <About />
         <Services />
+        <Work />
       </main>
     </>
   );

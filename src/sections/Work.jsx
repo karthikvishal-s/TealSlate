@@ -1,0 +1,172 @@
+import { useRef, useState } from 'react';
+import { motion, useSpring, useTransform, useVelocity } from 'motion/react';
+import { ArrowUpRight } from 'lucide-react';
+import { gsap, useGSAP, MOTION_OK } from '../lib/gsap';
+import { springFollow, easeExpo } from '../lib/motion';
+import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useMousePosition } from '../hooks/useMousePosition';
+import { useLenis } from '../hooks/useLenis';
+import { projects } from '../data/projects';
+import SectionLabel from '../components/SectionLabel';
+import SplitTextReveal from '../components/SplitTextReveal';
+import MagneticButton from '../components/MagneticButton';
+import Media from '../components/Media';
+
+/**
+ * Floating preview that trails the cursor with spring physics.
+ * All project images live in one vertical strip; switching projects slides the
+ * strip, so the swap reads as one continuous motion rather than a hard cut.
+ */
+function CursorPreview({ active, lastIndex }) {
+  const { x, y } = useMousePosition();
+  const sx = useSpring(x, springFollow);
+  const sy = useSpring(y, springFollow);
+  // Lean into horizontal movement for a physical feel.
+  const rotate = useTransform(useVelocity(sx), [-2500, 2500], [-10, 10], { clamp: true });
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      className="pointer-events-none fixed left-0 top-0 z-30"
+      style={{ x: sx, y: sy, rotate }}
+    >
+      <motion.div
+        className="h-[17rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl xl:h-[20rem] xl:w-[28rem]"
+        initial={false}
+        animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
+        transition={{ duration: 0.6, ease: easeExpo }}
+      >
+        <motion.div
+          className="size-full"
+          initial={false}
+          animate={{ y: `${-lastIndex * 100}%` }}
+          transition={{ duration: 0.8, ease: easeExpo }}
+        >
+          {projects.map((p) => (
+            <div key={p.id} className="size-full">
+              <Media image={p.image} gradient={p.gradient} label={p.name} />
+            </div>
+          ))}
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+export default function Work() {
+  const root = useRef(null);
+  const touch = useIsTouchDevice();
+  const reduced = useReducedMotion();
+  const [active, setActive] = useState(false);
+  const [index, setIndex] = useState(0);
+  const showPreview = !touch && !reduced;
+  const { scrollTo } = useLenis();
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(MOTION_OK, () => {
+        // Each row wipes open from the top as it enters the viewport.
+        gsap.utils.toArray('[data-work-row]').forEach((row) => {
+          gsap.fromTo(
+            row,
+            { clipPath: 'inset(0% 0% 100% 0%)', y: 40 },
+            {
+              clipPath: 'inset(0% 0% 0% 0%)',
+              y: 0,
+              duration: 1.4,
+              ease: 'expo.out',
+              clearProps: 'clipPath',
+              scrollTrigger: { trigger: row, start: 'top 92%', once: true },
+            },
+          );
+        });
+      });
+    },
+    { scope: root },
+  );
+
+  return (
+    <section id="work" ref={root} aria-labelledby="work-title" className="gutter py-28 md:py-40">
+      <div className="mb-14 flex flex-col gap-8 md:mb-20 md:flex-row md:items-end md:justify-between">
+        <div>
+          <SectionLabel index="(03)">Selected work</SectionLabel>
+          <SplitTextReveal id="work-title" className="mt-6 font-display text-display font-extrabold uppercase">
+            Work that <span className="text-teal-light">moves</span> the needle
+          </SplitTextReveal>
+        </div>
+        <p className="max-w-sm text-base leading-relaxed text-muted">
+          A few recent favourites across branding, digital, film, and growth. Full case studies available on request.
+        </p>
+      </div>
+
+      <ul
+        className="work-list border-t border-line"
+        onPointerLeave={() => setActive(false)}
+      >
+        {projects.map((project, i) => (
+          <li
+            key={project.id}
+            data-work-row
+            className="work-row border-b border-line"
+            onPointerEnter={(e) => {
+              if (e.pointerType !== 'mouse') return;
+              setIndex(i);
+              setActive(true);
+            }}
+          >
+            <a
+              href={project.href}
+              data-cursor="view"
+              // Placeholder links: swap `href` in src/data/projects.js for real case-study URLs.
+              onClick={(e) => project.href === '#' && e.preventDefault()}
+              className="work-row-content group grid grid-cols-12 items-center gap-x-4 gap-y-2 py-7 transition-opacity duration-500 ease-expo md:py-10"
+            >
+              <span className="col-span-2 text-sm tabular-nums text-muted md:col-span-1">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 className="col-span-10 font-display text-[clamp(1.9rem,6vw,5.5rem)] font-bold uppercase leading-[0.95] tracking-tight transition-transform duration-700 ease-expo group-hover:translate-x-4 md:col-span-6">
+                {project.name}
+              </h3>
+              <span className="col-span-7 col-start-3 text-sm text-muted md:col-span-3 md:col-start-auto">
+                {project.category}
+              </span>
+              <span className="col-span-3 flex items-center justify-end gap-3 text-sm tabular-nums md:col-span-2">
+                {project.year}
+                <ArrowUpRight
+                  aria-hidden="true"
+                  className="size-5 text-teal-light transition-transform duration-500 ease-expo group-hover:rotate-45"
+                />
+              </span>
+            </a>
+
+            {/* Touch devices: no hover, so show the image inline */}
+            {touch && (
+              <div className="mb-8 aspect-[16/10] overflow-hidden rounded-2xl">
+                <Media image={project.image} gradient={project.gradient} alt={`${project.name} project preview`} />
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-14 flex justify-center">
+        <MagneticButton
+          href="#contact"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollTo('#contact');
+          }}
+          variant="outline"
+          size="lg"
+          icon={ArrowUpRight}
+        >
+          Start your project
+        </MagneticButton>
+      </div>
+
+      {showPreview && <CursorPreview active={active} lastIndex={index} />}
+    </section>
+  );
+}
