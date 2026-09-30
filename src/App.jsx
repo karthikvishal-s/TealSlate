@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ScrollTrigger } from './lib/gsap';
 import { useLenis } from './hooks/useLenis';
 import Preloader from './components/Preloader';
+import CustomCursor from './components/CustomCursor';
 import Grain from './components/Grain';
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
   return (
     <>
       <Preloader onComplete={() => setLoaded(true)} />
+      <CustomCursor />
       <Grain />
 
       <main id="main" className="relative z-10 bg-night">
