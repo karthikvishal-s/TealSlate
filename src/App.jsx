@@ -62,6 +62,13 @@ export default function App() {
 
   return (
     <>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-full focus:bg-teal-light focus:px-5 focus:py-3 focus:text-night"
+      >
+        Skip to content
+      </a>
+
       <Preloader onComplete={() => setLoaded(true)} />
       <CustomCursor />
       <Grain />
