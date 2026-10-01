@@ -1,12 +1,15 @@
-import { motion } from 'motion/react';
+import { useRef, useState } from 'react';
+import { motion, useMotionTemplate, useMotionValue, useSpring } from 'motion/react';
 import { Sparkles } from 'lucide-react';
 import { easeExpo } from '../lib/motion';
+import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+
+const tiltSpring = { stiffness: 160, damping: 18, mass: 0.4 };
 
 /** Animated abstract portrait used until a real founder photo is added. */
 function PortraitArt({ founder }) {
   const [a, b, c] = founder.palette;
-  const showChips = true;
-
   return (
     <div
       aria-hidden="true"
@@ -38,10 +41,49 @@ function PortraitArt({ founder }) {
   );
 }
 
-/** Founder card: animated portrait, focus areas, bio and links. */
+/**
+ * Founder card with a pointer-following 3D tilt, moving light sheen, portrait zoom
+ * and skill chips that pop in on hover (Motion only; GSAP animates the parents).
+ */
 export default function FounderCard({ founder, index }) {
+  const ref = useRef(null);
+  const touch = useIsTouchDevice();
+  const reduced = useReducedMotion();
+  const interactive = !touch && !reduced;
+  const [hovered, setHovered] = useState(false);
+
+  const rotateX = useSpring(0, tiltSpring);
+  const rotateY = useSpring(0, tiltSpring);
+  const glareX = useMotionValue(50);
+  const glareY = useMotionValue(30);
+  const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgb(255 255 255 / 0.5), transparent 55%)`;
+
+  const onPointerMove = (e) => {
+    if (!interactive || e.pointerType !== 'mouse') return;
+    const r = ref.current.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    rotateY.set((px - 0.5) * 12);
+    rotateX.set(-(py - 0.5) * 10);
+    glareX.set(px * 100);
+    glareY.set(py * 100);
+  };
+
+  const onPointerLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+    setHovered(false);
+  };
+
+  const showChips = hovered || !interactive;
+
   return (
     <motion.article
+      ref={ref}
+      onPointerMove={onPointerMove}
+      onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
+      onPointerLeave={onPointerLeave}
+      style={{ rotateX, rotateY, transformPerspective: 1100 }}
       className="group relative rounded-[2rem] border border-line bg-card p-3 shadow-[0_30px_80px_-40px_rgb(20_33_31/0.35)] md:p-4"
     >
       <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
@@ -59,11 +101,20 @@ export default function FounderCard({ founder, index }) {
           )}
         </div>
 
+        {/* Sheen that follows the pointer */}
+        {interactive && (
+          <motion.div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 opacity-0 mix-blend-soft-light transition-opacity duration-500 group-hover:opacity-100"
+            style={{ background: glare }}
+          />
+        )}
+
         <span className="absolute left-4 top-4 rounded-full bg-paper/85 px-3 py-1 font-display text-xs font-bold text-ink backdrop-blur-md">
           0{index + 1}
         </span>
 
-        {/* Focus areas */}
+        {/* Skills pop in on hover (always visible on touch) */}
         <motion.ul
           aria-label={`${founder.name}'s focus areas`}
           className="absolute inset-x-4 bottom-4 flex flex-wrap gap-2"
