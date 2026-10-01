@@ -11,7 +11,7 @@ function ServiceCard({ service, index, total }) {
       data-service-card
       // Mobile: sticky cards that stack on top of each other while scrolling.
       style={{ '--i': index }}
-      className="group relative flex min-h-[26rem] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-deep p-7 max-lg:sticky max-lg:top-[calc(6rem+var(--i)*1rem)] md:p-10 motion-safe:lg:h-[min(68vh,40rem)] motion-safe:lg:min-h-0 motion-safe:lg:w-[min(36rem,40vw)] motion-safe:lg:shrink-0"
+      className="group relative flex min-h-[26rem] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-card p-6 max-lg:sticky max-lg:top-[calc(6rem+var(--i)*1rem)] md:p-10 motion-safe:lg:h-[min(68vh,40rem)] motion-safe:lg:min-h-0 motion-safe:lg:w-[min(36rem,40vw)] motion-safe:lg:shrink-0"
     >
       {/* Hover glow */}
       <div
@@ -20,7 +20,7 @@ function ServiceCard({ service, index, total }) {
       />
 
       <div className="relative flex items-start justify-between">
-        <span className="font-display text-7xl font-extrabold leading-none tracking-tighter text-teal-light/90 md:text-8xl">
+        <span className="font-display text-6xl font-bold leading-none tracking-tighter text-teal/90 md:text-7xl">
           {String(index + 1).padStart(2, '0')}
         </span>
         <span className="text-xs uppercase tracking-[0.28em] text-muted">
@@ -33,7 +33,7 @@ function ServiceCard({ service, index, total }) {
           {service.title}
           <ArrowUpRight
             aria-hidden="true"
-            className="mt-1 size-8 shrink-0 text-teal-light transition-transform duration-500 ease-expo group-hover:rotate-45"
+            className="mt-1 size-8 shrink-0 text-teal transition-transform duration-500 ease-expo group-hover:rotate-45"
           />
         </h3>
         <p className="mt-5 max-w-md text-base leading-relaxed text-muted">{service.description}</p>
@@ -64,18 +64,15 @@ export default function Services() {
       // Desktop: pin the section and translate the card track horizontally.
       mm.add(`${DESKTOP} and ${MOTION_OK}`, () => {
         const distance = () => track.current.scrollWidth - window.innerWidth;
-        const tl = gsap.timeline({
-          defaults: { ease: 'none' }, // linear mapping; scrub smoothing provides the easing
-          scrollTrigger: {
-            trigger: root.current,
-            start: 'top top',
-            end: () => `+=${distance()}`,
-            pin: true,
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
+        const range = { trigger: root.current, start: 'top top', end: () => `+=${distance()}`, invalidateOnRefresh: true };
+
+        // Linear mapping (ease: none); scrub smoothing provides the easing.
+        const move = gsap.to(track.current, {
+          x: () => -distance(),
+          ease: 'none',
+          scrollTrigger: { ...range, pin: true, scrub: 1 },
         });
-        tl.to(track.current, { x: () => -distance() }).fromTo(progress.current, { scaleX: 0 }, { scaleX: 1 }, 0);
+        gsap.fromTo(progress.current, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { ...range, scrub: 1 } });
       });
 
       // Mobile/tablet: simple fade-up for each stacked card.
@@ -103,8 +100,8 @@ export default function Services() {
       <div className="gutter mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between lg:mb-10">
         <div>
           <SectionLabel index="(02)">What we do</SectionLabel>
-          <SplitTextReveal id="services-title" className="mt-6 font-display text-display font-extrabold uppercase">
-            Services built to <span className="text-teal-light">scale</span>
+          <SplitTextReveal id="services-title" className="mt-6 font-display text-display font-bold">
+            Services built to <span className="text-teal">scale</span>
           </SplitTextReveal>
         </div>
         <p className="max-w-sm text-base leading-relaxed text-muted">
@@ -120,7 +117,7 @@ export default function Services() {
 
       <div aria-hidden="true" className="gutter mt-10 hidden motion-safe:lg:block">
         <div className="h-px w-full bg-line">
-          <div ref={progress} className="h-px origin-left scale-x-0 bg-teal-light" />
+          <div ref={progress} className="h-px origin-left scale-x-0 bg-teal" />
         </div>
       </div>
     </section>
