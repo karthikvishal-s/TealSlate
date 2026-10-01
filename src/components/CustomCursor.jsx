@@ -98,16 +98,14 @@ function Cursor() {
       data-hidden="true"
       className="pointer-events-none fixed inset-0 z-[100] transition-opacity duration-300"
     >
-      <div className="fixed inset-0 mix-blend-difference">
-        <div ref={ring} className="fixed left-0 top-0 will-change-transform">
-          <div className="cursor-ring-inner size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white" />
-        </div>
-        <div ref={dot} className="fixed left-0 top-0 will-change-transform">
-          <div className="size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
-        </div>
+      <div ref={ring} className="fixed left-0 top-0 will-change-transform">
+        <div className="cursor-ring-inner size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ink/40" />
+      </div>
+      <div ref={dot} className="fixed left-0 top-0 will-change-transform">
+        <div className="cursor-dot-inner size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink" />
       </div>
       <div ref={bubble} className="fixed left-0 top-0 will-change-transform">
-        <div className="cursor-label-inner grid size-24 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-teal-light text-xs font-bold uppercase tracking-[0.2em] text-night">
+        <div className="cursor-label-inner grid size-24 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-teal text-xs font-semibold uppercase tracking-[0.2em] text-paper shadow-lg shadow-teal/20">
           <span ref={label}>View</span>
         </div>
       </div>
