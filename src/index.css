@@ -11,8 +11,8 @@
   --color-teal-light: #2dd4bf;
   --color-line: rgb(230 238 237 / 0.12);
 
-  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
   /* expo.out / power4(quint).out / power4.inOut equivalents for CSS + Tailwind `ease-*` */
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
