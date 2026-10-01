@@ -87,6 +87,25 @@ export default function Services() {
           scrollTrigger: { ...range, pin: true, scrub: 1 },
         });
         gsap.fromTo(progress.current, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { ...range, scrub: 1 } });
+
+        // Each photo drifts against the track direction while its card crosses the screen.
+        gsap.utils.toArray('[data-service-img]').forEach((img) => {
+          gsap.fromTo(
+            img,
+            { xPercent: -6 },
+            {
+              xPercent: 6,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: img.closest('[data-service-card]'),
+                containerAnimation: move,
+                start: 'left right',
+                end: 'right left',
+                scrub: true,
+              },
+            },
+          );
+        });
       });
 
       // Mobile/tablet: simple fade-up for each stacked card.
