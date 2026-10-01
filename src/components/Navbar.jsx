@@ -33,12 +33,17 @@ export default function Navbar({ ready }) {
   useGSAP(
     () => {
       let hidden = false;
+      let scrolled = false;
       ScrollTrigger.create({
         start: 0,
         end: 'max',
         onUpdate: (self) => {
           const y = self.scroll();
-          header.current.dataset.scrolled = String(y > 40);
+          // Only touch the DOM when the state flips (writing every frame invalidates styles).
+          if (y > 40 !== scrolled) {
+            scrolled = y > 40;
+            header.current.dataset.scrolled = String(scrolled);
+          }
           const shouldHide = self.direction === 1 && y > 200 && !openRef.current;
           if (shouldHide === hidden) return;
           hidden = shouldHide;

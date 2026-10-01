@@ -37,7 +37,7 @@ function ServiceCard({ service, index, total }) {
             alt=""
             loading="lazy"
             decoding="async"
-            className="absolute inset-y-0 -left-[8%] h-full w-[116%] max-w-none object-cover"
+            className="absolute inset-y-0 -left-[8%] h-full w-[116%] max-w-none object-cover will-change-transform"
           />
         </div>
       </div>
@@ -84,9 +84,9 @@ export default function Services() {
         const move = gsap.to(track.current, {
           x: () => -distance(),
           ease: 'none',
-          scrollTrigger: { ...range, pin: true, scrub: 0.4 },
+          scrollTrigger: { ...range, pin: true, scrub: true, anticipatePin: 1 }, // Lenis already smooths
         });
-        gsap.fromTo(progress.current, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { ...range, scrub: 0.4 } });
+        gsap.fromTo(progress.current, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { ...range, scrub: true } });
 
         // Each photo drifts against the track direction while its card crosses the screen.
         gsap.utils.toArray('[data-service-img]').forEach((img) => {
