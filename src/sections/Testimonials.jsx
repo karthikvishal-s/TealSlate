@@ -60,8 +60,8 @@ export default function Testimonials() {
       <div className="gutter mb-14 flex flex-col gap-8 md:mb-20 md:flex-row md:items-end md:justify-between">
         <div>
           <SectionLabel index="(05)">Kind words</SectionLabel>
-          <SplitTextReveal id="testimonials-title" className="mt-6 font-display text-display font-extrabold uppercase">
-            Clients who <span className="text-teal-light">stay</span>
+          <SplitTextReveal id="testimonials-title" className="mt-6 font-display text-display font-bold">
+            Clients who <span className="text-teal">stay</span>
           </SplitTextReveal>
         </div>
 
@@ -71,7 +71,7 @@ export default function Testimonials() {
             onClick={() => goTo(index - 1)}
             disabled={atStart}
             aria-label="Previous testimonial"
-            className="grid size-14 place-items-center rounded-full border border-line transition-colors duration-500 hover:border-teal-light hover:bg-teal-light hover:text-night disabled:opacity-30 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-ink"
+            className="grid size-14 place-items-center rounded-full border border-line transition-colors duration-500 hover:border-teal hover:bg-teal hover:text-paper disabled:opacity-30 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-ink"
           >
             <ArrowLeft className="size-5" aria-hidden="true" />
           </button>
@@ -80,7 +80,7 @@ export default function Testimonials() {
             onClick={() => goTo(index + 1)}
             disabled={atEnd}
             aria-label="Next testimonial"
-            className="grid size-14 place-items-center rounded-full border border-line transition-colors duration-500 hover:border-teal-light hover:bg-teal-light hover:text-night disabled:opacity-30 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-ink"
+            className="grid size-14 place-items-center rounded-full border border-line transition-colors duration-500 hover:border-teal hover:bg-teal hover:text-paper disabled:opacity-30 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-ink"
           >
             <ArrowRight className="size-5" aria-hidden="true" />
           </button>
@@ -117,16 +117,16 @@ export default function Testimonials() {
               role="group"
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${count}`}
-              className="flex min-h-[24rem] w-[min(86vw,34rem)] shrink-0 flex-col justify-between rounded-3xl border border-line bg-deep p-7 md:min-h-[28rem] md:p-12"
+              className="flex min-h-[24rem] w-[min(86vw,34rem)] shrink-0 flex-col justify-between rounded-3xl border border-line bg-card p-7 md:min-h-[28rem] md:p-12"
             >
-              <Quote aria-hidden="true" className="size-10 fill-teal-light/20 text-teal-light" />
+              <Quote aria-hidden="true" className="size-10 fill-teal/20 text-teal" />
               <blockquote className="mt-8 font-display text-xl font-medium leading-snug tracking-tight md:text-[1.7rem]">
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
               <footer className="mt-10 flex items-center gap-4 border-t border-line pt-6">
                 <span
                   aria-hidden="true"
-                  className="grid size-12 shrink-0 place-items-center rounded-full bg-teal/15 font-display text-sm font-bold text-teal-light"
+                  className="grid size-12 shrink-0 place-items-center rounded-full bg-teal/15 font-display text-sm font-bold text-teal"
                 >
                   {t.name
                     .split(' ')
@@ -150,7 +150,7 @@ export default function Testimonials() {
           {String(index + 1).padStart(2, '0')} <span className="text-muted">/ {String(count).padStart(2, '0')}</span>
         </span>
         <div aria-hidden="true" className="h-px flex-1 bg-line">
-          <motion.div className="h-px origin-left bg-teal-light" style={{ scaleX: progress }} />
+          <motion.div className="h-px origin-left bg-teal" style={{ scaleX: progress }} />
         </div>
       </div>
     </section>
