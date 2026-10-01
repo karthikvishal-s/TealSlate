@@ -143,7 +143,7 @@ export default function Work() {
 
             {/* Touch devices: no hover, so show the image inline */}
             {touch && (
-              <div className="mb-8 aspect-[16/10] overflow-hidden rounded-2xl">
+              <div className="mb-8 aspect-[16/10] overflow-hidden rounded-2xl sm:aspect-[2/1] lg:aspect-[5/2]">
                 <Media image={project.image} gradient={project.gradient} alt={`${project.name} project preview`} />
               </div>
             )}

@@ -78,14 +78,14 @@ export default function About() {
 
   return (
     <section id="about" ref={root} aria-labelledby="about-title" className="gutter pb-16 pt-28 md:pb-24 md:pt-44">
-      <div className="grid gap-10 md:grid-cols-12">
-        <div className="md:col-span-3">
+      <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-3">
           <SectionLabel index="(01)">
             <span id="about-title">{about.label}</span>
           </SectionLabel>
         </div>
 
-        <p ref={statement} className="font-display text-lead font-semibold md:col-span-9">
+        <p ref={statement} className="font-display text-lead font-semibold md:portrait:text-[4.2vw] lg:col-span-9">
           {about.statement.map((seg, i) => (
             <span key={i} className={seg.accent ? 'text-teal' : undefined}>
               {seg.text}{' '}
@@ -94,20 +94,17 @@ export default function About() {
         </p>
       </div>
 
-      <div className="mt-16 grid gap-10 md:mt-24 md:grid-cols-12">
+      {/* Tablet: heading + two columns; desktop: aligned under the statement on the 12-col grid */}
+      <div className="mt-16 grid gap-8 md:mt-24 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
         <SplitTextReveal
           as="p"
           type="words"
-          className="font-display text-2xl font-bold tracking-tight md:col-span-4 md:col-start-4 md:text-3xl"
+          className="font-display text-2xl font-bold tracking-tight md:col-span-2 md:text-3xl lg:col-span-3 lg:col-start-4"
         >
           One studio. Every discipline.
         </SplitTextReveal>
         {about.supporting.map((line) => (
-          <p
-            key={line}
-            data-about-fade
-            className="max-w-sm text-base leading-relaxed text-muted md:col-span-3 md:first-of-type:col-start-8"
-          >
+          <p key={line} data-about-fade className="max-w-sm text-base leading-relaxed text-muted lg:col-span-3">
             {line}
           </p>
         ))}
