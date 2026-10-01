@@ -3,16 +3,20 @@ import { useMagnetic } from '../hooks/useMagnetic';
 
 const VARIANTS = {
   primary: {
-    base: 'bg-teal text-night',
+    base: 'bg-teal text-paper',
     fill: 'bg-ink',
   },
   outline: {
-    base: 'border border-line text-ink hover:text-night',
-    fill: 'bg-teal-light',
+    base: 'border border-line text-ink hover:text-paper',
+    fill: 'bg-teal',
+  },
+  'outline-dark': {
+    base: 'border border-paper/20 text-paper hover:text-ink',
+    fill: 'bg-teal-bright',
   },
   light: {
-    base: 'bg-ink text-night',
-    fill: 'bg-teal-light',
+    base: 'bg-ink text-paper',
+    fill: 'bg-teal',
   },
 };
 
