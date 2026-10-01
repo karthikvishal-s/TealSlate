@@ -22,18 +22,18 @@
   --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
 
   /* Fluid display scale */
-  --text-mega: clamp(3rem, 10.5vw, 12rem);
-  --text-mega--line-height: 0.88;
+  --text-mega: clamp(3rem, 8.5vw, 9.5rem);
+  --text-mega--line-height: 0.98;
   --text-mega--letter-spacing: -0.045em;
-  --text-huge: clamp(2.4rem, 7vw, 7.5rem);
-  --text-huge--line-height: 0.92;
+  --text-huge: clamp(2.6rem, 7vw, 7.5rem);
+  --text-huge--line-height: 0.95;
   --text-huge--letter-spacing: -0.04em;
-  --text-display: clamp(1.9rem, 4.2vw, 4.5rem);
-  --text-display--line-height: 1;
-  --text-display--letter-spacing: -0.03em;
-  --text-lead: clamp(1.55rem, 3.4vw, 3.4rem);
-  --text-lead--line-height: 1.12;
-  --text-lead--letter-spacing: -0.02em;
+  --text-display: clamp(2.25rem, 4.6vw, 4.75rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.035em;
+  --text-lead: clamp(1.5rem, 3vw, 3rem);
+  --text-lead--line-height: 1.2;
+  --text-lead--letter-spacing: -0.025em;
 }
 
 /* Horizontal page gutter: 16px on phones, scaling up on large screens */
