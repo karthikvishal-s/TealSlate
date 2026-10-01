@@ -10,6 +10,7 @@ TealSlate is a creative production studio that builds websites, brand identities
 
 ## Highlights
 
+- **Interactive hero image trail.** Photos glide in along the cursor path, tilt, and fade as you move across the headline.
 - **Cinematic preloader.** A 0→100 counter with the wordmark, then a curtain wipe that hands off to the hero animation.
 - **Smooth scrolling.** Lenis runs from GSAP's ticker, so the smooth scroll and every scroll-driven animation update in the same frame.
 - **Split-text reveals.** Headlines rise line by line, or word by word, from behind masks as they enter the viewport.
@@ -17,7 +18,9 @@ TealSlate is a creative production studio that builds websites, brand identities
   - The showreel frame expands from a card to full-bleed.
   - The studio statement fills in word by word.
   - A process timeline line draws itself as you scroll.
-- **Pinned horizontal services.** On desktop the six service cards scroll sideways. On mobile they stack as sticky cards.
+- **Meet the founders.** The founder cards tilt in 3D toward the cursor, with a moving light sheen and skill chips that pop in on hover. A circular badge spins faster as you scroll, and the cards reveal and drift in parallax.
+- **Parallax photo collage.** Studio photos wipe into view, and each one drifts at its own speed.
+- **Pinned horizontal services.** On desktop the six service cards scroll sideways and their photos drift in parallax. On mobile they stack as sticky cards.
 - **Selected work list.** A floating preview follows the cursor with spring physics and leans into movement. Each row wipes open as it scrolls in.
 - **Custom cursor.** A dot and a trailing ring that change state over links, projects ("View"), and the carousel ("Drag").
 - **Magnetic interactions.** Buttons and the contact heading pull toward the cursor and spring back.
@@ -36,7 +39,8 @@ TealSlate is a creative production studio that builds websites, brand identities
 | Interaction animation | Motion |
 | Smooth scroll | Lenis |
 | Icons | Lucide |
-| Type | Syne (display) and Manrope (body) |
+| Palette | Warm paper (#F5F2EC), deep slate ink (#14211F), teal (#0F766E) |
+| Type | Plus Jakarta Sans (display) and Inter (body) |
 
 **Motion rule of thumb:** GSAP owns everything driven by scrolling, and Motion owns everything driven by the pointer. The two never animate the same element.
 
@@ -56,10 +60,15 @@ src/
 ├── components/   Reusable UI and motion primitives (cursor, preloader, navbar, magnetic button, marquee…)
 ├── sections/     Page sections: Hero → Showreel → Clients → About → Services → Work → Process → Stats → Testimonials → Contact → Footer
 ├── hooks/        Lenis access, media queries, pointer position, magnetic behaviour
-├── data/         All site copy and content
+├── data/         All site copy and content (including founders)
+├── assets/       Optimized WebP photography (see assets/images/CREDITS.md)
 ├── lib/          GSAP registration, motion presets, contact form integration
 └── index.css     Design tokens, global styles, and keyframes
 ```
+
+## Photography
+
+The placeholder photography is from [Unsplash](https://unsplash.com) under the Unsplash License. Photographers are credited in `src/assets/images/CREDITS.md`.
 
 ## License
 
