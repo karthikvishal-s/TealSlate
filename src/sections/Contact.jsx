@@ -17,9 +17,9 @@ export default function Contact() {
         <SplitTextReveal
           id="contact-title"
           type="words"
-          className="font-display text-mega font-extrabold uppercase"
+          className="font-display text-mega font-bold"
         >
-          Let&apos;s <span className="text-teal-light">talk</span>
+          Let&apos;s <span className="text-teal">talk</span>
         </SplitTextReveal>
       </Magnetic>
 
@@ -34,7 +34,7 @@ export default function Contact() {
               className="group inline-flex items-center gap-2 font-display text-2xl font-bold tracking-tight md:text-3xl"
             >
               <RollingText>{site.email}</RollingText>
-              <ArrowUpRight aria-hidden="true" className="size-6 text-teal-light transition-transform duration-500 ease-expo group-hover:rotate-45" />
+              <ArrowUpRight aria-hidden="true" className="size-6 text-teal transition-transform duration-500 ease-expo group-hover:rotate-45" />
             </a>
           </div>
 
