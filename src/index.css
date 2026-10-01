@@ -43,13 +43,13 @@
 
 @layer base {
   html {
-    background: var(--color-night);
-    color-scheme: dark;
+    background: var(--color-paper);
+    color-scheme: light;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background: var(--color-night);
+    background: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -58,12 +58,12 @@
   }
 
   ::selection {
-    background: var(--color-teal-light);
-    color: var(--color-night);
+    background: var(--color-teal);
+    color: var(--color-paper);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-teal-light);
+    outline: 2px solid var(--color-teal);
     outline-offset: 4px;
     border-radius: 4px;
   }
