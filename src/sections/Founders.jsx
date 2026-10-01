@@ -25,13 +25,13 @@ export default function Founders() {
         gsap.utils.toArray('[data-founder-reveal]').forEach((el, i) => {
           gsap.fromTo(
             el,
-            { clipPath: 'inset(22% 12% 22% 12% round 2rem)', autoAlpha: 0, y: 80 },
+            { clipPath: 'inset(18% 8% 18% 8% round 1.75rem)', autoAlpha: 0, y: 50 },
             {
-              clipPath: 'inset(0% 0% 0% 0% round 2rem)',
+              clipPath: 'inset(0% 0% 0% 0% round 1.75rem)',
               autoAlpha: 1,
               y: 0,
-              duration: 1.6,
-              delay: i * 0.12,
+              duration: 1,
+              delay: i * 0.08,
               ease: 'expo.out',
               clearProps: 'clipPath', // let the 3D tilt + shadow breathe after the reveal
               scrollTrigger: { trigger: el, start: 'top 85%', once: true },
@@ -45,9 +45,9 @@ export default function Founders() {
         gsap.utils.toArray('[data-founder-parallax]').forEach((el, i) => {
           gsap.fromTo(
             el,
-            { yPercent: i ? 14 : 4 },
+            { yPercent: i ? 8 : 3 },
             {
-              yPercent: i ? -8 : -4,
+              yPercent: i ? -5 : -2,
               ease: 'none',
               scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
             },
@@ -59,7 +59,7 @@ export default function Founders() {
   );
 
   return (
-    <section ref={root} className="mt-28 md:mt-44" aria-labelledby="founders-title">
+    <section ref={root} className="mt-24 md:mt-32" aria-labelledby="founders-title">
       <div className="grid items-end gap-10 md:grid-cols-12">
         <div className="md:col-span-8">
           <SectionLabel>{foundersIntro.label}</SectionLabel>
@@ -73,17 +73,17 @@ export default function Founders() {
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{foundersIntro.body}</p>
         </div>
         <div className="flex md:col-span-4 md:justify-end">
-          <CircularText text={foundersIntro.badge} className="size-36 text-ink md:size-44">
-            <span className="grid size-14 place-items-center rounded-full bg-teal text-paper md:size-16">
-              <ArrowDown aria-hidden="true" className="size-6" />
+          <CircularText text={foundersIntro.badge} className="size-28 text-ink md:size-36">
+            <span className="grid size-11 place-items-center rounded-full bg-teal text-paper md:size-14">
+              <ArrowDown aria-hidden="true" className="size-5" />
             </span>
           </CircularText>
         </div>
       </div>
 
-      <div className="mt-16 grid gap-14 md:mt-24 md:grid-cols-2 md:gap-10 lg:gap-16">
+      <div className="mx-auto mt-12 grid max-w-2xl gap-10 md:mt-16 lg:max-w-none lg:grid-cols-2 lg:gap-8">
         {founders.map((founder, i) => (
-          <div key={founder.id} data-founder-parallax className={i ? 'md:mt-24' : ''}>
+          <div key={founder.id} data-founder-parallax className={i ? 'lg:mt-12' : ''}>
             <div data-founder-reveal>
               <FounderCard founder={founder} index={i} />
             </div>
@@ -91,7 +91,7 @@ export default function Founders() {
               as="blockquote"
               type="words"
               stagger={0.03}
-              className="mt-8 max-w-md px-2 font-display text-xl font-medium leading-snug tracking-tight text-ink/85 md:text-2xl"
+              className="mt-5 max-w-md px-1 font-display text-lg font-medium leading-snug tracking-tight text-ink/85"
             >
               &ldquo;{founder.quote}&rdquo;
             </SplitTextReveal>

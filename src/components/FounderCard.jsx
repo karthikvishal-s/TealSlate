@@ -5,7 +5,7 @@ import { easeExpo } from '../lib/motion';
 import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
-const tiltSpring = { stiffness: 160, damping: 18, mass: 0.4 };
+const tiltSpring = { stiffness: 260, damping: 22, mass: 0.3 };
 
 /** Animated abstract portrait used until a real founder photo is added. */
 function PortraitArt({ founder }) {
@@ -29,12 +29,12 @@ function PortraitArt({ founder }) {
         <circle cx="100" cy="100" r="70" fill="none" stroke="white" strokeOpacity="0.5" strokeWidth="0.8" strokeDasharray="2 6" />
         <circle cx="100" cy="100" r="52" fill="none" stroke="white" strokeOpacity="0.35" strokeWidth="0.6" />
       </svg>
-      <div className="float-y absolute right-[14%] top-[12%] size-[22%] rounded-full bg-white/35 backdrop-blur-sm" />
+      <div className="float-y absolute right-[14%] top-[12%] size-[22%] rounded-full bg-white/35" />
       <div
         className="absolute inset-0 opacity-[0.18]"
-        style={{ backgroundImage: 'radial-gradient(rgb(255 255 255) 1px, transparent 1px)', backgroundSize: '14px 14px' }}
+        style={{ backgroundImage: 'radial-gradient(rgb(255 255 255) 1px, transparent 1px)', backgroundSize: '8px 8px' }}
       />
-      <span className="absolute inset-0 grid place-items-center font-display text-[clamp(5rem,13vw,10rem)] font-bold tracking-tighter text-white drop-shadow-[0_8px_30px_rgb(20_33_31/0.25)]">
+      <span className="absolute inset-0 grid place-items-center font-display text-[clamp(1.9rem,3.4vw,2.6rem)] font-bold tracking-tight text-white drop-shadow-[0_4px_16px_rgb(20_33_31/0.25)]">
         {founder.initials}
       </span>
     </div>
@@ -43,7 +43,7 @@ function PortraitArt({ founder }) {
 
 /**
  * Founder card with a pointer-following 3D tilt, moving light sheen, portrait zoom
- * and skill chips that pop in on hover (Motion only; GSAP animates the parents).
+ * and focus chips that lift on hover (Motion only; GSAP animates the parents).
  */
 export default function FounderCard({ founder, index }) {
   const ref = useRef(null);
@@ -63,8 +63,8 @@ export default function FounderCard({ founder, index }) {
     const r = ref.current.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width;
     const py = (e.clientY - r.top) / r.height;
-    rotateY.set((px - 0.5) * 12);
-    rotateX.set(-(py - 0.5) * 10);
+    rotateY.set((px - 0.5) * 9);
+    rotateX.set(-(py - 0.5) * 8);
     glareX.set(px * 100);
     glareY.set(py * 100);
   };
@@ -75,19 +75,17 @@ export default function FounderCard({ founder, index }) {
     setHovered(false);
   };
 
-  const showChips = hovered || !interactive;
-
   return (
     <motion.article
       ref={ref}
       onPointerMove={onPointerMove}
       onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
       onPointerLeave={onPointerLeave}
-      style={{ rotateX, rotateY, transformPerspective: 1100 }}
-      className="group relative rounded-[2rem] border border-line bg-card p-3 shadow-[0_30px_80px_-40px_rgb(20_33_31/0.35)] md:p-4"
+      style={{ rotateX, rotateY, transformPerspective: 900 }}
+      className="group relative grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4 rounded-[1.75rem] border border-line bg-card p-3 shadow-[0_24px_60px_-36px_rgb(20_33_31/0.35)] sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:gap-5 sm:p-4 xl:grid-cols-[9.5rem_minmax(0,1fr)]"
     >
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
-        <div className="absolute inset-0 transition-transform duration-1000 ease-expo group-hover:scale-[1.06]">
+      <div className="relative aspect-[4/5] self-start overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 transition-transform duration-500 ease-expo group-hover:scale-[1.06]">
           {founder.photo ? (
             <img
               src={founder.photo}
@@ -105,54 +103,32 @@ export default function FounderCard({ founder, index }) {
         {interactive && (
           <motion.div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-0 mix-blend-soft-light transition-opacity duration-500 group-hover:opacity-100"
+            className="pointer-events-none absolute inset-0 opacity-0 mix-blend-soft-light transition-opacity duration-300 group-hover:opacity-100"
             style={{ background: glare }}
           />
         )}
 
-        <span className="absolute left-4 top-4 rounded-full bg-paper/85 px-3 py-1 font-display text-xs font-bold text-ink backdrop-blur-md">
+        <span className="absolute left-2 top-2 rounded-full bg-paper/90 px-2 py-0.5 font-display text-[10px] font-bold text-ink">
           0{index + 1}
         </span>
-
-        {/* Skills pop in on hover (always visible on touch) */}
-        <motion.ul
-          aria-label={`${founder.name}'s focus areas`}
-          className="absolute inset-x-4 bottom-4 flex flex-wrap gap-2"
-          initial={false}
-          animate={showChips ? 'show' : 'hide'}
-          variants={{ show: { transition: { staggerChildren: 0.06 } }, hide: {} }}
-        >
-          {founder.skills.map((skill) => (
-            <motion.li
-              key={skill}
-              className="rounded-full bg-paper/90 px-3 py-1.5 text-xs font-semibold text-ink shadow-sm backdrop-blur-md"
-              variants={{
-                show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: easeExpo } },
-                hide: { opacity: 0, y: 14, scale: 0.9, transition: { duration: 0.25 } },
-              }}
-            >
-              {skill}
-            </motion.li>
-          ))}
-        </motion.ul>
       </div>
 
-      <div className="px-2 pb-3 pt-6 md:px-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal">{founder.role}</p>
-        <h4 className="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">{founder.name}</h4>
-        <p className="mt-4 text-base leading-relaxed text-muted">{founder.bio}</p>
-        <p className="mt-5 flex items-start gap-2 text-sm text-ink/80">
-          <Sparkles aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-teal" />
+      <div className="flex min-w-0 flex-col py-0.5">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-teal">{founder.role}</p>
+        <h4 className="mt-1.5 font-display text-xl font-bold tracking-tight sm:text-2xl">{founder.name}</h4>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{founder.bio}</p>
+        <p className="mt-3 flex items-start gap-1.5 text-xs text-ink/75">
+          <Sparkles aria-hidden="true" className="mt-px size-3.5 shrink-0 text-teal" />
           {founder.funFact}
         </p>
-        <ul className="mt-6 flex gap-5 border-t border-line pt-5 text-sm font-medium">
+        <ul className="mt-auto flex gap-4 pt-3 text-xs font-medium">
           {founder.socials.map((s) => (
             <li key={s.label}>
               <a
                 href={s.href}
                 target="_blank"
                 rel="noreferrer"
-                className="underline decoration-line underline-offset-4 transition-colors duration-300 hover:text-teal hover:decoration-teal"
+                className="underline decoration-line underline-offset-4 transition-colors duration-200 hover:text-teal hover:decoration-teal"
               >
                 {s.label}
               </a>
@@ -160,6 +136,28 @@ export default function FounderCard({ founder, index }) {
           ))}
         </ul>
       </div>
+
+      {/* Focus areas: a quick staggered lift on hover */}
+      <motion.ul
+        aria-label={`${founder.name}'s focus areas`}
+        className="col-span-2 flex flex-wrap gap-1.5 border-t border-line pt-3"
+        initial={false}
+        animate={hovered ? 'lift' : 'rest'}
+        variants={{ lift: { transition: { staggerChildren: 0.035 } }, rest: {} }}
+      >
+        {founder.skills.map((skill) => (
+          <motion.li
+            key={skill}
+            className="rounded-full bg-mint/70 px-2.5 py-1 text-[11px] font-semibold text-ink"
+            variants={{
+              lift: { y: -3, transition: { duration: 0.25, ease: easeExpo } },
+              rest: { y: 0, transition: { duration: 0.2 } },
+            }}
+          >
+            {skill}
+          </motion.li>
+        ))}
+      </motion.ul>
     </motion.article>
   );
 }
