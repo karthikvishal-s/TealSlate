@@ -85,16 +85,16 @@ export default function Navbar({ ready }) {
       <header
         ref={header}
         data-scrolled="false"
-        className="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter] duration-500 data-[scrolled=true]:bg-night/70 data-[scrolled=true]:backdrop-blur-md"
+        className="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter] duration-500 data-[scrolled=true]:bg-paper/80 data-[scrolled=true]:backdrop-blur-md"
       >
         <div ref={inner} className="gutter flex h-20 items-center justify-between gap-6 md:h-24">
           <a
             href="#top"
             onClick={(e) => go(e, 0)}
-            className="font-display text-xl font-extrabold tracking-tight md:text-2xl"
+            className="font-display text-xl font-bold tracking-tight md:text-2xl"
             aria-label={`${site.name}, back to top`}
           >
-            Teal<span className="text-teal-light">Slate</span>
+            Teal<span className="text-teal">Slate</span>
           </a>
 
           <nav aria-label="Primary" className="hidden lg:block">
@@ -148,7 +148,7 @@ export default function Navbar({ ready }) {
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
-            className="gutter fixed inset-0 z-40 flex flex-col justify-between bg-deep pb-8 pt-28 lg:hidden"
+            className="gutter fixed inset-0 z-40 flex flex-col justify-between bg-card pb-8 pt-28 lg:hidden"
             initial={{ clipPath: 'inset(0% 0% 100% 0%)' }}
             animate={{ clipPath: 'inset(0% 0% 0% 0%)' }}
             exit={{ clipPath: 'inset(0% 0% 100% 0%)' }}
@@ -174,7 +174,7 @@ export default function Navbar({ ready }) {
                         show: { y: '0%', transition: { duration: 0.9, ease: easeExpo } },
                       }}
                     >
-                      <span className="text-sm font-medium text-teal-light">0{i + 1}</span>
+                      <span className="text-sm font-medium text-teal">0{i + 1}</span>
                       {link.label}
                     </motion.a>
                   </li>
