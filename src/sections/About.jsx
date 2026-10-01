@@ -57,7 +57,7 @@ export default function About() {
 
         <p ref={statement} className="font-display text-lead font-semibold md:col-span-9">
           {about.statement.map((seg, i) => (
-            <span key={i} className={seg.accent ? 'text-teal-light' : undefined}>
+            <span key={i} className={seg.accent ? 'text-teal' : undefined}>
               {seg.text}{' '}
             </span>
           ))}
@@ -68,7 +68,7 @@ export default function About() {
         <SplitTextReveal
           as="p"
           type="words"
-          className="font-display text-2xl font-bold uppercase tracking-tight md:col-span-4 md:col-start-4 md:text-3xl"
+          className="font-display text-2xl font-bold tracking-tight md:col-span-4 md:col-start-4 md:text-3xl"
         >
           One studio. Every discipline.
         </SplitTextReveal>
@@ -82,6 +82,7 @@ export default function About() {
           </p>
         ))}
       </div>
+
     </section>
   );
 }
