@@ -53,8 +53,8 @@ export default function Process() {
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-32">
             <SectionLabel index="(04)">Process</SectionLabel>
-            <SplitTextReveal id="process-title" className="mt-6 font-display text-display font-extrabold uppercase">
-              From first call to <span className="text-teal-light">full launch</span>
+            <SplitTextReveal id="process-title" className="mt-6 font-display text-display font-bold">
+              From first call to <span className="text-teal">full launch</span>
             </SplitTextReveal>
             <p className="mt-8 max-w-sm text-base leading-relaxed text-muted">
               A clear, collaborative process with no black boxes. You always know what&apos;s happening, what&apos;s next,
@@ -76,7 +76,7 @@ export default function Process() {
               y1="0"
               x2="1"
               y2="100%"
-              stroke="var(--color-teal-light)"
+              stroke="var(--color-teal)"
               strokeWidth="2"
               pathLength="1"
               strokeDasharray="1"
@@ -89,11 +89,11 @@ export default function Process() {
               <span
                 data-dot
                 aria-hidden="true"
-                className="absolute left-6 top-3 size-4 -translate-x-1/2 rounded-full border-2 border-line bg-night transition-all duration-500 ease-expo [&.is-active]:scale-125 [&.is-active]:border-teal-light [&.is-active]:bg-teal-light [&.is-active]:shadow-[0_0_24px_4px_rgb(45_212_191/0.45)]"
+                className="absolute left-6 top-3 size-4 -translate-x-1/2 rounded-full border-2 border-line bg-paper transition-all duration-500 ease-expo [&.is-active]:scale-125 [&.is-active]:border-teal [&.is-active]:bg-teal [&.is-active]:shadow-[0_0_24px_4px_rgb(45_212_191/0.45)]"
               />
               <div data-step-body>
                 <div className="flex flex-wrap items-center gap-4">
-                  <span className="font-display text-sm font-bold text-teal-light">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-display text-sm font-bold text-teal">{String(i + 1).padStart(2, '0')}</span>
                   <span className="rounded-full border border-line px-3 py-1 text-xs uppercase tracking-[0.2em] text-muted">
                     {step.duration}
                   </span>
