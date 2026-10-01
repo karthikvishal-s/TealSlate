@@ -45,9 +45,9 @@ export default function Founders() {
         gsap.utils.toArray('[data-founder-parallax]').forEach((el, i) => {
           gsap.fromTo(
             el,
-            { yPercent: i ? 8 : 3 },
+            { yPercent: i ? 5 : 2 },
             {
-              yPercent: i ? -5 : -2,
+              yPercent: i ? -3 : -1,
               ease: 'none',
               scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
             },
@@ -60,8 +60,9 @@ export default function Founders() {
 
   return (
     <section ref={root} className="mt-24 md:mt-32" aria-labelledby="founders-title">
-      <div className="grid items-end gap-10 md:grid-cols-12">
-        <div className="md:col-span-8">
+      <div className="grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-12">
+        {/* Intro stays in view beside the cards on desktop */}
+        <div className="lg:sticky lg:top-28 lg:col-span-4">
           <SectionLabel>{foundersIntro.label}</SectionLabel>
           <SplitTextReveal
             as="h3"
@@ -70,33 +71,31 @@ export default function Founders() {
           >
             {foundersIntro.heading}
           </SplitTextReveal>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{foundersIntro.body}</p>
-        </div>
-        <div className="flex md:col-span-4 md:justify-end">
-          <CircularText text={foundersIntro.badge} className="size-28 text-ink md:size-36">
-            <span className="grid size-11 place-items-center rounded-full bg-teal text-paper md:size-14">
-              <ArrowDown aria-hidden="true" className="size-5" />
+          <p className="mt-6 max-w-md text-base leading-relaxed text-muted md:text-lg">{foundersIntro.body}</p>
+          <CircularText text={foundersIntro.badge} className="mt-8 size-28 text-ink md:size-32">
+            <span className="grid size-11 place-items-center rounded-full bg-teal text-paper md:size-12">
+              <ArrowDown aria-hidden="true" className="size-5 lg:-rotate-90" />
             </span>
           </CircularText>
         </div>
-      </div>
 
-      <div className="mx-auto mt-12 grid max-w-2xl gap-10 md:mt-16 lg:max-w-none lg:grid-cols-2 lg:gap-8">
-        {founders.map((founder, i) => (
-          <div key={founder.id} data-founder-parallax className={i ? 'lg:mt-12' : ''}>
-            <div data-founder-reveal>
-              <FounderCard founder={founder} index={i} />
+        <div className="grid gap-8 sm:grid-cols-2 sm:gap-5 lg:col-span-8 lg:gap-6">
+          {founders.map((founder, i) => (
+            <div key={founder.id} data-founder-parallax>
+              <div data-founder-reveal>
+                <FounderCard founder={founder} index={i} />
+              </div>
+              <SplitTextReveal
+                as="blockquote"
+                type="words"
+                stagger={0.03}
+                className="mt-4 px-1 font-display text-base font-medium leading-snug tracking-tight text-ink/85 md:text-lg"
+              >
+                &ldquo;{founder.quote}&rdquo;
+              </SplitTextReveal>
             </div>
-            <SplitTextReveal
-              as="blockquote"
-              type="words"
-              stagger={0.03}
-              className="mt-5 max-w-md px-1 font-display text-lg font-medium leading-snug tracking-tight text-ink/85"
-            >
-              &ldquo;{founder.quote}&rdquo;
-            </SplitTextReveal>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -77,7 +77,7 @@ export default function About() {
   );
 
   return (
-    <section id="about" ref={root} aria-labelledby="about-title" className="gutter py-28 md:py-44">
+    <section id="about" ref={root} aria-labelledby="about-title" className="gutter pb-16 pt-28 md:pb-24 md:pt-44">
       <div className="grid gap-10 md:grid-cols-12">
         <div className="md:col-span-3">
           <SectionLabel index="(01)">

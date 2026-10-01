@@ -32,9 +32,9 @@ function PortraitArt({ founder }) {
       <div className="float-y absolute right-[14%] top-[12%] size-[22%] rounded-full bg-white/35" />
       <div
         className="absolute inset-0 opacity-[0.18]"
-        style={{ backgroundImage: 'radial-gradient(rgb(255 255 255) 1px, transparent 1px)', backgroundSize: '8px 8px' }}
+        style={{ backgroundImage: 'radial-gradient(rgb(255 255 255) 1px, transparent 1px)', backgroundSize: '12px 12px' }}
       />
-      <span className="absolute inset-0 grid place-items-center font-display text-[clamp(1.9rem,3.4vw,2.6rem)] font-bold tracking-tight text-white drop-shadow-[0_4px_16px_rgb(20_33_31/0.25)]">
+      <span className="absolute inset-0 grid place-items-center font-display text-[clamp(3.5rem,7vw,5.5rem)] font-bold tracking-tighter text-white drop-shadow-[0_6px_24px_rgb(20_33_31/0.25)]">
         {founder.initials}
       </span>
     </div>
@@ -63,7 +63,7 @@ export default function FounderCard({ founder, index }) {
     const r = ref.current.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width;
     const py = (e.clientY - r.top) / r.height;
-    rotateY.set((px - 0.5) * 9);
+    rotateY.set((px - 0.5) * 10);
     rotateX.set(-(py - 0.5) * 8);
     glareX.set(px * 100);
     glareY.set(py * 100);
@@ -81,11 +81,11 @@ export default function FounderCard({ founder, index }) {
       onPointerMove={onPointerMove}
       onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
       onPointerLeave={onPointerLeave}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
-      className="group relative grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4 rounded-[1.75rem] border border-line bg-card p-3 shadow-[0_24px_60px_-36px_rgb(20_33_31/0.35)] sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:gap-5 sm:p-4 xl:grid-cols-[9.5rem_minmax(0,1fr)]"
+      style={{ rotateX, rotateY, transformPerspective: 1000 }}
+      className="group relative flex h-full flex-col rounded-[1.75rem] border border-line bg-card p-2.5 shadow-[0_24px_60px_-36px_rgb(20_33_31/0.35)]"
     >
-      <div className="relative aspect-[4/5] self-start overflow-hidden rounded-2xl">
-        <div className="absolute inset-0 transition-transform duration-500 ease-expo group-hover:scale-[1.06]">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.35rem]">
+        <div className="absolute inset-0 transition-transform duration-500 ease-expo group-hover:scale-[1.05]">
           {founder.photo ? (
             <img
               src={founder.photo}
@@ -108,20 +108,44 @@ export default function FounderCard({ founder, index }) {
           />
         )}
 
-        <span className="absolute left-2 top-2 rounded-full bg-paper/90 px-2 py-0.5 font-display text-[10px] font-bold text-ink">
+        <span className="absolute left-3 top-3 rounded-full bg-paper/90 px-2.5 py-0.5 font-display text-[11px] font-bold text-ink">
           0{index + 1}
         </span>
+
+        {/* Focus areas sit on the portrait and lift with a quick stagger on hover */}
+        <motion.ul
+          aria-label={`${founder.name}'s focus areas`}
+          className="absolute inset-x-3 bottom-3 flex flex-wrap gap-1.5"
+          initial={false}
+          animate={hovered ? 'lift' : 'rest'}
+          variants={{ lift: { transition: { staggerChildren: 0.035 } }, rest: {} }}
+        >
+          {founder.skills.map((skill) => (
+            <motion.li
+              key={skill}
+              className="rounded-full bg-paper/90 px-2.5 py-1 text-[11px] font-semibold text-ink shadow-sm"
+              variants={{
+                lift: { y: -4, transition: { duration: 0.25, ease: easeExpo } },
+                rest: { y: 0, transition: { duration: 0.2 } },
+              }}
+            >
+              {skill}
+            </motion.li>
+          ))}
+        </motion.ul>
       </div>
 
-      <div className="flex min-w-0 flex-col py-0.5">
+      <div className="flex flex-1 flex-col px-2 pb-1.5 pt-4">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-teal">{founder.role}</p>
-        <h4 className="mt-1.5 font-display text-xl font-bold tracking-tight sm:text-2xl">{founder.name}</h4>
+        <h4 className="mt-1.5 font-display text-2xl font-bold tracking-tight">{founder.name}</h4>
         <p className="mt-2 text-sm leading-relaxed text-muted">{founder.bio}</p>
         <p className="mt-3 flex items-start gap-1.5 text-xs text-ink/75">
           <Sparkles aria-hidden="true" className="mt-px size-3.5 shrink-0 text-teal" />
           {founder.funFact}
         </p>
-        <ul className="mt-auto flex gap-4 pt-3 text-xs font-medium">
+        {/* Spacer keeps the links aligned at the bottom when the two cards differ in copy length */}
+        <div className="flex-1" />
+        <ul className="mt-4 flex gap-4 border-t border-line pt-3 text-xs font-medium">
           {founder.socials.map((s) => (
             <li key={s.label}>
               <a
@@ -136,28 +160,6 @@ export default function FounderCard({ founder, index }) {
           ))}
         </ul>
       </div>
-
-      {/* Focus areas: a quick staggered lift on hover */}
-      <motion.ul
-        aria-label={`${founder.name}'s focus areas`}
-        className="col-span-2 flex flex-wrap gap-1.5 border-t border-line pt-3"
-        initial={false}
-        animate={hovered ? 'lift' : 'rest'}
-        variants={{ lift: { transition: { staggerChildren: 0.035 } }, rest: {} }}
-      >
-        {founder.skills.map((skill) => (
-          <motion.li
-            key={skill}
-            className="rounded-full bg-mint/70 px-2.5 py-1 text-[11px] font-semibold text-ink"
-            variants={{
-              lift: { y: -3, transition: { duration: 0.25, ease: easeExpo } },
-              rest: { y: 0, transition: { duration: 0.2 } },
-            }}
-          >
-            {skill}
-          </motion.li>
-        ))}
-      </motion.ul>
     </motion.article>
   );
 }
