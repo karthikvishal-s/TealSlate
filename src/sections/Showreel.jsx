@@ -5,8 +5,9 @@ import { showreel } from '../data/showreel';
 import Media from '../components/Media';
 
 /**
- * Pinned section: the reel frame starts as a small inset card and expands to
- * full-bleed as you scroll (scrubbed clip-path + inner scale for depth).
+ * Pinned section: the reel frame starts as a small card and grows to fill the
+ * screen as you scroll. Transform-only (scale), so it stays on the compositor —
+ * a scrubbed clip-path would repaint the whole photo every frame.
  */
 export default function Showreel() {
   const root = useRef(null);
@@ -28,14 +29,11 @@ export default function Showreel() {
             start: 'top top',
             end: desktop ? '+=130%' : '+=80%',
             pin: true,
-            scrub: 0.4,
+            scrub: true, // Lenis already smooths; extra scrub smoothing reads as lag
+            anticipatePin: 1,
           },
         });
-        tl.fromTo(
-          frame.current,
-          { clipPath: desktop ? 'inset(22% 26% 22% 26% round 28px)' : 'inset(26% 6% 26% 6% round 20px)' },
-          { clipPath: 'inset(0% 0% 0% 0% round 0px)' },
-        )
+        tl.fromTo(frame.current, { scale: desktop ? 0.5 : 0.86 }, { scale: 1 })
           .fromTo(media.current, { scale: 1.35 }, { scale: 1 }, 0)
           .fromTo('[data-reel-title]', { yPercent: 0 }, { yPercent: -60, autoAlpha: 0 }, 0)
           .fromTo('[data-reel-ui]', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 0.7);
@@ -70,8 +68,8 @@ export default function Showreel() {
 
   return (
     <section id="showreel" ref={root} aria-label="Showreel" className="relative h-svh overflow-hidden">
-      <div ref={frame} className="absolute inset-0 overflow-hidden bg-sand">
-        <div ref={media} className="size-full">
+      <div ref={frame} className="absolute inset-0 overflow-hidden rounded-[2rem] bg-sand will-change-transform">
+        <div ref={media} className="size-full will-change-transform">
           {showreel.videoSrc ? (
             <video
               ref={video}

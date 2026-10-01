@@ -24,11 +24,12 @@ export default function Process() {
 
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
+        // scaleY (compositor-only) instead of strokeDashoffset, which repaints the SVG every frame.
         gsap.fromTo(
           '[data-draw]',
-          { strokeDashoffset: 1 },
+          { scaleY: 0 },
           {
-            strokeDashoffset: 0,
+            scaleY: 1,
             ease: 'none',
             scrollTrigger: { trigger: timeline.current, start: 'top 60%', end: 'bottom 60%', scrub: true },
           },
@@ -51,7 +52,7 @@ export default function Process() {
     <section id="process" ref={root} aria-labelledby="process-title" className="gutter py-28 md:py-40">
       <div className="grid gap-16 lg:grid-cols-12">
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-32">
+          <div className="lg:sticky lg:top-32 lg:will-change-transform">
             <SectionLabel index="(04)">Process</SectionLabel>
             <SplitTextReveal id="process-title" className="mt-6 font-display text-display font-bold">
               From first call to <span className="text-teal">full launch</span>
@@ -70,19 +71,16 @@ export default function Process() {
             preserveAspectRatio="none"
           >
             <line x1="1" y1="0" x2="1" y2="100%" stroke="var(--color-line)" strokeWidth="2" />
-            <line
-              data-draw
-              x1="1"
-              y1="0"
-              x2="1"
-              y2="100%"
-              stroke="var(--color-teal)"
-              strokeWidth="2"
-              pathLength="1"
-              strokeDasharray="1"
-              strokeDashoffset="0"
-            />
           </svg>
+          <div
+            data-draw
+            aria-hidden="true"
+            className="absolute left-[23px] top-0 h-full w-[2px] origin-top will-change-transform"
+          >
+            <svg className="size-full overflow-visible" preserveAspectRatio="none">
+              <line x1="1" y1="0" x2="1" y2="100%" stroke="var(--color-teal)" strokeWidth="2" />
+            </svg>
+          </div>
 
           {process.map((step, i) => (
             <li key={step.title} data-step className="relative pb-20 pl-16 last:pb-0 md:pb-28 md:pl-24">
