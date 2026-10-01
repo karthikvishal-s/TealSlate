@@ -51,18 +51,18 @@ export default function Preloader({ onComplete }) {
       ref={root}
       role="status"
       aria-label="Loading TealSlate"
-      className="fixed inset-0 z-[90] flex flex-col justify-between bg-deep p-4 sm:p-8 md:p-12"
+      className="fixed inset-0 z-[90] flex flex-col justify-between bg-ink p-4 text-paper sm:p-8 md:p-12"
       style={{ clipPath: 'inset(0% 0% 0% 0%)' }}
     >
-      <div className="flex items-center justify-between text-xs uppercase tracking-[0.28em] text-muted">
+      <div className="flex items-center justify-between text-xs uppercase tracking-[0.28em] text-paper/60">
         <span>{site.tagline}</span>
         <span>©{new Date().getFullYear()}</span>
       </div>
 
       <div className="overflow-hidden pb-[0.1em]">
-        <p className="flex font-display text-[clamp(3.25rem,15vw,15rem)] font-extrabold leading-[0.9] tracking-[-0.05em]">
+        <p className="flex font-display text-[clamp(3.25rem,15vw,15rem)] font-bold leading-[0.95] tracking-[-0.05em]">
           {site.name.split('').map((ch, i) => (
-            <span key={i} data-letter className={`inline-block ${i >= 4 ? 'text-teal-light' : ''}`}>
+            <span key={i} data-letter className={`inline-block ${i >= 4 ? 'text-teal-bright' : ''}`}>
               {ch}
             </span>
           ))}
@@ -70,11 +70,11 @@ export default function Preloader({ onComplete }) {
       </div>
 
       <div className="flex items-end justify-between gap-6">
-        <div className="h-px w-full max-w-md origin-left scale-x-0 bg-teal-light" ref={bar} />
+        <div className="h-px w-full max-w-md origin-left scale-x-0 bg-teal-bright" ref={bar} />
         <div className="overflow-hidden">
           <p data-counter-wrap className="font-display text-5xl font-bold tabular-nums md:text-7xl">
             <span ref={counter}>000</span>
-            <span className="text-teal-light">%</span>
+            <span className="text-teal-bright">%</span>
           </p>
         </div>
       </div>
