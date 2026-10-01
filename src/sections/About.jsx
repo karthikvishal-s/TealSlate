@@ -3,6 +3,7 @@ import { gsap, SplitText, useGSAP, MOTION_OK } from '../lib/gsap';
 import { about } from '../data/about';
 import SectionLabel from '../components/SectionLabel';
 import SplitTextReveal from '../components/SplitTextReveal';
+import Founders from './Founders';
 
 // Collage layout: varied sizes/offsets so the photos feel placed, not gridded.
 const COLLAGE_LAYOUT = ['col-span-2 md:col-span-5', 'md:col-span-4 md:mt-40', 'md:col-span-3 md:mt-12'];
@@ -128,6 +129,8 @@ export default function About() {
           </figure>
         ))}
       </div>
+
+      <Founders />
     </section>
   );
 }
