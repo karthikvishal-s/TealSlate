@@ -28,6 +28,20 @@ function ServiceCard({ service, index, total }) {
         </span>
       </div>
 
+      {/* Photo: the wrapper zooms on hover (CSS), the img drifts with the horizontal scroll (GSAP) */}
+      <div className="relative my-6 aspect-[16/9] overflow-hidden rounded-2xl motion-safe:lg:my-5 motion-safe:lg:aspect-auto motion-safe:lg:min-h-0 motion-safe:lg:flex-1">
+        <div className="absolute inset-0 grayscale-[35%] transition-[transform,filter] duration-1000 ease-expo group-hover:scale-105 group-hover:grayscale-0">
+          <img
+            data-service-img
+            src={service.image}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-y-0 -left-[8%] h-full w-[116%] max-w-none object-cover"
+          />
+        </div>
+      </div>
+
       <div className="relative">
         <h3 className="flex items-start justify-between gap-4 font-display text-3xl font-bold leading-[1.05] tracking-tight md:text-5xl">
           {service.title}
