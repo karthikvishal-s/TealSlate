@@ -85,7 +85,11 @@ export default function Showreel() {
               aria-label={`${showreel.title} ${showreel.year}`}
             />
           ) : (
-            <Media gradient="linear-gradient(135deg, #2dd4bf 0%, #0f766e 60%, #14211f 100%)" alt="" />
+            <Media
+              image={showreel.poster}
+              gradient="linear-gradient(135deg, #2dd4bf 0%, #0f766e 60%, #14211f 100%)"
+              alt="A film crew setting up lights and cameras on set"
+            />
           )}
         </div>
 
