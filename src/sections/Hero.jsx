@@ -54,7 +54,7 @@ export default function Hero({ ready }) {
       id="top"
       ref={root}
       aria-label="Introduction"
-      className="relative isolate flex min-h-svh flex-col overflow-hidden"
+      className="relative isolate flex min-h-svh flex-col overflow-hidden md:portrait:min-h-[min(100svh,60rem)]"
     >
       {/* Animated gradient mesh */}
       <div ref={bg} aria-hidden="true" className="absolute inset-0 -z-10">
@@ -69,45 +69,48 @@ export default function Hero({ ready }) {
 
       <div
         ref={content}
-        className="gutter relative z-10 flex flex-1 origin-top flex-col justify-end pb-10 pt-32 md:pb-14"
+        className="gutter relative z-10 flex flex-1 origin-top flex-col pb-8 pt-28 md:pb-12 md:pt-32"
       >
-        <p data-hero-fade className="mb-6 text-xs font-medium uppercase tracking-[0.28em] text-muted md:mb-10">
-          {hero.eyebrow}
-        </p>
-
-        <SplitTextReveal
-          as="h1"
-          ready={ready}
-          delay={0.15}
-          duration={1.1}
-          stagger={0.08}
-          className="font-display text-mega font-bold"
-        >
-          {hero.headline} <span className="text-teal">{hero.headlineAccent}</span>
-        </SplitTextReveal>
-
-        <div className="mt-10 grid gap-8 md:mt-16 md:grid-cols-12 md:items-end">
-          <p data-hero-fade className="max-w-md text-base leading-relaxed text-muted md:col-span-5 md:text-lg">
-            {hero.subline}
+        {/* my-auto centres this block vertically on any screen height (no dead space above) */}
+        <div className="my-auto pt-6 md:pt-10">
+          <p data-hero-fade className="mb-6 text-xs font-medium uppercase tracking-[0.28em] text-muted md:mb-10">
+            {hero.eyebrow}
           </p>
 
-          <div data-hero-fade className="flex flex-wrap items-center gap-4 md:col-span-5 md:col-start-8 md:justify-end">
-            <MagneticButton
-              href={hero.cta.href}
-              onClick={(e) => go(e, hero.cta.href)}
-              size="lg"
-              icon={ArrowUpRight}
-            >
-              {hero.cta.label}
-            </MagneticButton>
-            <MagneticButton
-              href={hero.secondaryCta.href}
-              onClick={(e) => go(e, hero.secondaryCta.href)}
-              variant="outline"
-              size="lg"
-            >
-              {hero.secondaryCta.label}
-            </MagneticButton>
+          <SplitTextReveal
+            as="h1"
+            ready={ready}
+            delay={0.15}
+            duration={1.1}
+            stagger={0.08}
+            className="font-display text-mega font-bold md:portrait:text-[11vw]"
+          >
+            {hero.headline} <span className="text-teal">{hero.headlineAccent}</span>
+          </SplitTextReveal>
+
+          <div className="mt-10 grid gap-8 md:mt-16 md:grid-cols-12 md:items-end">
+            <p data-hero-fade className="max-w-md text-base leading-relaxed text-muted md:col-span-5 md:text-lg">
+              {hero.subline}
+            </p>
+
+            <div data-hero-fade className="flex flex-wrap items-center gap-4 md:col-span-5 md:col-start-8 md:justify-end">
+              <MagneticButton
+                href={hero.cta.href}
+                onClick={(e) => go(e, hero.cta.href)}
+                size="lg"
+                icon={ArrowUpRight}
+              >
+                {hero.cta.label}
+              </MagneticButton>
+              <MagneticButton
+                href={hero.secondaryCta.href}
+                onClick={(e) => go(e, hero.secondaryCta.href)}
+                variant="outline"
+                size="lg"
+              >
+                {hero.secondaryCta.label}
+              </MagneticButton>
+            </div>
           </div>
         </div>
 
