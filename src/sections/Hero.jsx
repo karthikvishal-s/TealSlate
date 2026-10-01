@@ -5,12 +5,18 @@ import { useLenis } from '../hooks/useLenis';
 import { hero } from '../data/site';
 import SplitTextReveal from '../components/SplitTextReveal';
 import MagneticButton from '../components/MagneticButton';
+import ImageTrail from '../components/ImageTrail';
+import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+import { heroTrail } from '../data/heroTrail';
 
 export default function Hero({ ready }) {
   const root = useRef(null);
   const content = useRef(null);
   const bg = useRef(null);
   const { scrollTo } = useLenis();
+  const touch = useIsTouchDevice();
+  const reduced = useReducedMotion();
 
   // Supporting content fades up once the preloader hands over.
   useGSAP(
@@ -57,6 +63,9 @@ export default function Hero({ ready }) {
         <div className="blob blob-c" />
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-paper/30 to-paper" />
       </div>
+
+      {/* Interactive image trail (desktop pointers only, after the preloader) */}
+      {ready && !touch && !reduced && <ImageTrail images={heroTrail} targetRef={root} />}
 
       <div
         ref={content}
