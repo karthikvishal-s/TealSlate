@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { ArrowDown } from 'lucide-react';
-import { gsap, useGSAP, MOTION_OK } from '../lib/gsap';
+import { gsap, useGSAP, MOTION_OK, DESKTOP } from '../lib/gsap';
 import { founders, foundersIntro } from '../data/founders';
 import SectionLabel from '../components/SectionLabel';
 import SplitTextReveal from '../components/SplitTextReveal';
@@ -10,7 +10,7 @@ import FounderCard from '../components/FounderCard';
 /**
  * "Meet the founders" block inside the Studio section.
  * Layering per card (outer → inner):
- *   [data-founder-parallax]  wrapper (column offset)
+ *   [data-founder-parallax]  GSAP scrubbed drift (desktop)
  *   [data-founder-reveal]    GSAP clip-path wipe on enter
  *   <FounderCard>            Motion tilt / hover only
  */
@@ -35,6 +35,21 @@ export default function Founders() {
               ease: 'expo.out',
               clearProps: 'clipPath', // let the 3D tilt + shadow breathe after the reveal
               scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+            },
+          );
+        });
+      });
+
+      // Desktop: the two cards drift at different speeds for depth.
+      mm.add(`${DESKTOP} and ${MOTION_OK}`, () => {
+        gsap.utils.toArray('[data-founder-parallax]').forEach((el, i) => {
+          gsap.fromTo(
+            el,
+            { yPercent: i ? 14 : 4 },
+            {
+              yPercent: i ? -8 : -4,
+              ease: 'none',
+              scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
             },
           );
         });
