@@ -169,12 +169,26 @@
   animation: scroll-cue 2.2s var(--ease-in-out-expo) infinite;
 }
 
-/* Animated gradient used by media placeholders */
+/* Slow rotation used by media + founder portrait placeholders */
 @keyframes hue-drift {
   to { transform: rotate(360deg); }
 }
 .hue-drift {
   animation: hue-drift 18s linear infinite;
+}
+.spin-slow {
+  animation: hue-drift 40s linear infinite;
+}
+.spin-slow-reverse {
+  animation: hue-drift 55s linear infinite reverse;
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8%); }
+}
+.float-y {
+  animation: float-y 7s var(--ease-in-out-expo) infinite;
 }
 
 /* ───────────── Custom cursor ───────────── */
