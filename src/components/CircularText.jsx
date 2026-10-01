@@ -42,7 +42,7 @@ export default function CircularText({ text, className = '', children }) {
   );
 
   return (
-    <div ref={root} className={`relative grid place-items-center ${className}`}>
+    <div ref={root} className={`relative grid place-items-center overflow-hidden rounded-full ${className}`}>
       <svg ref={ring} viewBox="0 0 200 200" className="absolute inset-0 size-full" aria-hidden="true">
         <defs>
           <path id={`circle-${id}`} d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
