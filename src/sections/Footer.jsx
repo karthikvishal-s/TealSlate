@@ -48,53 +48,53 @@ export default function Footer({ ref, fixed }) {
   return (
     <footer
       ref={ref}
-      className={`${fixed ? 'fixed' : 'relative'} inset-x-0 bottom-0 z-0 overflow-hidden bg-deep`}
+      className={`${fixed ? 'fixed' : 'relative'} inset-x-0 bottom-0 z-0 overflow-hidden bg-ink text-paper`}
     >
       <div ref={inner} className="gutter flex flex-col pb-6 pt-20 md:pt-28">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-6">
-            <p className="font-display text-display font-extrabold uppercase">
+            <p className="font-display text-display font-bold">
               Have an idea? <br />
-              <span className="text-teal-light">Let&apos;s make it move.</span>
+              <span className="text-teal-bright">Let&apos;s make it move.</span>
             </p>
             <a
               href={`mailto:${site.email}`}
               className="group mt-8 inline-flex items-center gap-2 text-lg font-semibold md:text-xl"
             >
-              <RollingText>{site.email}</RollingText>
-              <ArrowUpRight aria-hidden="true" className="size-5 text-teal-light transition-transform duration-500 ease-expo group-hover:rotate-45" />
+              <RollingText accent="text-teal-bright">{site.email}</RollingText>
+              <ArrowUpRight aria-hidden="true" className="size-5 text-teal-bright transition-transform duration-500 ease-expo group-hover:rotate-45" />
             </a>
           </div>
 
           <nav aria-label="Footer" className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-6">
             <div>
-              <p className="mb-4 text-xs uppercase tracking-[0.22em] text-muted">Menu</p>
+              <p className="mb-4 text-xs uppercase tracking-[0.22em] text-paper/55">Menu</p>
               <ul className="flex flex-col gap-2">
                 {navLinks.map((l) => (
                   <li key={l.href}>
                     <a href={l.href} onClick={(e) => go(e, l.href)} className="group">
-                      <RollingText>{l.label}</RollingText>
+                      <RollingText accent="text-teal-bright">{l.label}</RollingText>
                     </a>
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <p className="mb-4 text-xs uppercase tracking-[0.22em] text-muted">Social</p>
+              <p className="mb-4 text-xs uppercase tracking-[0.22em] text-paper/55">Social</p>
               <ul className="flex flex-col gap-2">
                 {socials.map((s) => (
                   <li key={s.label}>
                     <a href={s.href} target="_blank" rel="noreferrer" className="group">
-                      <RollingText>{s.label}</RollingText>
+                      <RollingText accent="text-teal-bright">{s.label}</RollingText>
                     </a>
                   </li>
                 ))}
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="mb-4 text-xs uppercase tracking-[0.22em] text-muted">Studio</p>
-              <p className="text-ink/80">{site.location}</p>
-              <p className="mt-2 text-muted">Mon–Fri, 9:00–18:00</p>
+              <p className="mb-4 text-xs uppercase tracking-[0.22em] text-paper/55">Studio</p>
+              <p className="text-paper/80">{site.location}</p>
+              <p className="mt-2 text-paper/55">Mon–Fri, 9:00–18:00</p>
             </div>
           </nav>
         </div>
@@ -103,20 +103,20 @@ export default function Footer({ ref, fixed }) {
         <div className="@container mt-16 md:mt-24">
           <p
             aria-hidden="true"
-            className="select-none whitespace-nowrap text-center font-display text-[14cqi] font-extrabold leading-[0.8] tracking-[-0.06em]"
+            className="select-none whitespace-nowrap text-center font-display text-[14cqi] font-bold leading-[0.8] tracking-[-0.06em]"
           >
-            Teal<span className="text-teal-light">Slate</span>
+            Teal<span className="text-teal-bright">Slate</span>
           </p>
         </div>
 
-        <div className="mt-8 flex flex-col-reverse items-start gap-6 border-t border-line pt-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col-reverse items-start gap-6 border-t border-paper/15 pt-6 text-sm text-paper/55 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
           <p className="hidden md:block">Designed &amp; built in-house</p>
           <MagneticButton
             onClick={() => scrollTo(0, { duration: 2.2 })}
-            variant="outline"
+            variant="outline-dark"
             size="circle"
             aria-label="Back to top"
             strength={0.5}
