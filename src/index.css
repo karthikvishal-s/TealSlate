@@ -103,8 +103,7 @@
   height: 200%;
   pointer-events: none;
   z-index: 70;
-  opacity: 0.05;
-  mix-blend-mode: multiply;
+  opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 1s steps(6) infinite;
 }
@@ -195,14 +194,14 @@
 .cursor-ring-inner,
 .cursor-dot-inner {
   transition:
-    transform 0.5s var(--ease-expo),
-    background-color 0.3s var(--ease-expo),
-    border-color 0.3s var(--ease-expo),
-    opacity 0.3s var(--ease-expo);
+    transform 0.35s var(--ease-expo),
+    background-color 0.25s var(--ease-expo),
+    border-color 0.25s var(--ease-expo),
+    opacity 0.25s var(--ease-expo);
 }
 .cursor-label-inner {
   transform: scale(0);
-  transition: transform 0.5s var(--ease-expo);
+  transition: transform 0.35s var(--ease-expo);
 }
 /* Over links: a soft translucent halo — never an opaque blob over the text */
 [data-state="link"] .cursor-ring-inner {

@@ -7,7 +7,7 @@ import { useGSAP } from '@gsap/react';
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
 // House easing: fast start, long luxurious settle.
-gsap.defaults({ ease: 'expo.out', duration: 1.2 });
+gsap.defaults({ ease: 'expo.out', duration: 0.8 });
 
 // Lenis drives scrolling from gsap.ticker, so never let GSAP "catch up" after a hitch.
 gsap.ticker.lagSmoothing(0);

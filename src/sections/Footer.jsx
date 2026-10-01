@@ -115,7 +115,7 @@ export default function Footer({ ref, fixed }) {
           </p>
           <p className="hidden md:block">Designed &amp; built in-house</p>
           <MagneticButton
-            onClick={() => scrollTo(0, { duration: 2.2 })}
+            onClick={() => scrollTo(0, { duration: 1.6 })}
             variant="outline-dark"
             size="circle"
             aria-label="Back to top"

@@ -16,7 +16,7 @@ function ServiceCard({ service, index, total }) {
       {/* Hover glow */}
       <div
         aria-hidden="true"
-        className="absolute -right-1/4 -top-1/4 size-[70%] rounded-full bg-teal/20 opacity-0 blur-3xl transition-opacity duration-700 ease-expo group-hover:opacity-100"
+        className="absolute -right-1/4 -top-1/4 size-[70%] rounded-full bg-teal/20 opacity-0 blur-3xl transition-opacity duration-500 ease-expo group-hover:opacity-100"
       />
 
       <div className="relative flex items-start justify-between">
@@ -30,7 +30,7 @@ function ServiceCard({ service, index, total }) {
 
       {/* Photo: the wrapper zooms on hover (CSS), the img drifts with the horizontal scroll (GSAP) */}
       <div className="relative my-6 aspect-[16/9] overflow-hidden rounded-2xl motion-safe:lg:my-5 motion-safe:lg:aspect-auto motion-safe:lg:min-h-0 motion-safe:lg:flex-1">
-        <div className="absolute inset-0 grayscale-[35%] transition-[transform,filter] duration-1000 ease-expo group-hover:scale-105 group-hover:grayscale-0">
+        <div className="absolute inset-0 grayscale-[35%] transition-[transform,filter] duration-600 ease-expo group-hover:scale-105 group-hover:grayscale-0">
           <img
             data-service-img
             src={service.image}
@@ -84,9 +84,9 @@ export default function Services() {
         const move = gsap.to(track.current, {
           x: () => -distance(),
           ease: 'none',
-          scrollTrigger: { ...range, pin: true, scrub: 1 },
+          scrollTrigger: { ...range, pin: true, scrub: 0.4 },
         });
-        gsap.fromTo(progress.current, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { ...range, scrub: 1 } });
+        gsap.fromTo(progress.current, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { ...range, scrub: 0.4 } });
 
         // Each photo drifts against the track direction while its card crosses the screen.
         gsap.utils.toArray('[data-service-img]').forEach((img) => {
@@ -114,7 +114,7 @@ export default function Services() {
           gsap.from(card, {
             autoAlpha: 0,
             y: 60,
-            duration: 1.2,
+            duration: 0.8,
             scrollTrigger: { trigger: card, start: 'top 90%', once: true },
           });
         });

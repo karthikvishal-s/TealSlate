@@ -26,7 +26,7 @@ export default function Hero({ ready }) {
         gsap.set(items, { autoAlpha: 0, y: 40 });
         return;
       }
-      gsap.to(items, { autoAlpha: 1, y: 0, duration: 1.4, stagger: 0.1, delay: 0.55, ease: 'expo.out' });
+      gsap.to(items, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.07, delay: 0.3, ease: 'expo.out' });
     },
     { scope: root, dependencies: [ready] },
   );
@@ -79,8 +79,8 @@ export default function Hero({ ready }) {
           as="h1"
           ready={ready}
           delay={0.15}
-          duration={1.6}
-          stagger={0.12}
+          duration={1.1}
+          stagger={0.08}
           className="font-display text-mega font-bold"
         >
           {hero.headline} <span className="text-teal">{hero.headlineAccent}</span>

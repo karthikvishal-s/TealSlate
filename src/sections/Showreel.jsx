@@ -28,7 +28,7 @@ export default function Showreel() {
             start: 'top top',
             end: desktop ? '+=130%' : '+=80%',
             pin: true,
-            scrub: 1,
+            scrub: 0.4,
           },
         });
         tl.fromTo(
@@ -99,7 +99,7 @@ export default function Showreel() {
         {/* Placeholder play glyph (decorative until a real video is added) */}
         {!showreel.videoSrc && (
           <div aria-hidden="true" className="absolute inset-0 grid place-items-center">
-            <div className="grid size-24 place-items-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm md:size-32">
+            <div className="grid size-24 place-items-center rounded-full border border-white/40 bg-white/15 md:size-32">
               <Play className="ml-1 size-8 fill-white text-white md:size-10" />
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function Showreel() {
               type="button"
               onClick={togglePlay}
               aria-label={playing ? 'Pause showreel' : 'Play showreel'}
-              className="grid size-12 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition-colors hover:bg-white/25"
+              className="grid size-12 place-items-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/25"
             >
               {playing ? <Pause className="size-5" /> : <Play className="size-5" />}
             </button>
@@ -137,7 +137,7 @@ export default function Showreel() {
               type="button"
               onClick={() => setMuted((m) => !m)}
               aria-label={muted ? 'Unmute showreel' : 'Mute showreel'}
-              className="grid size-12 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition-colors hover:bg-white/25"
+              className="grid size-12 place-items-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/25"
             >
               {muted ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
             </button>

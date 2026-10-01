@@ -33,13 +33,13 @@ export default function Preloader({ onComplete }) {
         return;
       }
 
-      tl.from(letters, { yPercent: 115, duration: 1.1, stagger: 0.045, ease: 'expo.out' })
-        .to(count, { v: 100, duration: 2.1, ease: 'power3.inOut', onUpdate: render }, 0.15)
-        .to(bar.current, { scaleX: 1, duration: 2.1, ease: 'power3.inOut' }, 0.15)
-        .to(letters, { yPercent: -115, duration: 0.7, stagger: 0.03, ease: 'power4.in' }, '+=0.1')
-        .to('[data-counter-wrap]', { yPercent: -115, duration: 0.7, ease: 'power4.in' }, '<')
-        .to(root.current, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.15, ease: 'power4.inOut' }, '-=0.15')
-        .add(finish, '-=0.6');
+      tl.from(letters, { yPercent: 115, duration: 0.8, stagger: 0.035, ease: 'expo.out' })
+        .to(count, { v: 100, duration: 1.4, ease: 'power3.inOut', onUpdate: render }, 0.1)
+        .to(bar.current, { scaleX: 1, duration: 1.4, ease: 'power3.inOut' }, 0.1)
+        .to(letters, { yPercent: -115, duration: 0.55, stagger: 0.025, ease: 'power4.in' }, '+=0.05')
+        .to('[data-counter-wrap]', { yPercent: -115, duration: 0.55, ease: 'power4.in' }, '<')
+        .to(root.current, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.9, ease: 'power4.inOut' }, '-=0.15')
+        .add(finish, '-=0.5');
     },
     { scope: root },
   );

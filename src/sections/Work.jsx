@@ -35,13 +35,13 @@ function CursorPreview({ active, lastIndex }) {
         className="h-[17rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl xl:h-[20rem] xl:w-[28rem]"
         initial={false}
         animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
-        transition={{ duration: 0.6, ease: easeExpo }}
+        transition={{ duration: 0.4, ease: easeExpo }}
       >
         <motion.div
           className="size-full"
           initial={false}
           animate={{ y: `${-lastIndex * 100}%` }}
-          transition={{ duration: 0.8, ease: easeExpo }}
+          transition={{ duration: 0.5, ease: easeExpo }}
         >
           {projects.map((p) => (
             <div key={p.id} className="size-full">
@@ -75,7 +75,7 @@ export default function Work() {
             {
               clipPath: 'inset(0% 0% 0% 0%)',
               y: 0,
-              duration: 1.4,
+              duration: 1,
               ease: 'expo.out',
               clearProps: 'clipPath',
               scrollTrigger: { trigger: row, start: 'top 92%', once: true },
@@ -126,7 +126,7 @@ export default function Work() {
               <span className="col-span-2 text-sm tabular-nums text-muted md:col-span-1">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <h3 className="col-span-10 font-display text-[clamp(1.9rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-tight transition-transform duration-700 ease-expo group-hover:translate-x-4 md:col-span-6">
+              <h3 className="col-span-10 font-display text-[clamp(1.9rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-tight transition-transform duration-500 ease-expo group-hover:translate-x-4 md:col-span-6">
                 {project.name}
               </h3>
               <span className="col-span-7 col-start-3 text-sm text-muted md:col-span-3 md:col-start-auto">

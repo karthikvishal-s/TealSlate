@@ -13,7 +13,7 @@ export default function SmoothScroll({ children }) {
   useEffect(() => {
     if (reduced) return undefined;
 
-    const instance = new Lenis({ lerp: 0.085, smoothWheel: true });
+    const instance = new Lenis({ lerp: 0.12, smoothWheel: true });
 
     // Keep ScrollTrigger in lockstep with Lenis' virtual scroll position,
     // and let GSAP's ticker own the RAF loop so both update in the same frame.
@@ -33,7 +33,7 @@ export default function SmoothScroll({ children }) {
   const value = useMemo(() => {
     const scrollTo = (target, options = {}) => {
       if (lenis) {
-        lenis.scrollTo(target, { duration: 1.6, easing: expoOut, ...options });
+        lenis.scrollTo(target, { duration: 1.2, easing: expoOut, ...options });
         return;
       }
       if (typeof target === 'number') {

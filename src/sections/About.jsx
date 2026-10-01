@@ -47,7 +47,7 @@ export default function About() {
             { clipPath: 'inset(100% 0% 0% 0% round 1.5rem)' },
             {
               clipPath: 'inset(0% 0% 0% 0% round 1.5rem)',
-              duration: 1.5,
+              duration: 1,
               ease: 'expo.out',
               scrollTrigger: { trigger: item, start: 'top 90%', once: true },
             },
@@ -67,8 +67,8 @@ export default function About() {
         gsap.from('[data-about-fade]', {
           autoAlpha: 0,
           y: 40,
-          stagger: 0.12,
-          duration: 1.2,
+          stagger: 0.08,
+          duration: 0.8,
           scrollTrigger: { trigger: '[data-about-fade]', start: 'top 88%', once: true },
         });
       });

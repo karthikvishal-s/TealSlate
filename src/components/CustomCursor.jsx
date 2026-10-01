@@ -68,7 +68,7 @@ function Cursor() {
 
     // Frame-rate independent lerp so the ring feels identical at 60Hz and 120Hz.
     const tick = () => {
-      const k = 1 - Math.pow(1 - 0.18, gsap.ticker.deltaRatio());
+      const k = 1 - Math.pow(1 - 0.28, gsap.ticker.deltaRatio());
       lag.x += (mouse.x - lag.x) * k;
       lag.y += (mouse.y - lag.y) * k;
       const t = `translate3d(${lag.x}px, ${lag.y}px, 0)`;

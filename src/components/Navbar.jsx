@@ -24,7 +24,7 @@ export default function Navbar({ ready }) {
         gsap.set(inner.current, { autoAlpha: 0, yPercent: -80 });
         return;
       }
-      gsap.to(inner.current, { autoAlpha: 1, yPercent: 0, duration: 1.4, delay: 0.5, ease: 'expo.out' });
+      gsap.to(inner.current, { autoAlpha: 1, yPercent: 0, duration: 0.9, delay: 0.3, ease: 'expo.out' });
     },
     { scope: header, dependencies: [ready] },
   );
@@ -85,7 +85,7 @@ export default function Navbar({ ready }) {
       <header
         ref={header}
         data-scrolled="false"
-        className="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter] duration-500 data-[scrolled=true]:bg-paper/80 data-[scrolled=true]:backdrop-blur-md"
+        className="group/header fixed inset-x-0 top-0 z-50 transition-colors duration-300 data-[scrolled=true]:bg-paper/95 data-[scrolled=true]:shadow-[0_1px_0_rgb(20_33_31/0.08)]"
       >
         <div ref={inner} className="gutter flex h-20 items-center justify-between gap-6 md:h-24">
           <a
@@ -152,7 +152,7 @@ export default function Navbar({ ready }) {
             initial={{ clipPath: 'inset(0% 0% 100% 0%)' }}
             animate={{ clipPath: 'inset(0% 0% 0% 0%)' }}
             exit={{ clipPath: 'inset(0% 0% 100% 0%)' }}
-            transition={{ duration: 0.8, ease: easeInOut }}
+            transition={{ duration: 0.6, ease: easeInOut }}
           >
             <nav aria-label="Mobile">
               <motion.ul
@@ -160,7 +160,7 @@ export default function Navbar({ ready }) {
                 initial="hidden"
                 animate="show"
                 exit="hidden"
-                variants={{ show: { transition: { staggerChildren: 0.07, delayChildren: 0.25 } } }}
+                variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.15 } } }}
               >
                 {navLinks.map((link, i) => (
                   <li key={link.href} className="overflow-hidden">
@@ -171,7 +171,7 @@ export default function Navbar({ ready }) {
                       className="flex items-baseline gap-4 font-display text-[clamp(2.75rem,12vw,5rem)] font-bold leading-[1.05] tracking-tight"
                       variants={{
                         hidden: { y: '110%', transition: { duration: 0.4, ease: easeInOut } },
-                        show: { y: '0%', transition: { duration: 0.9, ease: easeExpo } },
+                        show: { y: '0%', transition: { duration: 0.6, ease: easeExpo } },
                       }}
                     >
                       <span className="text-sm font-medium text-teal">0{i + 1}</span>
@@ -185,7 +185,7 @@ export default function Navbar({ ready }) {
             <motion.div
               className="flex flex-col gap-4 border-t border-line pt-6 text-sm"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0, transition: { delay: 0.6, duration: 0.8, ease: easeExpo } }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.35, duration: 0.5, ease: easeExpo } }}
               exit={{ opacity: 0, transition: { duration: 0.2 } }}
             >
               <a href={`mailto:${site.email}`} className="text-lg font-semibold">

@@ -38,7 +38,7 @@ export default function Process() {
           gsap.from(step.querySelector('[data-step-body]'), {
             autoAlpha: 0,
             y: 50,
-            duration: 1.3,
+            duration: 0.9,
             scrollTrigger: { trigger: step, start: 'top 78%', once: true },
           });
         });

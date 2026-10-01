@@ -53,21 +53,21 @@ export default function MagneticButton({
       href={href}
       type={href ? undefined : rest.type ?? 'button'}
       style={{ x, y }}
-      className={`group relative isolate inline-flex items-center justify-center overflow-hidden whitespace-nowrap rounded-full font-semibold tracking-tight transition-colors duration-500 ease-expo disabled:pointer-events-none disabled:opacity-60 ${v.base} ${SIZES[size]} ${className}`}
+      className={`group relative isolate inline-flex items-center justify-center overflow-hidden whitespace-nowrap rounded-full font-semibold tracking-tight transition-colors duration-300 ease-expo disabled:pointer-events-none disabled:opacity-60 ${v.base} ${SIZES[size]} ${className}`}
       {...handlers}
       {...rest}
     >
       {/* Oversized circle that slides up to fill the pill on hover */}
       <span
         aria-hidden="true"
-        className={`absolute left-1/2 top-full -z-10 aspect-square w-[150%] -translate-x-1/2 rounded-full transition-transform duration-700 ease-expo group-hover:-translate-y-[75%] ${v.fill}`}
+        className={`absolute left-1/2 top-full -z-10 aspect-square w-[150%] -translate-x-1/2 rounded-full transition-transform duration-500 ease-expo group-hover:-translate-y-[75%] ${v.fill}`}
       />
       <motion.span style={{ x: innerX, y: innerY }} className="relative flex items-center gap-2.5">
         {children}
         {Icon && (
           <Icon
             aria-hidden="true"
-            className="size-[1.1em] transition-transform duration-500 ease-expo group-hover:rotate-45"
+            className="size-[1.1em] transition-transform duration-300 ease-expo group-hover:rotate-45"
             strokeWidth={2}
           />
         )}

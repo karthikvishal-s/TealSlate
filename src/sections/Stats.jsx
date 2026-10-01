@@ -16,12 +16,12 @@ export default function Stats() {
           num.textContent = '0';
 
           const tl = gsap.timeline({ scrollTrigger: { trigger: stat, start: 'top 88%', once: true }, delay: i * 0.1 });
-          tl.from(stat.querySelector('[data-rule]'), { scaleX: 0, duration: 1.4, ease: 'expo.out' })
+          tl.from(stat.querySelector('[data-rule]'), { scaleX: 0, duration: 0.9, ease: 'expo.out' })
             .to(
               counter,
               {
                 v: target,
-                duration: 2.2,
+                duration: 1.5,
                 ease: 'power3.out',
                 onUpdate: () => {
                   num.textContent = Math.round(counter.v);
@@ -29,7 +29,7 @@ export default function Stats() {
               },
               0,
             )
-            .from(stat.querySelectorAll('[data-stat-text]'), { autoAlpha: 0, y: 20, stagger: 0.08, duration: 1 }, 0.2);
+            .from(stat.querySelectorAll('[data-stat-text]'), { autoAlpha: 0, y: 20, stagger: 0.06, duration: 0.7 }, 0.15);
         });
       });
     },

@@ -5,12 +5,12 @@
 export default function RollingText({ children, className = '', accent = 'text-teal' }) {
   return (
     <span className={`relative inline-flex overflow-hidden ${className}`}>
-      <span className="inline-block transition-transform duration-500 ease-expo group-hover:-translate-y-full">
+      <span className="inline-block transition-transform duration-400 ease-expo group-hover:-translate-y-full">
         {children}
       </span>
       <span
         aria-hidden="true"
-        className={`absolute left-0 top-full inline-block ${accent} transition-transform duration-500 ease-expo group-hover:-translate-y-full`}
+        className={`absolute left-0 top-full inline-block ${accent} transition-transform duration-400 ease-expo group-hover:-translate-y-full`}
       >
         {children}
       </span>
