@@ -50,7 +50,7 @@ export default function Footer({ ref, fixed }) {
       ref={ref}
       className={`${fixed ? 'fixed' : 'relative'} inset-x-0 bottom-0 z-0 overflow-hidden bg-ink text-paper`}
     >
-      <div ref={inner} className="gutter flex flex-col pb-6 pt-20 md:pt-28">
+      <div ref={inner} className="gutter flex flex-col pb-6 pt-20 will-change-[transform,opacity] md:pt-28">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <p className="font-display text-display font-bold">

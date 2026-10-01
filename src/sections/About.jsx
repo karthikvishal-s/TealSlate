@@ -85,7 +85,7 @@ export default function About() {
           </SectionLabel>
         </div>
 
-        <p ref={statement} className="font-display text-lead font-semibold md:portrait:text-[4.2vw] lg:col-span-9">
+        <p ref={statement} className="font-display text-lead font-semibold will-change-transform md:portrait:text-[4.2vw] lg:col-span-9">
           {about.statement.map((seg, i) => (
             <span key={i} className={seg.accent ? 'text-teal' : undefined}>
               {seg.text}{' '}
@@ -119,7 +119,7 @@ export default function About() {
                 alt={item.alt}
                 loading="lazy"
                 decoding="async"
-                className="absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover"
+                className="absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover will-change-transform"
               />
             </div>
             <figcaption className="mt-3 text-xs uppercase tracking-[0.22em] text-muted">{item.caption}</figcaption>

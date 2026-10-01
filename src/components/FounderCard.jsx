@@ -17,19 +17,23 @@ function PortraitArt({ founder }) {
       style={{ background: `linear-gradient(160deg, ${c} 0%, ${a} 55%, ${b} 100%)` }}
     >
       {/* Slowly rotating organic shapes */}
-      <svg viewBox="0 0 200 200" className="spin-slow absolute -left-1/4 -top-1/4 size-[150%] opacity-70">
-        <path
-          fill={c}
-          fillOpacity="0.55"
-          d="M47.6,-61.2C60.9,-52.6,70.1,-37.3,74.3,-20.6C78.5,-3.9,77.6,14.2,70.2,28.9C62.8,43.6,48.9,54.9,33.3,62.7C17.7,70.5,0.4,74.8,-17.6,72.6C-35.6,70.4,-54.3,61.7,-65.4,47.1C-76.5,32.5,-80,12,-76.4,-6.6C-72.8,-25.2,-62.1,-41.9,-47.6,-50.7C-33.1,-59.5,-16.5,-60.4,0.4,-60.9C17.4,-61.4,34.3,-69.8,47.6,-61.2Z"
-          transform="translate(100 100)"
-        />
-      </svg>
-      <svg viewBox="0 0 200 200" className="spin-slow-reverse absolute -bottom-1/3 -right-1/3 size-[120%] opacity-60">
-        <circle cx="100" cy="100" r="70" fill="none" stroke="white" strokeOpacity="0.5" strokeWidth="0.8" strokeDasharray="2 6" />
-        <circle cx="100" cy="100" r="52" fill="none" stroke="white" strokeOpacity="0.35" strokeWidth="0.6" />
-      </svg>
-      <div className="float-y absolute right-[14%] top-[12%] size-[22%] rounded-full bg-white/35" />
+      <div className="portrait-anim spin-slow absolute -left-1/4 -top-1/4 size-[150%] opacity-70">
+        <svg viewBox="0 0 200 200" className="size-full">
+          <path
+            fill={c}
+            fillOpacity="0.55"
+            d="M47.6,-61.2C60.9,-52.6,70.1,-37.3,74.3,-20.6C78.5,-3.9,77.6,14.2,70.2,28.9C62.8,43.6,48.9,54.9,33.3,62.7C17.7,70.5,0.4,74.8,-17.6,72.6C-35.6,70.4,-54.3,61.7,-65.4,47.1C-76.5,32.5,-80,12,-76.4,-6.6C-72.8,-25.2,-62.1,-41.9,-47.6,-50.7C-33.1,-59.5,-16.5,-60.4,0.4,-60.9C17.4,-61.4,34.3,-69.8,47.6,-61.2Z"
+            transform="translate(100 100)"
+          />
+        </svg>
+      </div>
+      <div className="portrait-anim spin-slow-reverse absolute -bottom-1/3 -right-1/3 size-[120%] opacity-60">
+        <svg viewBox="0 0 200 200" className="size-full">
+          <circle cx="100" cy="100" r="70" fill="none" stroke="white" strokeOpacity="0.5" strokeWidth="0.8" strokeDasharray="2 6" />
+          <circle cx="100" cy="100" r="52" fill="none" stroke="white" strokeOpacity="0.35" strokeWidth="0.6" />
+        </svg>
+      </div>
+      <div className="portrait-anim float-y absolute right-[14%] top-[12%] size-[22%] rounded-full bg-white/35" />
       <div
         className="absolute inset-0 opacity-[0.18]"
         style={{ backgroundImage: 'radial-gradient(rgb(255 255 255) 1px, transparent 1px)', backgroundSize: '12px 12px' }}

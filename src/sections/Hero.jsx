@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { gsap, useGSAP, MOTION_OK } from '../lib/gsap';
+import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from '../lib/gsap';
 import { useLenis } from '../hooks/useLenis';
 import { hero } from '../data/site';
 import SplitTextReveal from '../components/SplitTextReveal';
@@ -40,6 +40,14 @@ export default function Hero({ ready }) {
         gsap.to(content.current, { scale: 0.88, yPercent: 12, autoAlpha: 0, ease: 'none', scrollTrigger });
         gsap.to(bg.current, { yPercent: 25, ease: 'none', scrollTrigger });
       });
+
+      // Pause the gradient-mesh animation once the hero is off screen (no hidden GPU work).
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: 'bottom top', // hero fully scrolled past…
+        end: 'max', // …until the end of the page
+        toggleClass: { targets: bg.current, className: 'is-offscreen' },
+      });
     },
     { scope: root },
   );
@@ -57,7 +65,7 @@ export default function Hero({ ready }) {
       className="relative isolate flex min-h-svh flex-col overflow-hidden md:portrait:min-h-[min(100svh,60rem)]"
     >
       {/* Animated gradient mesh */}
-      <div ref={bg} aria-hidden="true" className="absolute inset-0 -z-10">
+      <div ref={bg} aria-hidden="true" className="absolute inset-0 -z-10 will-change-transform">
         <div className="blob blob-a" />
         <div className="blob blob-b" />
         <div className="blob blob-c" />
@@ -69,7 +77,7 @@ export default function Hero({ ready }) {
 
       <div
         ref={content}
-        className="gutter relative z-10 flex flex-1 origin-top flex-col pb-8 pt-28 md:pb-12 md:pt-32"
+        className="gutter relative z-10 flex flex-1 origin-top flex-col pb-8 pt-28 will-change-[transform,opacity] md:pb-12 md:pt-32"
       >
         {/* my-auto centres this block vertically on any screen height (no dead space above) */}
         <div className="my-auto pt-6 md:pt-10">
