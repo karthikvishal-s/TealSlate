@@ -178,7 +178,8 @@
 }
 
 /* ───────────── Custom cursor ───────────── */
-.cursor-ring-inner {
+.cursor-ring-inner,
+.cursor-dot-inner {
   transition:
     transform 0.5s var(--ease-expo),
     background-color 0.3s var(--ease-expo),
@@ -189,12 +190,19 @@
   transform: scale(0);
   transition: transform 0.5s var(--ease-expo);
 }
+/* Over links: a soft translucent halo — never an opaque blob over the text */
 [data-state="link"] .cursor-ring-inner {
-  transform: scale(1.9);
-  background-color: #fff;
+  transform: scale(1.6);
+  background-color: rgb(15 118 110 / 0.12);
+  border-color: rgb(15 118 110 / 0.55);
+}
+[data-state="link"] .cursor-dot-inner {
+  transform: scale(0);
 }
 [data-state="view"] .cursor-ring-inner,
-[data-state="drag"] .cursor-ring-inner {
+[data-state="drag"] .cursor-ring-inner,
+[data-state="view"] .cursor-dot-inner,
+[data-state="drag"] .cursor-dot-inner {
   transform: scale(0);
 }
 [data-state="view"] .cursor-label-inner,
