@@ -92,8 +92,8 @@ export default function Work() {
       <div className="mb-14 flex flex-col gap-8 md:mb-20 md:flex-row md:items-end md:justify-between">
         <div>
           <SectionLabel index="(03)">Selected work</SectionLabel>
-          <SplitTextReveal id="work-title" className="mt-6 font-display text-display font-extrabold uppercase">
-            Work that <span className="text-teal-light">moves</span> the needle
+          <SplitTextReveal id="work-title" className="mt-6 font-display text-display font-bold">
+            Work that <span className="text-teal">moves</span> the needle
           </SplitTextReveal>
         </div>
         <p className="max-w-sm text-base leading-relaxed text-muted">
@@ -126,7 +126,7 @@ export default function Work() {
               <span className="col-span-2 text-sm tabular-nums text-muted md:col-span-1">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <h3 className="col-span-10 font-display text-[clamp(1.9rem,6vw,5.5rem)] font-bold uppercase leading-[0.95] tracking-tight transition-transform duration-700 ease-expo group-hover:translate-x-4 md:col-span-6">
+              <h3 className="col-span-10 font-display text-[clamp(1.9rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-tight transition-transform duration-700 ease-expo group-hover:translate-x-4 md:col-span-6">
                 {project.name}
               </h3>
               <span className="col-span-7 col-start-3 text-sm text-muted md:col-span-3 md:col-start-auto">
@@ -136,7 +136,7 @@ export default function Work() {
                 {project.year}
                 <ArrowUpRight
                   aria-hidden="true"
-                  className="size-5 text-teal-light transition-transform duration-500 ease-expo group-hover:rotate-45"
+                  className="size-5 text-teal transition-transform duration-500 ease-expo group-hover:rotate-45"
                 />
               </span>
             </a>
