@@ -55,12 +55,12 @@ export default function Hero({ ready }) {
         <div className="blob blob-a" />
         <div className="blob blob-b" />
         <div className="blob blob-c" />
-        <div className="absolute inset-0 bg-linear-to-b from-transparent via-night/30 to-night" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-paper/30 to-paper" />
       </div>
 
       <div
         ref={content}
-        className="gutter flex flex-1 origin-top flex-col justify-end pb-10 pt-32 md:pb-14"
+        className="gutter relative z-10 flex flex-1 origin-top flex-col justify-end pb-10 pt-32 md:pb-14"
       >
         <p data-hero-fade className="mb-6 text-xs font-medium uppercase tracking-[0.28em] text-muted md:mb-10">
           {hero.eyebrow}
@@ -72,9 +72,9 @@ export default function Hero({ ready }) {
           delay={0.15}
           duration={1.6}
           stagger={0.12}
-          className="font-display text-mega font-extrabold"
+          className="font-display text-mega font-bold"
         >
-          {hero.headline} <span className="text-teal-light">{hero.headlineAccent}</span>
+          {hero.headline} <span className="text-teal">{hero.headlineAccent}</span>
         </SplitTextReveal>
 
         <div className="mt-10 grid gap-8 md:mt-16 md:grid-cols-12 md:items-end">
@@ -105,7 +105,7 @@ export default function Hero({ ready }) {
         <div data-hero-fade className="mt-12 flex items-center justify-between border-t border-line pt-5 text-xs uppercase tracking-[0.28em] text-muted md:mt-16">
           <a href="#showreel" onClick={(e) => go(e, '#showreel')} className="flex items-center gap-4">
             <span className="relative block h-10 w-px overflow-hidden bg-line">
-              <span className="scroll-cue-line absolute inset-0 bg-teal-light" />
+              <span className="scroll-cue-line absolute inset-0 bg-teal" />
             </span>
             Scroll to explore
           </a>
