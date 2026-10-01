@@ -99,11 +99,11 @@ export default function Footer({ ref, fixed }) {
           </nav>
         </div>
 
-        {/* Container-query units: the wordmark (≈7em wide) always spans the content width exactly */}
+        {/* Container-query units: the wordmark (≈3.9em wide) always spans the content width exactly */}
         <div className="@container mt-16 md:mt-24">
           <p
             aria-hidden="true"
-            className="select-none whitespace-nowrap text-center font-display text-[14cqi] font-bold leading-[0.8] tracking-[-0.06em]"
+            className="select-none whitespace-nowrap text-center font-display text-[25cqi] font-bold leading-[0.85] tracking-[-0.06em]"
           >
             Teal<span className="text-teal-bright">Slate</span>
           </p>
