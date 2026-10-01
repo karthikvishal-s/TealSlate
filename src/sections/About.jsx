@@ -4,6 +4,11 @@ import { about } from '../data/about';
 import SectionLabel from '../components/SectionLabel';
 import SplitTextReveal from '../components/SplitTextReveal';
 
+// Collage layout: varied sizes/offsets so the photos feel placed, not gridded.
+const COLLAGE_LAYOUT = ['col-span-2 md:col-span-5', 'md:col-span-4 md:mt-40', 'md:col-span-3 md:mt-12'];
+const COLLAGE_RATIO = ['aspect-[4/3] md:aspect-[4/5]', 'aspect-[3/4]', 'aspect-[3/4] md:aspect-square'];
+const COLLAGE_SPEED = [1, 1.6, 0.7];
+
 export default function About() {
   const root = useRef(null);
   const statement = useRef(null);
@@ -32,6 +37,30 @@ export default function About() {
                 },
               },
             ),
+        });
+
+        // Collage: each frame wipes up into view, and its photo drifts at its own speed.
+        gsap.utils.toArray('[data-collage-item]').forEach((item) => {
+          gsap.fromTo(
+            item,
+            { clipPath: 'inset(100% 0% 0% 0% round 1.5rem)' },
+            {
+              clipPath: 'inset(0% 0% 0% 0% round 1.5rem)',
+              duration: 1.5,
+              ease: 'expo.out',
+              scrollTrigger: { trigger: item, start: 'top 90%', once: true },
+            },
+          );
+          const speed = Number(item.dataset.speed);
+          gsap.fromTo(
+            item.querySelector('img'),
+            { yPercent: -8 * speed },
+            {
+              yPercent: 8 * speed,
+              ease: 'none',
+              scrollTrigger: { trigger: item, start: 'top bottom', end: 'bottom top', scrub: true },
+            },
+          );
         });
 
         gsap.from('[data-about-fade]', {
@@ -83,6 +112,22 @@ export default function About() {
         ))}
       </div>
 
+      <div className="mt-20 grid grid-cols-2 gap-4 md:mt-28 md:grid-cols-12 md:gap-6">
+        {about.collage.map((item, i) => (
+          <figure key={item.caption} className={COLLAGE_LAYOUT[i]}>
+            <div data-collage-item data-speed={COLLAGE_SPEED[i]} className={`relative overflow-hidden rounded-3xl ${COLLAGE_RATIO[i]}`}>
+              <img
+                src={item.image}
+                alt={item.alt}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover"
+              />
+            </div>
+            <figcaption className="mt-3 text-xs uppercase tracking-[0.22em] text-muted">{item.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
     </section>
   );
 }
