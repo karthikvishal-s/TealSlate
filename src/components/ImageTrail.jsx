@@ -1,0 +1,87 @@
+import { useEffect, useRef } from 'react';
+import { animate } from 'motion/react';
+import { easeExpo, easeInOut } from '../lib/motion';
+
+/**
+ * Pointer-driven image trail. Every `threshold` px of pointer travel, the next
+ * image in a small pool glides from the previous cursor point to the current one,
+ * pops in with a slight tilt, then shrinks away. Pooling keeps the DOM tiny.
+ *
+ * Listens on `targetRef` (the section) so it works under content layered on top.
+ */
+export default function ImageTrail({ images, targetRef, threshold = 90 }) {
+  const layer = useRef(null);
+
+  useEffect(() => {
+    const target = targetRef.current;
+    const nodes = [...layer.current.children];
+    let last = null;
+    let index = 0;
+    let z = 1;
+
+    const onMove = (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const rect = target.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      if (!last) {
+        last = { x, y };
+        return;
+      }
+      if (Math.hypot(x - last.x, y - last.y) < threshold) return;
+
+      const el = nodes[index % nodes.length];
+      index += 1;
+      el.style.zIndex = String((z += 1));
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
+      const tilt = (Math.random() - 0.5) * 16;
+
+      // One call with per-value timing: a separate fade-out call would cancel the fade-in.
+      animate(
+        el,
+        {
+          x: [last.x - w / 2, x - w / 2],
+          y: [last.y - h / 2, y - h / 2],
+          rotate: [tilt * 2, tilt],
+          scale: [0.55, 1, 1, 0.3],
+          opacity: [0, 1, 1, 0],
+        },
+        {
+          duration: 0.9,
+          ease: easeExpo,
+          scale: { duration: 1.7, times: [0, 0.3, 0.5, 1], ease: [easeExpo, 'linear', easeInOut] },
+          opacity: { duration: 1.7, times: [0, 0.2, 0.5, 1], ease: [easeExpo, 'linear', easeInOut] },
+        },
+      );
+
+      last = { x, y };
+    };
+
+    const onLeave = () => {
+      last = null;
+    };
+
+    target.addEventListener('pointermove', onMove, { passive: true });
+    target.addEventListener('pointerleave', onLeave);
+    return () => {
+      target.removeEventListener('pointermove', onMove);
+      target.removeEventListener('pointerleave', onLeave);
+    };
+  }, [targetRef, threshold]);
+
+  return (
+    <div ref={layer} aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+      {images.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          alt=""
+          decoding="async"
+          className="absolute left-0 top-0 w-[clamp(9rem,14vw,15rem)] rounded-2xl object-cover opacity-0 shadow-[0_24px_60px_-20px_rgb(20_33_31/0.45)]"
+        />
+      ))}
+    </div>
+  );
+}
