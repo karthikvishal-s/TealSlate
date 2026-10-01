@@ -64,7 +64,7 @@ export default function App() {
     <>
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-full focus:bg-teal-light focus:px-5 focus:py-3 focus:text-night"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-full focus:bg-teal focus:px-5 focus:py-3 focus:text-paper"
       >
         Skip to content
       </a>
@@ -76,7 +76,7 @@ export default function App() {
 
       <main
         id="main"
-        className={`relative z-10 bg-night ${footer.fixed ? 'rounded-b-[2rem] shadow-[0_30px_60px_rgb(0_0_0/0.45)] md:rounded-b-[3rem]' : ''}`}
+        className={`relative z-10 bg-paper ${footer.fixed ? 'rounded-b-[2rem] shadow-[0_30px_60px_rgb(0_0_0/0.45)] md:rounded-b-[3rem]' : ''}`}
         style={{ marginBottom: footer.fixed ? footer.height : 0 }}
       >
         <Hero ready={loaded} />
