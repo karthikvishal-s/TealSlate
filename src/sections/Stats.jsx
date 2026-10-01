@@ -42,9 +42,9 @@ export default function Stats() {
         {stats.map((stat) => (
           <li key={stat.label} data-stat className="@container">
             <div data-rule className="mb-6 h-px origin-left bg-line" />
-            <p className="font-display text-[clamp(2.25rem,21cqi,7rem)] font-extrabold leading-none tracking-tighter tabular-nums">
+            <p className="font-display text-[clamp(2.25rem,21cqi,7rem)] font-bold leading-none tracking-tighter tabular-nums">
               <span data-count={stat.value}>{stat.value}</span>
-              <span className="text-teal-light">{stat.suffix}</span>
+              <span className="text-teal">{stat.suffix}</span>
             </p>
             <p data-stat-text className="mt-4 text-base font-semibold md:text-lg">
               {stat.label}
