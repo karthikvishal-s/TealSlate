@@ -70,7 +70,7 @@ export default function Showreel() {
 
   return (
     <section id="showreel" ref={root} aria-label="Showreel" className="relative h-svh overflow-hidden">
-      <div ref={frame} className="absolute inset-0 overflow-hidden bg-panel">
+      <div ref={frame} className="absolute inset-0 overflow-hidden bg-sand">
         <div ref={media} className="size-full">
           {showreel.videoSrc ? (
             <video
@@ -85,12 +85,12 @@ export default function Showreel() {
               aria-label={`${showreel.title} ${showreel.year}`}
             />
           ) : (
-            <Media
-              gradient="radial-gradient(ellipse at 30% 30%, #2dd4bf 0%, transparent 55%), radial-gradient(ellipse at 75% 70%, #0e7490 0%, transparent 60%), linear-gradient(135deg, #0f766e 0%, #111a1e 70%)"
-              alt=""
-            />
+            <Media gradient="linear-gradient(135deg, #2dd4bf 0%, #0f766e 60%, #14211f 100%)" alt="" />
           )}
         </div>
+
+        {/* Scrim keeps the overlay text legible on any footage */}
+        <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-ink/65 via-ink/10 to-ink/25" />
 
         {/* Placeholder play glyph (decorative until a real video is added) */}
         {!showreel.videoSrc && (
@@ -105,10 +105,10 @@ export default function Showreel() {
       <div className="pointer-events-none absolute inset-0 grid place-items-center">
         <h2
           data-reel-title
-          className="font-display text-huge font-extrabold uppercase text-ink drop-shadow-[0_4px_30px_rgb(11_18_21/0.5)]"
+          className="font-display text-huge font-bold text-white drop-shadow-[0_4px_30px_rgb(20_33_31/0.45)]"
         >
           {showreel.title}
-          <sup className="ml-2 align-super text-[0.25em] font-semibold tracking-normal text-teal-light">
+          <sup className="ml-2 align-super text-[0.25em] font-semibold tracking-normal text-teal-bright">
             {showreel.year}
           </sup>
         </h2>
@@ -118,14 +118,14 @@ export default function Showreel() {
         data-reel-ui
         className="gutter absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 pb-8 md:pb-12"
       >
-        <p className="max-w-sm text-sm leading-relaxed text-ink/80 md:text-base">{showreel.caption}</p>
+        <p className="max-w-sm text-sm leading-relaxed text-white/85 md:text-base">{showreel.caption}</p>
         {showreel.videoSrc && (
           <div className="flex gap-3">
             <button
               type="button"
               onClick={togglePlay}
               aria-label={playing ? 'Pause showreel' : 'Play showreel'}
-              className="grid size-12 place-items-center rounded-full bg-ink/15 backdrop-blur-md transition-colors hover:bg-ink/25"
+              className="grid size-12 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition-colors hover:bg-white/25"
             >
               {playing ? <Pause className="size-5" /> : <Play className="size-5" />}
             </button>
@@ -133,7 +133,7 @@ export default function Showreel() {
               type="button"
               onClick={() => setMuted((m) => !m)}
               aria-label={muted ? 'Unmute showreel' : 'Mute showreel'}
-              className="grid size-12 place-items-center rounded-full bg-ink/15 backdrop-blur-md transition-colors hover:bg-ink/25"
+              className="grid size-12 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition-colors hover:bg-white/25"
             >
               {muted ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
             </button>
