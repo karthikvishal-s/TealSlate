@@ -189,7 +189,7 @@ export default function Work() {
             e.preventDefault();
             scrollTo('#contact');
           }}
-          variant="outline"
+          variant="outline-dark"
           size="lg"
           icon={ArrowUpRight}
         >
