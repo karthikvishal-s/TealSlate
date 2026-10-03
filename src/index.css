@@ -217,6 +217,14 @@
   transform: scale(0);
   transition: transform 0.35s var(--ease-expo);
 }
+/* Over dark sections the ink ring and dot would vanish: switch them to paper
+   (declared before the state rules so the link halo still wins). */
+[data-theme="dark"] .cursor-ring-inner {
+  border-color: rgb(245 242 236 / 0.5);
+}
+[data-theme="dark"] .cursor-dot-inner {
+  background-color: var(--color-paper);
+}
 /* Over links: a soft translucent halo — never an opaque blob over the text */
 [data-state="link"] .cursor-ring-inner {
   transform: scale(1.6);
