@@ -69,6 +69,23 @@ export default function Testimonials() {
           );
         });
       });
+
+      // Phones/tablets: each tilted card is laid down flat into the column as it scrolls in.
+      mm.add(`not ${DESKTOP} and ${MOTION_OK}`, () => {
+        cards.forEach((card, i) => {
+          gsap.fromTo(
+            card,
+            { rotate: i % 2 ? 7 : -7, y: 80, scale: 0.94 },
+            {
+              rotate: 0,
+              y: 0,
+              scale: 1,
+              ease: 'power2.out',
+              scrollTrigger: { trigger: slots[i], start: 'top bottom', end: 'top 70%', scrub: true },
+            },
+          );
+        });
+      });
     },
     { scope: root },
   );
