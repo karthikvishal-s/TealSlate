@@ -189,13 +189,19 @@ export default function Work() {
           <li
             key={project.id}
             data-work-row
-            className="work-row relative"
+            className="work-row group/row relative isolate"
             onPointerEnter={(e) => {
               if (e.pointerType !== 'mouse') return;
               setIndex(i);
               setActive(true);
             }}
           >
+            {/* Hover highlight: a soft panel sweeps in behind the row */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-0 -inset-x-3 -z-10 origin-top scale-y-0 rounded-2xl bg-paper/[0.05] transition-transform duration-500 ease-expo group-hover/row:scale-y-100 md:-inset-x-6"
+            />
+
             <a
               href={project.href}
               data-cursor="view"
