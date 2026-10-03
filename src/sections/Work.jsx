@@ -132,15 +132,13 @@ export default function Work() {
         </p>
       </div>
 
-      <ul
-        className="work-list border-t border-line"
-        onPointerLeave={() => setActive(false)}
-      >
+      <div data-work-line="top" aria-hidden="true" className="h-px origin-left bg-line" />
+      <ul className="work-list" onPointerLeave={() => setActive(false)}>
         {projects.map((project, i) => (
           <li
             key={project.id}
             data-work-row
-            className="work-row border-b border-line"
+            className="work-row relative"
             onPointerEnter={(e) => {
               if (e.pointerType !== 'mouse') return;
               setIndex(i);
@@ -178,6 +176,8 @@ export default function Work() {
                 <Media image={project.image} gradient={project.gradient} alt={`${project.name} project preview`} />
               </div>
             )}
+
+            <span data-work-line aria-hidden="true" className="absolute inset-x-0 bottom-0 h-px origin-left bg-line" />
           </li>
         ))}
       </ul>
