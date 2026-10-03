@@ -15,9 +15,13 @@ export default function Testimonials() {
         </div>
 
         <ul className="relative flex flex-col items-center gap-5 lg:flex-row lg:flex-wrap lg:items-start lg:justify-center lg:gap-6">
-          {testimonials.map((t) => (
+          {testimonials.map((t, i) => (
             <li key={t.name} className="relative w-full max-w-[34rem] lg:w-[min(26rem,28vw)] lg:max-w-none">
-              <figure className="flex min-h-[22rem] flex-col justify-between rounded-3xl border border-line p-7 md:p-10 bg-card">
+              <figure
+                className={`flex min-h-[22rem] flex-col justify-between rounded-3xl border border-line p-7 md:p-10 ${
+                  i % 2 ? 'bg-mint' : 'bg-card'
+                }`}
+              >
                 <Quote aria-hidden="true" className="size-9 fill-teal/20 text-teal" />
                 <blockquote className="mt-7 font-display text-lg font-medium leading-snug tracking-tight md:text-xl">
                   &ldquo;{t.quote}&rdquo;
