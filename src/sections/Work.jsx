@@ -56,6 +56,7 @@ function CursorPreview({ active, lastIndex }) {
 
 export default function Work() {
   const root = useRef(null);
+  const fill = useRef(null);
   const touch = useIsTouchDevice();
   const reduced = useReducedMotion();
   const [active, setActive] = useState(false);
@@ -88,7 +89,19 @@ export default function Work() {
   );
 
   return (
-    <section id="work" ref={root} aria-labelledby="work-title" className="gutter py-28 md:py-40">
+    <section
+      id="work"
+      ref={root}
+      aria-labelledby="work-title"
+      data-cursor-theme="dark"
+      className="theme-night gutter relative isolate py-28 md:py-40"
+    >
+      <div
+        ref={fill}
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 rounded-[2rem] bg-night md:rounded-[5rem]"
+      />
+
       <div className="mb-14 flex flex-col gap-8 md:mb-20 md:flex-row md:items-end md:justify-between">
         <div>
           <SectionLabel index="(03)">Selected work</SectionLabel>
