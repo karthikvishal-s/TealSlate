@@ -14,6 +14,7 @@ export default function CustomCursor() {
  * Position is written straight to the DOM every frame (no React re-renders).
  * State (link / view / drag / text) is read from hovered elements via event delegation:
  *   data-cursor="view" | "drag"   data-cursor-label="Open" (optional custom label)
+ * Sections marked data-cursor-theme="dark" switch the ring and dot to light colours.
  */
 function Cursor() {
   const root = useRef(null);
@@ -48,6 +49,9 @@ function Cursor() {
     };
 
     const onOver = (e) => {
+      const theme = e.target.closest?.('[data-cursor-theme="dark"]') ? 'dark' : 'light';
+      if (root.current.dataset.theme !== theme) root.current.dataset.theme = theme;
+
       const el = e.target.closest?.(INTERACTIVE);
       if (!el) return setState('default');
       const mode = el.dataset.cursor;
