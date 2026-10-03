@@ -86,6 +86,13 @@ export default function Work() {
           },
         );
 
+        gsap.from('[data-work-line="top"]', {
+          scaleX: 0,
+          duration: 1.4,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: '[data-work-line="top"]', start: 'top 92%', once: true },
+        });
+
         // Each row wipes open from the top as it enters, while its divider draws left to right.
         gsap.utils.toArray('[data-work-row]').forEach((row) => {
           const scrollTrigger = { trigger: row, start: 'top 92%', once: true };
