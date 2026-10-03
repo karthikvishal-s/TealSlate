@@ -17,6 +17,7 @@ import Media from '../components/Media';
  * Floating preview that trails the cursor with spring physics.
  * All project images live in one vertical strip; switching projects slides the
  * strip, so the swap reads as one continuous motion rather than a hard cut.
+ * The strip also settles from a slight zoom as the frame opens, for depth.
  */
 function CursorPreview({ active, lastIndex }) {
   const { x, y } = useMousePosition();
@@ -40,14 +41,21 @@ function CursorPreview({ active, lastIndex }) {
         <motion.div
           className="size-full"
           initial={false}
-          animate={{ y: `${-lastIndex * 100}%` }}
-          transition={{ duration: 0.5, ease: easeExpo }}
+          animate={{ scale: active ? 1 : 1.3 }}
+          transition={{ duration: 0.7, ease: easeExpo }}
         >
-          {projects.map((p) => (
-            <div key={p.id} className="size-full">
-              <Media image={p.image} gradient={p.gradient} label={p.name} />
-            </div>
-          ))}
+          <motion.div
+            className="size-full"
+            initial={false}
+            animate={{ y: `${-lastIndex * 100}%` }}
+            transition={{ duration: 0.5, ease: easeExpo }}
+          >
+            {projects.map((p) => (
+              <div key={p.id} className="size-full">
+                <Media image={p.image} gradient={p.gradient} label={p.name} />
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
       </motion.div>
     </motion.div>
