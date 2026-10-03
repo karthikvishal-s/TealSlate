@@ -54,6 +54,48 @@ function CursorPreview({ active, lastIndex }) {
   );
 }
 
+/**
+ * Project name whose letters roll up, one after another, to a teal copy on hover
+ * (pure CSS transforms). Letters are grouped per word so long names still wrap; the
+ * extra 0.25em of travel carries descenders (y, g) fully out of each letter's mask.
+ */
+function RollingTitle({ text }) {
+  let n = 0;
+  return (
+    <>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">
+        {text.split(' ').map((word, w) => (
+          <span key={w}>
+            {w > 0 && ' '}
+            <span className="inline-block whitespace-nowrap">
+              {word.split('').map((ch) => {
+                const delay = `${n++ * 18}ms`;
+                return (
+                  <span key={n} className="relative -mb-[0.15em] inline-block overflow-hidden pb-[0.15em]">
+                    <span
+                      className="inline-block transition-transform duration-500 ease-expo group-hover:-translate-y-[calc(100%+0.25em)]"
+                      style={{ transitionDelay: delay }}
+                    >
+                      {ch}
+                    </span>
+                    <span
+                      className="absolute left-0 top-0 inline-block translate-y-[calc(100%+0.25em)] text-teal transition-transform duration-500 ease-expo group-hover:translate-y-0"
+                      style={{ transitionDelay: delay }}
+                    >
+                      {ch}
+                    </span>
+                  </span>
+                );
+              })}
+            </span>
+          </span>
+        ))}
+      </span>
+    </>
+  );
+}
+
 export default function Work() {
   const root = useRef(null);
   const fill = useRef(null);
@@ -165,7 +207,7 @@ export default function Work() {
                 {String(i + 1).padStart(2, '0')}
               </span>
               <h3 className="col-span-10 font-display text-[clamp(1.9rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-tight transition-transform duration-500 ease-expo group-hover:translate-x-4 md:col-span-6">
-                {project.name}
+                <RollingTitle text={project.name} />
               </h3>
               <span className="col-span-7 col-start-3 text-sm text-muted md:col-span-3 md:col-start-auto">
                 {project.category}
