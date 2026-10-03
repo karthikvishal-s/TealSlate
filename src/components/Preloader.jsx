@@ -69,8 +69,11 @@ export default function Preloader({ onComplete }) {
         </p>
       </div>
 
-      <div className="flex items-end justify-between gap-6">
-        <div className="h-px w-full max-w-md origin-left scale-x-0 bg-teal-bright" ref={bar} />
+      <div className="flex flex-col items-end gap-4 md:gap-6">
+        {/* Full-width track; the teal fill sweeps edge to edge as the counter climbs */}
+        <div className="h-px w-full bg-paper/15">
+          <div className="h-px w-full origin-left scale-x-0 bg-teal-bright" ref={bar} />
+        </div>
         <div className="overflow-hidden">
           <p data-counter-wrap className="font-display text-5xl font-bold tabular-nums md:text-7xl">
             <span ref={counter}>000</span>

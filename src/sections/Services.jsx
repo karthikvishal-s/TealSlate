@@ -11,7 +11,7 @@ function ServiceCard({ service, index, total }) {
       data-service-card
       // Mobile: sticky cards that stack on top of each other while scrolling.
       style={{ '--i': index }}
-      className="group relative flex min-h-[26rem] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-card p-6 max-lg:sticky max-lg:top-[calc(6rem+var(--i)*1rem)] md:p-10 motion-safe:lg:h-[min(68vh,40rem)] motion-safe:lg:min-h-0 motion-safe:lg:w-[min(36rem,40vw)] motion-safe:lg:shrink-0"
+      className="group relative flex min-h-[26rem] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-card p-6 max-lg:sticky max-lg:top-[calc(6rem+var(--i)*1rem)] md:p-10 motion-safe:lg:h-[min(68vh,40rem)] motion-safe:lg:min-h-0 motion-safe:lg:w-[min(36rem,40vw)] motion-safe:lg:shrink-0 motion-safe:lg:portrait:h-[min(60vh,50rem)] motion-safe:lg:portrait:w-[min(40rem,62vw)]"
     >
       {/* Hover glow */}
       <div
