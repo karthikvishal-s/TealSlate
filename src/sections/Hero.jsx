@@ -81,7 +81,7 @@ export default function Hero({ ready }) {
       >
         {/* my-auto centres this block vertically on any screen height (no dead space above) */}
         <div className="my-auto pt-6 md:pt-10">
-          <p data-hero-fade className="mb-6 text-xs font-medium uppercase tracking-[0.28em] text-muted md:mb-10">
+          <p data-hero-fade className="hero-text mb-6 text-xs font-medium uppercase tracking-[0.28em] text-muted md:mb-10">
             {hero.eyebrow}
           </p>
 
@@ -91,13 +91,13 @@ export default function Hero({ ready }) {
             delay={0.15}
             duration={1.1}
             stagger={0.08}
-            className="font-display text-mega font-bold md:portrait:text-[11vw]"
+            className="hero-text font-display text-mega font-bold md:portrait:text-[11vw]"
           >
             {hero.headline} <span className="text-teal">{hero.headlineAccent}</span>
           </SplitTextReveal>
 
           <div className="mt-10 grid gap-8 md:mt-16 md:grid-cols-12 md:items-end">
-            <p data-hero-fade className="max-w-md text-base leading-relaxed text-muted md:col-span-5 md:text-lg">
+            <p data-hero-fade className="hero-text max-w-md text-base leading-relaxed text-muted md:col-span-5 md:text-lg">
               {hero.subline}
             </p>
 
@@ -115,6 +115,7 @@ export default function Hero({ ready }) {
                 onClick={(e) => go(e, hero.secondaryCta.href)}
                 variant="outline"
                 size="lg"
+                className="hero-cta-soft"
               >
                 {hero.secondaryCta.label}
               </MagneticButton>
@@ -122,7 +123,7 @@ export default function Hero({ ready }) {
           </div>
         </div>
 
-        <div data-hero-fade className="mt-12 flex items-center justify-between border-t border-line pt-5 text-xs uppercase tracking-[0.28em] text-muted md:mt-16">
+        <div data-hero-fade className="hero-text mt-12 flex items-center justify-between border-t border-line pt-5 text-xs uppercase tracking-[0.28em] text-muted md:mt-16">
           <a href="#showreel" onClick={(e) => go(e, '#showreel')} className="flex items-center gap-4">
             <span className="relative block h-10 w-px overflow-hidden bg-line">
               <span className="scroll-cue-line absolute inset-0 bg-teal" />

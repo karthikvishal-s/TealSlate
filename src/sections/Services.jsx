@@ -80,11 +80,57 @@ export default function Services() {
         const distance = () => track.current.scrollWidth - window.innerWidth;
         const range = { trigger: root.current, start: 'top top', end: () => `+=${distance()}`, invalidateOnRefresh: true };
 
+        // 3D curved carousel: the cards ride a drum. The card in focus faces you at full size;
+        // the further a card is from the focus, the more it swings away, recedes, and dims.
+        // The focus point drifts from the first card's centre to the last one's over the pin,
+        // so the reel opens and closes on a card facing forward without adding scroll length.
+        const cards = gsap.utils.toArray('[data-service-card]');
+        gsap.set(cards, { transformPerspective: 1100 });
+        const set = cards.map((card) => ({
+          rotate: gsap.quickSetter(card, 'rotationY', 'deg'),
+          z: gsap.quickSetter(card, 'z', 'px'),
+          x: gsap.quickSetter(card, 'x', 'px'),
+          opacity: gsap.quickSetter(card, 'opacity'),
+        }));
+        // Layout is read once per refresh (offsets ignore transforms), never per frame.
+        let layout = { centres: [], widths: [], dist: 0, spread: 1 };
+        const measure = () => {
+          layout = {
+            centres: cards.map((c) => c.offsetLeft + c.offsetWidth / 2),
+            widths: cards.map((c) => c.offsetWidth),
+            dist: distance(),
+            spread: window.innerWidth * 0.75,
+          };
+        };
+        const curve = (p) => {
+          const { centres, widths, dist, spread } = layout;
+          const first = centres[0];
+          const focus = first + (centres[centres.length - 1] - dist - first) * p;
+          cards.forEach((_, i) => {
+            const d = gsap.utils.clamp(-1, 1, (centres[i] - dist * p - focus) / spread);
+            const a = Math.abs(d);
+            set[i].rotate(-42 * d);
+            set[i].z(-260 * a);
+            set[i].x(-d * widths[i] * 0.12); // tuck turned cards in towards the focus
+            set[i].opacity(1 - 0.45 * a);
+          });
+        };
+
         // Linear mapping (ease: none); scrub smoothing provides the easing.
         const move = gsap.to(track.current, {
           x: () => -distance(),
           ease: 'none',
-          scrollTrigger: { ...range, pin: true, scrub: true, anticipatePin: 1 }, // Lenis already smooths
+          scrollTrigger: {
+            ...range,
+            pin: true,
+            scrub: true, // Lenis already smooths
+            anticipatePin: 1,
+            onRefresh: (self) => {
+              measure();
+              curve(self.progress);
+            },
+            onUpdate: (self) => curve(self.progress),
+          },
         });
         gsap.fromTo(progress.current, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { ...range, scrub: true } });
 
@@ -106,6 +152,9 @@ export default function Services() {
             },
           );
         });
+
+        // quickSetter writes aren't recorded by the context, so clear them when leaving desktop.
+        return () => gsap.set(cards, { clearProps: 'transform,opacity' });
       });
 
       // Mobile/tablet: simple fade-up for each stacked card.

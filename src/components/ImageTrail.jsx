@@ -8,6 +8,8 @@ import { easeExpo, easeInOut } from '../lib/motion';
  * pops in with a slight tilt, then shrinks away. Pooling keeps the DOM tiny.
  *
  * Listens on `targetRef` (the section) so it works under content layered on top.
+ * While images are showing, `is-trailing` is set on the target so content above can
+ * react (the hero uses it for a soft legibility halo on its text).
  */
 export default function ImageTrail({ images, targetRef, threshold = 90 }) {
   const layer = useRef(null);
@@ -18,6 +20,14 @@ export default function ImageTrail({ images, targetRef, threshold = 90 }) {
     let last = null;
     let index = 0;
     let z = 1;
+    let trailing = false;
+    let idle;
+    // Touch the DOM only when the state flips; clear it shortly before the last image is gone.
+    const setTrailing = (on) => {
+      if (on === trailing) return;
+      trailing = on;
+      target.classList.toggle('is-trailing', on);
+    };
 
     const onMove = (e) => {
       if (e.pointerType !== 'mouse') return;
@@ -57,6 +67,9 @@ export default function ImageTrail({ images, targetRef, threshold = 90 }) {
       );
 
       last = { x, y };
+      setTrailing(true);
+      clearTimeout(idle);
+      idle = setTimeout(() => setTrailing(false), 1300);
     };
 
     const onLeave = () => {
@@ -68,11 +81,15 @@ export default function ImageTrail({ images, targetRef, threshold = 90 }) {
     return () => {
       target.removeEventListener('pointermove', onMove);
       target.removeEventListener('pointerleave', onLeave);
+      clearTimeout(idle);
+      target.classList.remove('is-trailing');
     };
   }, [targetRef, threshold]);
 
   return (
-    <div ref={layer} aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+    // `isolate` makes this layer its own stacking context, so the ever-rising z-index of
+    // the images stays inside it and the trail never climbs above the hero content.
+    <div ref={layer} aria-hidden="true" className="pointer-events-none absolute inset-0 isolate overflow-hidden">
       {images.map((src, i) => (
         <img
           key={i}
