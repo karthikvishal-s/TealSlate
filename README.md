@@ -25,7 +25,7 @@ TealSlate is a creative production studio that builds websites, brand identities
 - **Custom cursor.** A dot and a trailing ring that change state over links and projects ("View"), and turn light over dark sections.
 - **Magnetic interactions.** Buttons and the contact heading pull toward the cursor and spring back.
 - **Velocity-aware marquees.** Client logos speed up with fast scrolling and flip direction when you scroll up.
-- **Draggable testimonials.** Momentum snaps to the nearest card, with button and keyboard controls.
+- **Testimonials that spread.** The cards start as a tilted pile and fan out into a neat layout as you scroll. On smaller screens each card straightens into a stack.
 - **Contact form.** Inline validation, focus management, and loading, success, and error states.
 - **Sticky footer reveal.** The footer sits underneath the page and is uncovered as you reach the bottom.
 
