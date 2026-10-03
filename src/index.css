@@ -250,6 +250,16 @@
   }
 }
 
+/* ───────────── Night sections (Selected work) ─────────────
+   Re-points the palette variables inside the section, so every child utility
+   (text-muted, border-line, text-teal…) adapts without per-element overrides. */
+.theme-night {
+  color: var(--color-paper);
+  --color-muted: rgb(245 242 236 / 0.55);
+  --color-line: rgb(245 242 236 / 0.14);
+  --color-teal: var(--color-teal-bright);
+}
+
 /* ───────────── Reduced motion ───────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
