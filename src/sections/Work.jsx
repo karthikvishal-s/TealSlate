@@ -68,6 +68,14 @@ export default function Work() {
     () => {
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
+        // The black panel widens to full bleed as it scrolls in.
+        // Only the solid fill is scaled (one compositor layer, no repaint), never the content.
+        gsap.fromTo(
+          fill.current,
+          { scaleX: 0.9 },
+          { scaleX: 1, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'top 30%', scrub: true } },
+        );
+
         // Each row wipes open from the top as it enters the viewport.
         gsap.utils.toArray('[data-work-row]').forEach((row) => {
           gsap.fromTo(
@@ -99,7 +107,7 @@ export default function Work() {
       <div
         ref={fill}
         aria-hidden="true"
-        className="absolute inset-0 -z-10 rounded-[2rem] bg-night md:rounded-[5rem]"
+        className="absolute inset-0 -z-10 rounded-[2rem] bg-night will-change-transform md:rounded-[5rem]"
       />
 
       <div className="mb-14 flex flex-col gap-8 md:mb-20 md:flex-row md:items-end md:justify-between">
