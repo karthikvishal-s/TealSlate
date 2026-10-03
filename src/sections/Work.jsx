@@ -68,12 +68,22 @@ export default function Work() {
     () => {
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
-        // The black panel widens to full bleed as it scrolls in.
+        // The black panel widens to full bleed as it scrolls in, and narrows again on the way out.
         // Only the solid fill is scaled (one compositor layer, no repaint), never the content.
         gsap.fromTo(
           fill.current,
           { scaleX: 0.9 },
           { scaleX: 1, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'top 30%', scrub: true } },
+        );
+        gsap.fromTo(
+          fill.current,
+          { scaleX: 1 },
+          {
+            scaleX: 0.9,
+            ease: 'none',
+            immediateRender: false,
+            scrollTrigger: { trigger: root.current, start: 'bottom 70%', end: 'bottom top', scrub: true },
+          },
         );
 
         // Each row wipes open from the top as it enters the viewport.
