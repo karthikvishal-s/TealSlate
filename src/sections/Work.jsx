@@ -86,8 +86,9 @@ export default function Work() {
           },
         );
 
-        // Each row wipes open from the top as it enters the viewport.
+        // Each row wipes open from the top as it enters, while its divider draws left to right.
         gsap.utils.toArray('[data-work-row]').forEach((row) => {
+          const scrollTrigger = { trigger: row, start: 'top 92%', once: true };
           gsap.fromTo(
             row,
             { clipPath: 'inset(0% 0% 100% 0%)', y: 40 },
@@ -97,9 +98,10 @@ export default function Work() {
               duration: 1,
               ease: 'expo.out',
               clearProps: 'clipPath',
-              scrollTrigger: { trigger: row, start: 'top 92%', once: true },
+              scrollTrigger,
             },
           );
+          gsap.from(row.querySelector('[data-work-line]'), { scaleX: 0, duration: 1.4, ease: 'expo.out', delay: 0.1, scrollTrigger });
         });
       });
     },
