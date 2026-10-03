@@ -48,6 +48,7 @@ export default function Footer({ ref, fixed }) {
   return (
     <footer
       ref={ref}
+      data-cursor-theme="dark"
       className={`${fixed ? 'fixed' : 'relative'} inset-x-0 bottom-0 z-0 overflow-hidden bg-ink text-paper`}
     >
       <div ref={inner} className="gutter flex flex-col pb-6 pt-20 will-change-[transform,opacity] md:pt-28">
