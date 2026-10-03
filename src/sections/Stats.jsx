@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { gsap, useGSAP, MOTION_OK } from '../lib/gsap';
 import { stats } from '../data/stats';
+import Odometer from '../components/Odometer';
 
 export default function Stats() {
   const root = useRef(null);
@@ -10,23 +11,13 @@ export default function Stats() {
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
         gsap.utils.toArray('[data-stat]').forEach((stat, i) => {
-          const num = stat.querySelector('[data-count]');
-          const target = Number(num.dataset.count);
-          const counter = { v: 0 };
-          num.textContent = '0';
-
           const tl = gsap.timeline({ scrollTrigger: { trigger: stat, start: 'top 88%', once: true }, delay: i * 0.1 });
           tl.from(stat.querySelector('[data-rule]'), { scaleX: 0, duration: 0.9, ease: 'expo.out' })
-            .to(
-              counter,
-              {
-                v: target,
-                duration: 1.5,
-                ease: 'power3.out',
-                onUpdate: () => {
-                  num.textContent = Math.round(counter.v);
-                },
-              },
+            // Digits roll up from 0; `y: 0` drops the static final-position transform.
+            .fromTo(
+              stat.querySelectorAll('[data-odo-strip]'),
+              { y: 0, yPercent: 0 },
+              { yPercent: (_, el) => Number(el.dataset.to), duration: 1.8, stagger: 0.08, ease: 'power4.out' },
               0,
             )
             .from(stat.querySelectorAll('[data-stat-text]'), { autoAlpha: 0, y: 20, stagger: 0.06, duration: 0.7 }, 0.15);
@@ -43,7 +34,7 @@ export default function Stats() {
           <li key={stat.label} data-stat className="@container">
             <div data-rule className="mb-6 h-px origin-left bg-line" />
             <p className="font-display text-[clamp(2.25rem,21cqi,7rem)] font-bold leading-none tracking-tighter tabular-nums">
-              <span data-count={stat.value}>{stat.value}</span>
+              <Odometer value={stat.value} />
               <span className="text-teal">{stat.suffix}</span>
             </p>
             <p data-stat-text className="mt-4 text-base font-semibold md:text-lg">
