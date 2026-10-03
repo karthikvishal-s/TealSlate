@@ -96,6 +96,12 @@ function RollingTitle({ text }) {
   );
 }
 
+// Which edge of the row the pointer crossed, so the hover highlight sweeps in (and out) from that side.
+const edge = (e) => {
+  const r = e.currentTarget.getBoundingClientRect();
+  return e.clientY < r.top + r.height / 2 ? 'top' : 'bottom';
+};
+
 export default function Work() {
   const root = useRef(null);
   const fill = useRef(null);
@@ -192,14 +198,18 @@ export default function Work() {
             className="work-row group/row relative isolate"
             onPointerEnter={(e) => {
               if (e.pointerType !== 'mouse') return;
+              e.currentTarget.dataset.edge = edge(e);
               setIndex(i);
               setActive(true);
             }}
+            onPointerLeave={(e) => {
+              if (e.pointerType === 'mouse') e.currentTarget.dataset.edge = edge(e);
+            }}
           >
-            {/* Hover highlight: a soft panel sweeps in behind the row */}
+            {/* Hover highlight: sweeps in from the edge the pointer entered, and out through the one it left */}
             <span
               aria-hidden="true"
-              className="absolute inset-y-0 -inset-x-3 -z-10 origin-top scale-y-0 rounded-2xl bg-paper/[0.05] transition-transform duration-500 ease-expo group-hover/row:scale-y-100 md:-inset-x-6"
+              className="absolute inset-y-0 -inset-x-3 -z-10 origin-top scale-y-0 rounded-2xl bg-paper/[0.05] transition-transform duration-500 ease-expo group-hover/row:scale-y-100 group-data-[edge=bottom]/row:origin-bottom md:-inset-x-6"
             />
 
             <a
