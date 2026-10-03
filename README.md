@@ -22,7 +22,7 @@ TealSlate is a creative production studio that builds websites, brand identities
 - **Parallax photo collage.** Studio photos wipe into view, and each one drifts at its own speed.
 - **Pinned horizontal services.** On desktop the six service cards scroll sideways and their photos drift in parallax. On mobile they stack as sticky cards.
 - **Selected work on black.** A near-black panel widens to full bleed as it scrolls in and narrows on the way out. A floating preview follows the cursor with spring physics, leans into movement, and settles from a slight zoom as it opens. Project names roll letter by letter to teal, a highlight sweeps in from the edge the pointer entered, and each row wipes open as its divider draws in.
-- **Custom cursor.** A dot and a trailing ring that change state over links, projects ("View"), and the carousel ("Drag").
+- **Custom cursor.** A dot and a trailing ring that change state over links and projects ("View"), and turn light over dark sections.
 - **Magnetic interactions.** Buttons and the contact heading pull toward the cursor and spring back.
 - **Velocity-aware marquees.** Client logos speed up with fast scrolling and flip direction when you scroll up.
 - **Draggable testimonials.** Momentum snaps to the nearest card, with button and keyboard controls.
