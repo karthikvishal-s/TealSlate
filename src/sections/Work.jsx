@@ -33,7 +33,7 @@ function CursorPreview({ active, lastIndex }) {
       style={{ x: sx, y: sy, rotate }}
     >
       <motion.div
-        className="h-[17rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl xl:h-[20rem] xl:w-[28rem]"
+        className="h-[17rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl shadow-[0_30px_80px_-20px_rgb(0_0_0/0.6)] xl:h-[20rem] xl:w-[28rem]"
         initial={false}
         animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
         transition={{ duration: 0.4, ease: easeExpo }}
