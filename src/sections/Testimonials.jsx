@@ -13,6 +13,8 @@ const PILE = [
   { rotate: -18, x: -25, y: -50 },
   { rotate: 16, x: 25, y: -60 },
 ];
+// Stacking order within the pile: the near-straight second card sits on top.
+const STACK = [3, 5, 4, 1, 2];
 
 /**
  * Testimonials start as a messy pile and spread open into a neat layout as you scroll.
@@ -90,6 +92,7 @@ export default function Testimonials() {
               key={t.name}
               data-pile-slot
               className="relative w-full max-w-[34rem] lg:w-[min(26rem,28vw)] lg:max-w-none"
+              style={{ zIndex: STACK[i % STACK.length] }}
             >
               <div data-pile-card className="motion-safe:will-change-transform">
                 <figure
