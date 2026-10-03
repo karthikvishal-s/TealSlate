@@ -18,7 +18,7 @@ export default function Testimonials() {
           {testimonials.map((t, i) => (
             <li key={t.name} className="relative w-full max-w-[34rem] lg:w-[min(26rem,28vw)] lg:max-w-none">
               <figure
-                className={`flex min-h-[22rem] flex-col justify-between rounded-3xl border border-line p-7 md:p-10 ${
+                className={`flex min-h-[22rem] flex-col justify-between rounded-3xl border-4 border-paper p-7 shadow-[0_24px_60px_-28px_rgb(20_33_31/0.35)] md:p-10 ${
                   i % 2 ? 'bg-mint' : 'bg-card'
                 }`}
               >
