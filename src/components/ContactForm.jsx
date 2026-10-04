@@ -21,7 +21,7 @@ function validate(v) {
 }
 
 const inputBase =
-  'peer w-full border-0 border-b bg-transparent px-0 py-3 text-lg text-ink placeholder:text-muted/50 outline-none transition-colors duration-300 focus:border-teal focus-visible:outline-none aria-[invalid=true]:border-rose-500';
+  'peer w-full border-0 border-b bg-transparent px-0 py-3 text-lg text-current placeholder:text-muted/50 outline-none transition-colors duration-300 focus:border-teal focus-visible:outline-none aria-[invalid=true]:border-rose-400';
 
 function Field({ id, label, error, optional, children }) {
   return (
@@ -35,7 +35,7 @@ function Field({ id, label, error, optional, children }) {
         {error && (
           <motion.p
             id={`${id}-error`}
-            className="mt-2 flex items-center gap-1.5 text-sm text-rose-600"
+            className="mt-2 flex items-center gap-1.5 text-sm text-rose-400"
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -108,14 +108,14 @@ export default function ContactForm() {
           <motion.div
             key="success"
             role="status"
-            className="flex min-h-[32rem] flex-col items-start justify-center rounded-3xl border border-line bg-card p-8 md:p-12"
+            className="flex min-h-[32rem] flex-col items-start justify-center rounded-3xl border border-line bg-paper/[0.04] p-8 md:p-12"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.7, ease: easeExpo }}
           >
             <motion.span
-              className="grid size-16 place-items-center rounded-full bg-teal text-paper"
+              className="grid size-16 place-items-center rounded-full bg-teal text-night"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.15 }}
@@ -199,11 +199,11 @@ export default function ContactForm() {
                   className={`${inputBase} appearance-none border-line pr-8 ${values.service ? '' : 'text-muted/70'}`}
                   {...aria('service')}
                 >
-                  <option value="" disabled className="bg-card">
+                  <option value="" disabled>
                     Select a service
                   </option>
                   {contact.serviceOptions.map((opt) => (
-                    <option key={opt} value={opt} className="bg-card text-ink">
+                    <option key={opt} value={opt}>
                       {opt}
                     </option>
                   ))}
@@ -233,7 +233,7 @@ export default function ContactForm() {
                       onBlur={blur}
                       className="peer sr-only"
                     />
-                    <span className="block rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-ink/40 peer-checked:border-teal peer-checked:bg-teal peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-teal">
+                    <span className="block rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-paper/40 peer-checked:border-teal peer-checked:bg-teal peer-checked:text-night peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-teal">
                       {opt}
                     </span>
                   </label>
@@ -243,7 +243,7 @@ export default function ContactForm() {
                 {showError('budget') && (
                   <motion.p
                     id="budget-error"
-                    className="mt-3 flex items-center gap-1.5 text-sm text-rose-600"
+                    className="mt-3 flex items-center gap-1.5 text-sm text-rose-400"
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
@@ -287,7 +287,7 @@ export default function ContactForm() {
             <div className="flex flex-col-reverse items-start gap-6 md:col-span-2 md:flex-row md:items-center md:justify-between">
               <div aria-live="polite" className="min-h-6 text-sm">
                 {status === 'error' && (
-                  <p role="alert" className="flex items-center gap-2 text-rose-600">
+                  <p role="alert" className="flex items-center gap-2 text-rose-400">
                     <AlertCircle aria-hidden="true" className="size-4 shrink-0" />
                     Something went wrong sending your message. Please try again or email us directly.
                   </p>
@@ -295,6 +295,7 @@ export default function ContactForm() {
               </div>
               <MagneticButton
                 type="submit"
+                variant="paper"
                 size="lg"
                 disabled={status === 'submitting'}
                 icon={status === 'submitting' ? undefined : ArrowUpRight}

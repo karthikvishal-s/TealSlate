@@ -284,6 +284,12 @@
   --color-line: rgb(245 242 236 / 0.14);
   --color-teal: var(--color-teal-bright);
 }
+/* Browser autofill paints inputs light yellow; keep night forms on their own colours */
+.theme-night input:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-paper);
+  caret-color: var(--color-paper);
+  transition: background-color 9999s;
+}
 
 /* ───────────── Reduced motion ───────────── */
 @media (prefers-reduced-motion: reduce) {
