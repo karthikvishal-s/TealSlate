@@ -13,6 +13,8 @@
   --color-mint: #d6efea;
   --color-line: rgb(20 33 31 / 0.12);
   --color-night: #0b0f0e;
+  /* Logo teal from the brand file; used for the TS mark and wordmark only */
+  --color-brand: #00a090;
 
   --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
