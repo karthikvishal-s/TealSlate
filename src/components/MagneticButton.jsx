@@ -18,6 +18,11 @@ const VARIANTS = {
     base: 'bg-ink text-paper',
     fill: 'bg-teal',
   },
+  // For dark surfaces: a paper pill that fills with bright teal on hover.
+  paper: {
+    base: 'bg-paper text-ink',
+    fill: 'bg-teal-bright',
+  },
 };
 
 const SIZES = {
