@@ -7,6 +7,7 @@ import { useLenis } from '../hooks/useLenis';
 import { navLinks, site, socials } from '../data/site';
 import MagneticButton from './MagneticButton';
 import RollingText from './RollingText';
+import { LogoMark, LogoWordmark } from './Logo';
 
 export default function Navbar({ ready }) {
   const header = useRef(null);
@@ -96,10 +97,11 @@ export default function Navbar({ ready }) {
           <a
             href="#top"
             onClick={(e) => go(e, 0)}
-            className="font-display text-xl font-bold tracking-tight md:text-2xl"
+            className="flex items-center gap-3 text-brand"
             aria-label={`${site.name}, back to top`}
           >
-            Teal<span className="text-teal">Slate</span>
+            <LogoMark className="h-8 w-auto md:h-9" />
+            <LogoWordmark production={false} className="h-3.5 w-auto max-sm:hidden md:h-4" />
           </a>
 
           <nav aria-label="Primary" className="hidden lg:block">
