@@ -24,7 +24,7 @@ export default function Preloader({ onComplete }) {
       const [t, s, cam] = ['t', 's', 'cam'].map((part) => q(`[data-mark-part="${part}"]`));
       const count = { v: 0 };
       const render = () => {
-        counter.current.textContent = String(Math.round(count.v)).padStart(3, '0');
+        counter.current.textContent = String(Math.round(count.v));
       };
       const finish = () => onCompleteRef.current?.();
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -91,7 +91,7 @@ export default function Preloader({ onComplete }) {
         </div>
         <div className="overflow-hidden">
           <p data-counter-wrap className="font-display text-5xl font-bold tabular-nums md:text-7xl">
-            <span ref={counter}>000</span>
+            <span ref={counter}>0</span>
             <span className="text-teal-bright">%</span>
           </p>
         </div>
