@@ -12,6 +12,7 @@ import SectionLabel from '../components/SectionLabel';
 import SplitTextReveal from '../components/SplitTextReveal';
 import MagneticButton from '../components/MagneticButton';
 import Media from '../components/Media';
+import { LogoMark } from '../components/Logo';
 
 /**
  * Floating preview that trails the cursor with spring physics.
@@ -113,6 +114,7 @@ const edge = (e) => {
 export default function Work() {
   const root = useRef(null);
   const fill = useRef(null);
+  const mark = useRef(null);
   const touch = useIsTouchDevice();
   const reduced = useReducedMotion();
   const [active, setActive] = useState(false);
@@ -139,6 +141,18 @@ export default function Work() {
             ease: 'none',
             immediateRender: false,
             scrollTrigger: { trigger: root.current, start: 'bottom 70%', end: 'bottom top', scrub: true },
+          },
+        );
+
+        // The watermark drifts slowly across the whole section.
+        gsap.fromTo(
+          mark.current,
+          { yPercent: 8, rotate: -4 },
+          {
+            yPercent: -8,
+            rotate: 0,
+            ease: 'none',
+            scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
           },
         );
 
@@ -182,8 +196,13 @@ export default function Work() {
       <div
         ref={fill}
         aria-hidden="true"
-        className="absolute inset-0 -z-10 rounded-[2rem] bg-night will-change-transform md:rounded-[5rem]"
-      />
+        className="absolute inset-0 -z-10 overflow-hidden rounded-[2rem] bg-night will-change-transform md:rounded-[5rem]"
+      >
+        {/* Faint TS watermark in the bottom-right corner, drifting slowly (matches the Contact box) */}
+        <div ref={mark} className="absolute -bottom-[4%] -right-[6%] w-[min(60%,44rem)] will-change-transform">
+          <LogoMark className="w-full text-paper opacity-[0.045]" />
+        </div>
+      </div>
 
       <div className="mb-14 flex flex-col gap-8 md:mb-20 md:flex-row md:items-end md:justify-between">
         <div>
