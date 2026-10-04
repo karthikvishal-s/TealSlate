@@ -24,5 +24,7 @@ export const EASE = {
 export const REDUCED = '(prefers-reduced-motion: reduce)';
 export const MOTION_OK = '(prefers-reduced-motion: no-preference)';
 export const DESKTOP = '(min-width: 1024px)';
+// The complement of DESKTOP. (`not ${DESKTOP} and …` is invalid media-query syntax and never matches.)
+export const MOBILE = '(max-width: 1023.98px)';
 
 export { gsap, ScrollTrigger, SplitText, useGSAP };

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Quote } from 'lucide-react';
-import { gsap, useGSAP, MOTION_OK, DESKTOP } from '../lib/gsap';
+import { gsap, useGSAP, MOTION_OK, DESKTOP, MOBILE } from '../lib/gsap';
 import { testimonials } from '../data/testimonials';
 import SectionLabel from '../components/SectionLabel';
 import SplitTextReveal from '../components/SplitTextReveal';
@@ -17,7 +17,10 @@ const PILE = [
 const STACK = [3, 5, 4, 1, 2];
 
 /**
- * Testimonials start as a messy pile and spread open into a neat layout as you scroll.
+ * Testimonials start as a messy pile and spread open as you scroll.
+ * - Desktop: the pile fans out into a neat 3 + 2 layout.
+ * - Phones/tablets: there's only room to read one card at a time, so the cards stay in a
+ *   pinned pile and each scroll step deals the top card away while the next one straightens.
  * Layering per card (outer → inner):
  *   <li data-pile-slot>   untransformed: layout slot, measured for the pile offsets, scroll trigger
  *   [data-pile-card]      GSAP scrubbed pile → spread
@@ -47,8 +50,9 @@ export default function Testimonials() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: pile.current,
-            start: 'center 95%',
-            end: 'center 45%',
+            // A long, gentle range so the spread unfolds at reading pace.
+            start: 'center 100%',
+            end: 'center 35%',
             scrub: true,
             invalidateOnRefresh: true,
           },
@@ -64,27 +68,55 @@ export default function Testimonials() {
               rotate: pose(i).rotate,
               scale: 0.94,
             },
-            { x: 0, y: 0, rotate: 0, scale: 1, ease: 'power3.out', immediateRender: true },
-            i * 0.06,
+            { x: 0, y: 0, rotate: 0, scale: 1, ease: 'power2.out', immediateRender: true },
+            i * 0.1,
           );
         });
       });
 
-      // Phones/tablets: each tilted card is laid down flat into the column as it scrolls in.
-      mm.add(`not ${DESKTOP} and ${MOTION_OK}`, () => {
-        cards.forEach((card, i) => {
-          gsap.fromTo(
-            card,
-            { rotate: i % 2 ? 7 : -7, y: 80, scale: 0.94 },
-            {
-              rotate: 0,
-              y: 0,
-              scale: 1,
-              ease: 'power2.out',
-              scrollTrigger: { trigger: slots[i], start: 'top bottom', end: 'top 70%', scrub: true },
-            },
-          );
+      // Phones/tablets: a pinned deck. The cards share one spot (CSS grid stack); the top card
+      // is flat and readable, the rest peek out tilted beneath it. Each scroll step deals the
+      // top card up and away while the next one straightens into place.
+      mm.add(`${MOBILE} and ${MOTION_OK}`, () => {
+        const count = cards.length;
+        // Pose of a card `depth` places below the top of the deck.
+        const deckPose = (i, depth) =>
+          depth === 0
+            ? { rotate: 0, y: 0, scale: 1 }
+            : { rotate: pose(i).rotate * 0.6, y: depth * 12, scale: 1 - depth * 0.04 };
+
+        slots.forEach((slot, i) => gsap.set(slot, { zIndex: count - i }));
+        cards.forEach((card, i) => gsap.set(card, deckPose(i, i)));
+
+        const STEP = 1; // one deal
+        const HOLD = 0.45; // a pause with the new top card flat, so it can be read
+        const tl = gsap.timeline({
+          defaults: { duration: STEP, ease: 'power2.inOut' },
+          scrollTrigger: {
+            trigger: pile.current,
+            start: 'center 52%',
+            end: () => `+=${window.innerHeight * 0.5 * ((count - 1) * (STEP + HOLD) + HOLD)}`,
+            pin: true,
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
         });
+        for (let k = 0; k < count - 1; k++) {
+          const at = HOLD + k * (STEP + HOLD);
+          tl.to(
+            cards[k],
+            {
+              y: () => -window.innerHeight * 0.75,
+              x: k % 2 ? 70 : -70,
+              rotate: k % 2 ? 12 : -12,
+              autoAlpha: 0,
+              ease: 'power2.in',
+            },
+            at,
+          );
+          for (let j = k + 1; j < count; j++) tl.to(cards[j], deckPose(j, j - k - 1), at);
+        }
+        tl.to({}, { duration: HOLD }); // let the last card rest before the pin releases
       });
     },
     { scope: root },
@@ -102,13 +134,14 @@ export default function Testimonials() {
 
         <ul
           ref={pile}
-          className="relative flex flex-col items-center gap-5 lg:flex-row lg:flex-wrap lg:items-start lg:justify-center lg:gap-6"
+          // Below lg with motion on, the cards stack in one grid cell to form the deck.
+          className="relative flex flex-col items-center gap-5 max-lg:motion-safe:grid max-lg:motion-safe:place-items-center lg:flex-row lg:flex-wrap lg:items-start lg:justify-center lg:gap-6"
         >
           {testimonials.map((t, i) => (
             <li
               key={t.name}
               data-pile-slot
-              className="relative w-full max-w-[34rem] lg:w-[min(26rem,28vw)] lg:max-w-none"
+              className="relative w-full max-w-[34rem] max-lg:motion-safe:[grid-area:1/1] lg:w-[min(26rem,28vw)] lg:max-w-none"
               style={{ zIndex: STACK[i % STACK.length] }}
             >
               <div data-pile-card className="motion-safe:will-change-transform">
