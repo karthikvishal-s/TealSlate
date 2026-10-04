@@ -76,7 +76,8 @@ export default function App() {
 
       <main
         id="main"
-        className={`relative z-10 bg-paper ${footer.fixed ? 'rounded-b-[2rem] shadow-[0_30px_60px_rgb(0_0_0/0.45)] md:rounded-b-[3rem]' : ''}`}
+        data-rounded={footer.fixed}
+        className={`group/main relative z-10 bg-paper ${footer.fixed ? 'rounded-b-[2rem] shadow-[0_30px_60px_rgb(0_0_0/0.45)] md:rounded-b-[3rem]' : ''}`}
         style={{ marginBottom: footer.fixed ? footer.height : 0 }}
       >
         <Hero ready={loaded} />
