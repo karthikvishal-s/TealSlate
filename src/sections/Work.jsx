@@ -6,7 +6,7 @@ import { springSnappy, easeExpo } from '../lib/motion';
 import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useMousePosition } from '../hooks/useMousePosition';
-import { usePageNav } from '../components/PageTransition';
+import { isPlainClick, usePageNav } from '../components/PageTransition';
 import { projects } from '../data/projects';
 import SectionLabel from '../components/SectionLabel';
 import SplitTextReveal from '../components/SplitTextReveal';
@@ -297,6 +297,7 @@ export default function Work() {
         <MagneticButton
           href="/contact"
           onClick={(e) => {
+            if (!isPlainClick(e)) return;
             e.preventDefault();
             go('/contact');
           }}

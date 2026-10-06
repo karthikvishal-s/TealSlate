@@ -3,7 +3,7 @@ import { ArrowUpRight, Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import { motion, useSpring } from 'motion/react';
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK, DESKTOP } from '../lib/gsap';
 import { springFollow } from '../lib/motion';
-import { usePageNav } from '../components/PageTransition';
+import { isPlainClick, usePageNav } from '../components/PageTransition';
 import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { hero } from '../data/site';
@@ -399,6 +399,7 @@ export default function Hero({ ready }) {
   );
 
   const go = (e, href) => {
+    if (!isPlainClick(e)) return;
     e.preventDefault();
     navigateTo(href);
   };

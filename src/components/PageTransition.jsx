@@ -34,6 +34,12 @@ const parse = (target) => {
   return { path: path || '/', hash: hash ? `#${hash}` : '' };
 };
 
+/**
+ * True for an ordinary left click. Cmd/Ctrl/Shift/Alt-clicks and other buttons are left to
+ * the browser, so "open in a new tab / window" keeps working on every link.
+ */
+export const isPlainClick = (e) => e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
+
 export function usePageNav() {
   return useContext(NavContext);
 }

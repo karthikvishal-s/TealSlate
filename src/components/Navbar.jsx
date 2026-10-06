@@ -5,7 +5,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { easeExpo, easeInOut } from '../lib/motion';
 import { useLenis } from '../hooks/useLenis';
-import { usePageNav } from './PageTransition';
+import { isPlainClick, usePageNav } from './PageTransition';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { navLinks, site, socials } from '../data/site';
 import MagneticButton from './MagneticButton';
@@ -112,6 +112,7 @@ export default function Navbar({ ready }) {
   }, [open, lenis]);
 
   const go = (e, href) => {
+    if (!isPlainClick(e)) return;
     e.preventDefault();
     if (open) {
       setOpen(false);

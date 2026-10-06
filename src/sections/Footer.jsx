@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from '../lib/gsap';
 import { useLenis } from '../hooks/useLenis';
-import { usePageNav } from '../components/PageTransition';
+import { isPlainClick, usePageNav } from '../components/PageTransition';
 import { navLinks, site, socials } from '../data/site';
 import { showreel } from '../data/showreel';
 import MagneticButton from '../components/MagneticButton';
@@ -40,6 +40,7 @@ export default function Footer({ ref, fixed }) {
   );
 
   const go = (e, href) => {
+    if (!isPlainClick(e)) return;
     e.preventDefault();
     navigateTo(href);
   };
