@@ -79,6 +79,16 @@ export default function FounderCard({ founder, index }) {
   // Motion-safe cards start on the slate and flip round as they enter.
   const [flipped, setFlipped] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   const inView = useInView(ref, { once: true, amount: 0.5 });
+  // The button that was pressed sits on the face that turns away (and goes inert), so focus
+  // follows the flip to the matching button on the other side.
+  const frontButton = useRef(null);
+  const backButton = useRef(null);
+  const focusAfterFlip = useRef(false);
+  useEffect(() => {
+    if (!focusAfterFlip.current) return;
+    focusAfterFlip.current = false;
+    (flipped ? backButton : frontButton).current?.focus({ preventScroll: true });
+  }, [flipped]);
   const [board, animateBoard] = useAnimate();
 
   const rotateX = useSpring(0, tiltSpring);
@@ -111,8 +121,14 @@ export default function FounderCard({ founder, index }) {
   }, [inView, reduced, index]);
 
   const toSlate = () => {
+    focusAfterFlip.current = true;
     setFlipped(true);
     clap();
+  };
+
+  const toFront = () => {
+    focusAfterFlip.current = true;
+    setFlipped(false);
   };
 
   const onPointerMove = (e) => {
@@ -210,6 +226,7 @@ export default function FounderCard({ founder, index }) {
             <p className="mt-2 text-sm leading-relaxed text-muted">{founder.bio}</p>
             <div className="flex-1" />
             <button
+              ref={frontButton}
               type="button"
               onClick={toSlate}
               aria-pressed="false"
@@ -280,8 +297,9 @@ export default function FounderCard({ founder, index }) {
                 ))}
               </ul>
               <button
+                ref={backButton}
                 type="button"
-                onClick={() => setFlipped(false)}
+                onClick={toFront}
                 aria-pressed="true"
                 aria-label="Show portrait"
                 className="inline-flex items-center gap-2 rounded-full border border-paper/25 px-3.5 py-2 font-semibold transition-colors duration-200 hover:border-teal-bright hover:text-teal-bright"
