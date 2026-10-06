@@ -141,7 +141,8 @@ export default function Navbar({ ready }) {
                   <a
                     href={hrefFor(link.href)}
                     onClick={(e) => go(e, link.href)}
-                    aria-current={active === link.href ? 'true' : undefined}
+                    // A route link marks the current page; a section link marks the current place on it.
+                    aria-current={active === link.href ? (link.href.startsWith('/') ? 'page' : 'location') : undefined}
                     className="group relative isolate inline-block py-3"
                   >
                     {active === link.href && (
