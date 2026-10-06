@@ -2,7 +2,9 @@ import { useRef } from 'react';
 import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from '../lib/gsap';
 import { useLenis } from '../hooks/useLenis';
+import { usePageNav } from '../components/PageTransition';
 import { navLinks, site, socials } from '../data/site';
+import { showreel } from '../data/showreel';
 import MagneticButton from '../components/MagneticButton';
 import RollingText from '../components/RollingText';
 
@@ -14,26 +16,23 @@ import RollingText from '../components/RollingText';
 export default function Footer({ ref, fixed }) {
   const inner = useRef(null);
   const { scrollTo } = useLenis();
+  const { go: navigateTo, hrefFor } = usePageNav();
 
   // Content drifts up into place while the footer is being revealed (subtle parallax).
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
+        const reveal = {
+          start: () => ScrollTrigger.maxScroll(window) - inner.current.offsetHeight,
+          end: 'max',
+          scrub: true,
+          invalidateOnRefresh: true,
+        };
         gsap.fromTo(
           inner.current,
           { yPercent: -25, autoAlpha: 0.3 },
-          {
-            yPercent: 0,
-            autoAlpha: 1,
-            ease: 'none',
-            scrollTrigger: {
-              start: () => ScrollTrigger.maxScroll(window) - inner.current.offsetHeight,
-              end: 'max',
-              scrub: true,
-              invalidateOnRefresh: true,
-            },
-          },
+          { yPercent: 0, autoAlpha: 1, ease: 'none', scrollTrigger: reveal },
         );
       });
     },
@@ -42,7 +41,7 @@ export default function Footer({ ref, fixed }) {
 
   const go = (e, href) => {
     e.preventDefault();
-    scrollTo(href);
+    navigateTo(href);
   };
 
   return (
@@ -56,7 +55,18 @@ export default function Footer({ ref, fixed }) {
           <div className="lg:col-span-6">
             <p className="font-display text-display font-bold">
               Have an idea? <br />
-              <span className="text-teal-bright">Let&apos;s make it move.</span>
+              <span className="text-teal-bright">
+                Let&apos;s make it{' '}
+                {/* Bookend to the hero: "move." is a window onto the reel again, under the same teal key light */}
+                <span
+                  className="bg-cover bg-center bg-clip-text text-transparent [background-blend-mode:screen]"
+                  style={{
+                    backgroundImage: `linear-gradient(rgb(45 212 191 / 0.4), rgb(45 212 191 / 0.4)), url(${showreel.poster})`,
+                  }}
+                >
+                  move.
+                </span>
+              </span>
             </p>
             <a
               href={`mailto:${site.email}`}
@@ -70,10 +80,10 @@ export default function Footer({ ref, fixed }) {
           <nav aria-label="Footer" className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-6">
             <div>
               <p className="mb-4 text-xs uppercase tracking-[0.22em] text-paper/55">Menu</p>
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col">
                 {navLinks.map((l) => (
                   <li key={l.href}>
-                    <a href={l.href} onClick={(e) => go(e, l.href)} className="group">
+                    <a href={hrefFor(l.href)} onClick={(e) => go(e, l.href)} className="group inline-block py-1.5">
                       <RollingText accent="text-teal-bright">{l.label}</RollingText>
                     </a>
                   </li>
@@ -82,10 +92,10 @@ export default function Footer({ ref, fixed }) {
             </div>
             <div>
               <p className="mb-4 text-xs uppercase tracking-[0.22em] text-paper/55">Social</p>
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col">
                 {socials.map((s) => (
                   <li key={s.label}>
-                    <a href={s.href} target="_blank" rel="noreferrer" className="group">
+                    <a href={s.href} target="_blank" rel="noreferrer" className="group inline-block py-1.5">
                       <RollingText accent="text-teal-bright">{s.label}</RollingText>
                     </a>
                   </li>
@@ -95,7 +105,7 @@ export default function Footer({ ref, fixed }) {
             <div className="col-span-2 sm:col-span-1">
               <p className="mb-4 text-xs uppercase tracking-[0.22em] text-paper/55">Studio</p>
               <p className="text-paper/80">{site.location}</p>
-              <p className="mt-2 text-paper/55">Mon–Fri, 9:00–18:00</p>
+              <p className="mt-2 text-paper/55">Mon-Fri, 9:00-18:00</p>
             </div>
           </nav>
         </div>
