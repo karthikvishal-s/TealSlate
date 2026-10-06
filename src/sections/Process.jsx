@@ -29,24 +29,23 @@ import DevelopImage from '../components/DevelopImage';
  * re-renders when a stop is reached (4 times per pass).
  */
 
-const MAPS = {
-  desktop: {
-    w: 1200,
-    h: 520,
-    route: 'M 70 140 C 150 140, 190 270, 300 260 S 400 160, 470 175 S 560 330, 650 380 S 800 450, 860 360 S 940 150, 1030 150 S 1160 230, 1140 330',
-    stops: [0.03, 0.33, 0.64, 0.97],
-    // Where each stop's print sits relative to its pin (viewBox units), and its tilt.
-    prints: [
-      { dx: 30, dy: -112, rot: -5 },
-      { dx: -10, dy: -118, rot: 4 },
-      { dx: -5, dy: -175, rot: -4 },
-      { dx: -96, dy: 118, rot: 5 },
-    ],
-    contours: [
-      { cx: 250, cy: 400, r: [[210, 95], [150, 66], [90, 38]], rot: -8 },
-      { cx: 900, cy: 230, r: [[250, 125], [180, 88], [110, 52], [45, 20]], rot: 12 },
-    ],
-  },
+// The landscape map (viewBox units). Phones and portrait tablets use the measured rail.
+const MAP = {
+  w: 1200,
+  h: 520,
+  route: 'M 70 140 C 150 140, 190 270, 300 260 S 400 160, 470 175 S 560 330, 650 380 S 800 450, 860 360 S 940 150, 1030 150 S 1160 230, 1140 330',
+  stops: [0.03, 0.33, 0.64, 0.97],
+  // Where each stop's print sits relative to its pin (viewBox units), and its tilt.
+  prints: [
+    { dx: 30, dy: -112, rot: -5 },
+    { dx: -10, dy: -118, rot: 4 },
+    { dx: -5, dy: -175, rot: -4 },
+    { dx: -96, dy: 118, rot: 5 },
+  ],
+  contours: [
+    { cx: 250, cy: 400, r: [[210, 95], [150, 66], [90, 38]], rot: -8 },
+    { cx: 900, cy: 230, r: [[250, 125], [180, 88], [110, 52], [45, 20]], rot: 12 },
+  ],
 };
 const HOLD = 0.12; // extra pinned scroll after the last stop, so its card can be read
 // The map needs width and a landscape frame; everything else gets the rail.
@@ -200,12 +199,12 @@ export default function Process() {
   const stage = useRef(null);
   const trigger = useRef(null);
   const reachedRef = useRef(0);
-  const stopsRef = useRef(MAPS.desktop.stops);
+  const stopsRef = useRef(MAP.stops);
   const desktop = useMediaQuery(MAP_QUERY);
   const reduced = useReducedMotion();
   const touch = useIsTouchDevice();
   const pinned = desktop && !reduced;
-  const map = desktop ? MAPS.desktop : null;
+  const map = desktop ? MAP : null;
   const points = useStopPoints(route, map);
   const [rail, setRail] = useState(null);
   const { scrollTo } = useLenis();
@@ -283,7 +282,7 @@ export default function Process() {
       const path = route.current;
       if (!path || (!desktop && !rail)) return undefined;
       // Where each stop sits along the route (fixed on the map, measured on the rail).
-      stopsRef.current = desktop ? MAPS.desktop.stops : rail.pins.map((pin) => fractionAtY(path, pin.y));
+      stopsRef.current = desktop ? MAP.stops : rail.pins.map((pin) => fractionAtY(path, pin.y));
       const len = path.getTotalLength();
       const paths = [path, trail.current];
       paths.forEach((p) => {
