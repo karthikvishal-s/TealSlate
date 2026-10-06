@@ -10,7 +10,7 @@ export default defineConfig({
         // Split vendors into long-term cacheable chunks.
         codeSplitting: {
           groups: [
-            { name: 'react', test: /node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
+            { name: 'react', test: /node_modules[\\/](react|react-dom|react-router|scheduler)[\\/]/ },
             { name: 'gsap', test: /node_modules[\\/](gsap|@gsap|lenis)[\\/]/ },
             { name: 'motion', test: /node_modules[\\/](motion|framer-motion|motion-dom|motion-utils)[\\/]/ },
           ],
