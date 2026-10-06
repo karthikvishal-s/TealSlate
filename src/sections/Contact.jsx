@@ -71,7 +71,9 @@ export default function Contact() {
 
         {/* Motion (magnetic) on the wrapper, GSAP (split reveal) on the heading inside: never the same element */}
         <Magnetic strength={0.08} className="mt-6 inline-block">
+          {/* Contact is its own page now, so this is the page's one h1 */}
           <SplitTextReveal
+            as="h1"
             id="contact-title"
             type="words"
             className="font-display text-mega font-bold"
