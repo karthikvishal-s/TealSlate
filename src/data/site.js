@@ -28,6 +28,6 @@ export const hero = {
   headlineAccent: 'move.',
   subline:
     'TealSlate is a creative production studio building websites, identities, films, and campaigns for businesses that refuse to blend in.',
-  cta: { label: 'Start a project', href: '/contact' },
+  cta: { label: "Let's talk", href: '/contact' },
   secondaryCta: { label: 'See our work', href: '#work' },
 };

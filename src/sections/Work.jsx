@@ -305,7 +305,7 @@ export default function Work() {
           size="lg"
           icon={ArrowUpRight}
         >
-          Start your project
+          Let&apos;s talk
         </MagneticButton>
       </div>
 

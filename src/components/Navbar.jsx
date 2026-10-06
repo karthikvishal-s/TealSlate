@@ -176,7 +176,7 @@ export default function Navbar({ ready }) {
                 icon={ArrowUpRight}
                 className="!h-12 max-sm:hidden"
               >
-                Let&apos;s Talk
+                Let&apos;s talk
               </MagneticButton>
             )}
 
