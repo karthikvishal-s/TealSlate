@@ -13,7 +13,8 @@ export default function SmoothScroll({ children }) {
   useEffect(() => {
     if (reduced) return undefined;
 
-    const instance = new Lenis({ lerp: 0.12, smoothWheel: true });
+    // A lower lerp gives the heavier, gliding feel; touch keeps native momentum.
+    const instance = new Lenis({ lerp: 0.1, wheelMultiplier: 0.95, smoothWheel: true });
 
     // Keep ScrollTrigger in lockstep with Lenis' virtual scroll position,
     // and let GSAP's ticker own the RAF loop so both update in the same frame.
@@ -33,7 +34,11 @@ export default function SmoothScroll({ children }) {
   const value = useMemo(() => {
     const scrollTo = (target, options = {}) => {
       if (lenis) {
-        lenis.scrollTo(target, { duration: 1.2, easing: expoOut, ...options });
+        // Duration follows distance, so short hops don't drag and long jumps don't snap.
+        const el = typeof target === 'string' ? document.querySelector(target) : target;
+        const to = typeof target === 'number' ? target : el ? el.getBoundingClientRect().top + lenis.scroll : lenis.scroll;
+        const duration = gsap.utils.clamp(0.9, 2.2, Math.abs(to - lenis.scroll) / 2400);
+        lenis.scrollTo(target, { duration, easing: expoOut, ...options });
         return;
       }
       if (typeof target === 'number') {
