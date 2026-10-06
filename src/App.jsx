@@ -1,20 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router';
 import { ScrollTrigger } from './lib/gsap';
 import { useLenis } from './hooks/useLenis';
 import Preloader from './components/Preloader';
 import CustomCursor from './components/CustomCursor';
 import Grain from './components/Grain';
 import Navbar from './components/Navbar';
-import Hero from './sections/Hero';
-import Clients from './sections/Clients';
-import About from './sections/About';
-import Services from './sections/Services';
-import Work from './sections/Work';
-import Process from './sections/Process';
-import Stats from './sections/Stats';
-import Testimonials from './sections/Testimonials';
-import Contact from './sections/Contact';
+import { PageTransitionProvider } from './components/PageTransition';
 import Footer from './sections/Footer';
+import Home from './pages/Home';
+import ContactPage from './pages/ContactPage';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -60,7 +55,7 @@ export default function App() {
   }, [footer]);
 
   return (
-    <>
+    <PageTransitionProvider>
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-full focus:bg-teal focus:px-5 focus:py-3 focus:text-paper"
@@ -79,18 +74,14 @@ export default function App() {
         className={`group/main relative z-10 bg-paper ${footer.fixed ? 'rounded-b-[2rem] shadow-[0_30px_60px_rgb(0_0_0/0.45)] md:rounded-b-[3rem]' : ''}`}
         style={{ marginBottom: footer.fixed ? footer.height : 0 }}
       >
-        <Hero ready={loaded} />
-        <Clients />
-        <About />
-        <Services />
-        <Work />
-        <Process />
-        <Stats />
-        <Testimonials />
-        <Contact />
+        <Routes>
+          <Route path="/" element={<Home ready={loaded} />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
 
       <Footer ref={footerRef} fixed={footer.fixed} />
-    </>
+    </PageTransitionProvider>
   );
 }

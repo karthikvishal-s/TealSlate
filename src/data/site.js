@@ -11,7 +11,7 @@ export const navLinks = [
   { label: 'Services', href: '#services' },
   { label: 'Studio', href: '#about' },
   { label: 'Process', href: '#process' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export const socials = [
@@ -28,6 +28,6 @@ export const hero = {
   headlineAccent: 'move.',
   subline:
     'TealSlate is a creative production studio building websites, identities, films, and campaigns for businesses that refuse to blend in.',
-  cta: { label: 'Start a project', href: '#contact' },
+  cta: { label: 'Start a project', href: '/contact' },
   secondaryCta: { label: 'See our work', href: '#work' },
 };
