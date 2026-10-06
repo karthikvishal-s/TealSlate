@@ -161,14 +161,17 @@ export default function Navbar({ ready }) {
           </nav>
 
           <div className="flex items-center gap-3">
-            <MagneticButton
-              href="/contact"
-              onClick={(e) => go(e, '/contact')}
-              icon={ArrowUpRight}
-              className="!h-12 max-sm:hidden"
-            >
-              Let&apos;s Talk
-            </MagneticButton>
+            {/* Already on the contact page: the CTA would only point at itself */}
+            {pathname !== '/contact' && (
+              <MagneticButton
+                href="/contact"
+                onClick={(e) => go(e, '/contact')}
+                icon={ArrowUpRight}
+                className="!h-12 max-sm:hidden"
+              >
+                Let&apos;s Talk
+              </MagneticButton>
+            )}
 
             <button
               ref={menuButton}
