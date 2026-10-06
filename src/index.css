@@ -116,50 +116,26 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ───────────── Hero gradient mesh (pastel) ───────────── */
-.blob {
-  position: absolute;
-  border-radius: 9999px;
-  will-change: transform;
+/* ───────────── Hero footage: slow Ken Burns drift ─────────────
+   Paused once the hero has scrolled away (Hero.jsx toggles .is-offscreen). */
+@keyframes kenburns {
+  to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
 }
-.blob-a {
-  width: 70vmax;
-  height: 70vmax;
-  top: -32vmax;
-  left: -22vmax;
-  background: radial-gradient(circle at center, rgb(45 212 191 / 0.32), transparent 62%);
-  animation: blob-a 22s var(--ease-in-out-expo) infinite alternate;
+.kenburns {
+  animation: kenburns 18s var(--ease-in-out-expo) infinite alternate;
 }
-.blob-b {
-  width: 60vmax;
-  height: 60vmax;
-  bottom: -35vmax;
-  right: -18vmax;
-  background: radial-gradient(circle at center, rgb(15 118 110 / 0.18), transparent 60%);
-  animation: blob-b 26s var(--ease-in-out-expo) infinite alternate;
-}
-.blob-c {
-  width: 42vmax;
-  height: 42vmax;
-  top: 15%;
-  left: 45%;
-  background: radial-gradient(circle at center, rgb(244 196 160 / 0.4), transparent 60%);
-  animation: blob-c 30s var(--ease-in-out-expo) infinite alternate;
-}
-
-/* Pause the mesh once the hero has scrolled away (class toggled by Hero.jsx) */
-.is-offscreen .blob {
+.is-offscreen .kenburns {
   animation-play-state: paused;
 }
 
-@keyframes blob-a {
-  to { transform: translate3d(18vw, 14vh, 0) scale(1.15); }
+/* Contact success: the check mark draws itself in once the card has opened */
+.draw-check path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: draw-check 0.5s 0.45s var(--ease-expo) forwards;
 }
-@keyframes blob-b {
-  to { transform: translate3d(-22vw, -18vh, 0) scale(0.9); }
-}
-@keyframes blob-c {
-  to { transform: translate3d(-30vw, 12vh, 0) scale(1.25); }
+@keyframes draw-check {
+  to { stroke-dashoffset: 0; }
 }
 
 /* Hero legibility: while trail images pass beneath (ImageTrail sets .is-trailing), the copy
@@ -177,16 +153,39 @@
   background-color: rgb(245 242 236 / 0.8);
 }
 
-/* Translate-only keyframes so it runs on the compositor (animating transform-origin
-   would force a main-thread style recalc every frame, forever). */
-@keyframes scroll-cue {
-  0% { transform: translateY(-100%); }
-  45%, 55% { transform: translateY(0); }
-  100% { transform: translateY(100%); }
+/* Process map: a reached stop pings once; the step card swaps with a quick rise */
+@keyframes stop-ping {
+  from { transform: scale(1); opacity: 0.6; }
+  to { transform: scale(2.1); opacity: 0; }
 }
-.scroll-cue-line {
+.is-reached .stop-ping {
+  animation: stop-ping 0.7s var(--ease-expo) 1 both;
+}
+/* The next stop breathes like a beacon; the terrain drifts. Both only while on screen. */
+@keyframes stop-beacon {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.is-live .is-next .stop-beacon {
+  animation: stop-beacon 1.8s var(--ease-expo) infinite;
+}
+@keyframes contour-drift {
+  from { transform: translate3d(-8px, 4px, 0); }
+  to { transform: translate3d(8px, -4px, 0); }
+}
+.contour-drift {
   will-change: transform;
-  animation: scroll-cue 2.2s var(--ease-in-out-expo) infinite;
+  animation: contour-drift 14s var(--ease-in-out-expo) infinite alternate;
+  animation-play-state: paused;
+}
+.is-live .contour-drift {
+  animation-play-state: running;
+}
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+.card-in {
+  animation: card-in 0.2s var(--ease-expo) both;
 }
 
 /* Slow rotation used by media + founder portrait placeholders */
@@ -272,6 +271,19 @@
 @media (hover: hover) and (pointer: fine) {
   .work-list:hover .work-row:not(:hover) .work-row-content {
     opacity: 0.3;
+  }
+}
+
+/* ───────────── Reviews: hovering one card dims the rest (desktop) ───────────── */
+.focus-dim {
+  transition:
+    opacity 0.25s var(--ease-expo),
+    scale 0.25s var(--ease-expo);
+}
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .review-pile:hover [data-pile-slot]:not(:hover) .focus-dim {
+    opacity: 0.55;
+    scale: 0.98;
   }
 }
 
