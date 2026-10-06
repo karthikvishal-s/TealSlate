@@ -6,7 +6,6 @@ import CustomCursor from './components/CustomCursor';
 import Grain from './components/Grain';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
-import Showreel from './sections/Showreel';
 import Clients from './sections/Clients';
 import About from './sections/About';
 import Services from './sections/Services';
@@ -81,7 +80,6 @@ export default function App() {
         style={{ marginBottom: footer.fixed ? footer.height : 0 }}
       >
         <Hero ready={loaded} />
-        <Showreel />
         <Clients />
         <About />
         <Services />
