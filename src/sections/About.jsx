@@ -2,6 +2,8 @@ import { useRef } from 'react';
 import { gsap, SplitText, useGSAP, MOTION_OK } from '../lib/gsap';
 import { about } from '../data/about';
 import SectionLabel from '../components/SectionLabel';
+import DevelopImage from '../components/DevelopImage';
+import { stretch } from '../lib/velocity';
 import SplitTextReveal from '../components/SplitTextReveal';
 import Founders from './Founders';
 
@@ -40,21 +42,13 @@ export default function About() {
             ),
         });
 
-        // Collage: each frame wipes up into view, and its photo drifts at its own speed.
-        gsap.utils.toArray('[data-collage-item]').forEach((item) => {
-          gsap.fromTo(
-            item,
-            { clipPath: 'inset(100% 0% 0% 0% round 1.5rem)' },
-            {
-              clipPath: 'inset(0% 0% 0% 0% round 1.5rem)',
-              duration: 1,
-              ease: 'expo.out',
-              scrollTrigger: { trigger: item, start: 'top 90%', once: true },
-            },
-          );
+        // Collage: each photo develops as it rises into focus (DevelopImage) and drifts at its
+        // own speed; the frames lean with scroll speed.
+        const items = gsap.utils.toArray('[data-collage-item]');
+        items.forEach((item) => {
           const speed = Number(item.dataset.speed);
           gsap.fromTo(
-            item.querySelector('img'),
+            item.querySelector('[data-parallax]'),
             { yPercent: -8 * speed },
             {
               yPercent: 8 * speed,
@@ -64,6 +58,8 @@ export default function About() {
           );
         });
 
+        const unstretch = stretch(items);
+
         gsap.from('[data-about-fade]', {
           autoAlpha: 0,
           y: 40,
@@ -71,6 +67,8 @@ export default function About() {
           duration: 0.8,
           scrollTrigger: { trigger: '[data-about-fade]', start: 'top 88%', once: true },
         });
+
+        return unstretch;
       });
     },
     { scope: root },
@@ -80,7 +78,7 @@ export default function About() {
     <section id="about" ref={root} aria-labelledby="about-title" className="gutter pb-16 pt-28 md:pb-24 md:pt-44">
       <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-3">
-          <SectionLabel index="(01)">
+          <SectionLabel>
             <span id="about-title">{about.label}</span>
           </SectionLabel>
         </div>
@@ -114,12 +112,12 @@ export default function About() {
         {about.collage.map((item, i) => (
           <figure key={item.caption} className={COLLAGE_LAYOUT[i]}>
             <div data-collage-item data-speed={COLLAGE_SPEED[i]} className={`relative overflow-hidden rounded-3xl ${COLLAGE_RATIO[i]}`}>
-              <img
+              <DevelopImage
+                data-parallax
                 src={item.image}
                 alt={item.alt}
-                loading="lazy"
-                decoding="async"
-                className="absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover will-change-transform"
+                mode="scroll"
+                className="absolute inset-x-0 -top-[12%] h-[124%] w-full will-change-transform"
               />
             </div>
             <figcaption className="mt-3 text-xs uppercase tracking-[0.22em] text-muted">{item.caption}</figcaption>
