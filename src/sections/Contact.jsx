@@ -67,7 +67,7 @@ export default function Contact() {
           </div>
         </div>
 
-        <SectionLabel index="(06)">Contact</SectionLabel>
+        <SectionLabel>Contact</SectionLabel>
 
         {/* Motion (magnetic) on the wrapper, GSAP (split reveal) on the heading inside: never the same element */}
         <Magnetic strength={0.08} className="mt-6 inline-block">
@@ -97,10 +97,10 @@ export default function Contact() {
 
             <div>
               <p className="mb-3 text-xs uppercase tracking-[0.22em] text-muted">Follow along</p>
-              <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              <ul className="flex flex-wrap gap-x-6">
                 {socials.map((s) => (
                   <li key={s.label}>
-                    <a href={s.href} target="_blank" rel="noreferrer" className="group text-sm font-medium">
+                    <a href={s.href} target="_blank" rel="noreferrer" className="group inline-block py-1.5 text-sm font-medium">
                       <RollingText>{s.label}</RollingText>
                     </a>
                   </li>

@@ -5,6 +5,8 @@ import { easeExpo } from '../lib/motion';
 import { contact } from '../data/contact';
 import { submitContact } from '../lib/submitContact';
 import MagneticButton from './MagneticButton';
+import { useLenis } from '../hooks/useLenis';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 const INITIAL = { name: '', email: '', company: '', service: '', budget: '', message: '', botcheck: false };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -56,6 +58,8 @@ export default function ContactForm() {
   const [touched, setTouched] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [status, setStatus] = useState('idle'); // idle | submitting | success | error
+  const { scrollTo } = useLenis();
+  const reduced = useReducedMotion();
 
   const errors = validate(values);
   const showError = (name) => (touched[name] || submitted) && errors[name];
@@ -71,9 +75,18 @@ export default function ContactForm() {
     e.preventDefault();
     setSubmitted(true);
     if (Object.keys(errors).length) {
-      // Move focus to the first invalid field.
+      // Glide to the first invalid field, focus it, and give it a small nudge.
       const first = Object.keys(errors)[0];
-      formRef.current.querySelector(`[name="${first}"]`)?.focus();
+      const field = formRef.current.querySelector(`[name="${first}"]`);
+      if (!field) return;
+      scrollTo(field, { offset: -160 });
+      field.focus({ preventScroll: true });
+      if (!reduced) {
+        field.closest(field.type === 'radio' ? 'fieldset' : '.relative')?.animate(
+          [0, -2, 2, -2, 2, 0].map((x) => ({ transform: `translateX(${x}px)` })),
+          { duration: 240, easing: 'ease-in-out' },
+        );
+      }
       return;
     }
     setStatus('submitting');
@@ -103,34 +116,49 @@ export default function ContactForm() {
 
   return (
     <div className="relative">
-      <AnimatePresence mode="wait" initial={false}>
+      {/* popLayout: the form steps out of the flow while the send button grows into the
+          confirmation card (shared layoutId), so the reply reads as the result of the click. */}
+      <AnimatePresence mode="popLayout" initial={false}>
         {status === 'success' ? (
           <motion.div
             key="success"
+            layoutId={reduced ? undefined : 'contact-send'}
             role="status"
-            className="flex min-h-[32rem] flex-col items-start justify-center rounded-3xl border border-line bg-paper/[0.04] p-8 md:p-12"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.7, ease: easeExpo }}
+            className="flex min-h-[32rem] flex-col items-start justify-center border border-line bg-paper/[0.04] p-8 md:p-12"
+            style={{ borderRadius: 24 }}
+            initial={reduced ? { opacity: 0 } : false}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: easeExpo }}
           >
-            <motion.span
-              className="grid size-16 place-items-center rounded-full bg-teal text-night"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.15 }}
-            >
-              <Check aria-hidden="true" className="size-8" strokeWidth={2.5} />
-            </motion.span>
-            <h3 className="mt-8 font-display text-4xl font-bold tracking-tight md:text-5xl">{contact.successTitle}</h3>
-            <p className="mt-4 max-w-md text-lg leading-relaxed text-muted">{contact.successBody}</p>
-            <button
-              type="button"
-              onClick={reset}
-              className="mt-10 text-sm font-semibold text-teal underline decoration-teal/40 underline-offset-8 transition-colors hover:decoration-teal"
-            >
-              Send another message
-            </button>
+            {[
+              <span key="icon" className="draw-check grid size-16 place-items-center rounded-full bg-teal text-night">
+                <Check aria-hidden="true" className="size-8" strokeWidth={2.5} />
+              </span>,
+              <h3 key="title" className="mt-8 font-display text-4xl font-bold tracking-tight md:text-5xl">
+                {contact.successTitle}
+              </h3>,
+              <p key="body" className="mt-4 max-w-md text-lg leading-relaxed text-muted">
+                {contact.successBody}
+              </p>,
+              <button
+                key="again"
+                type="button"
+                onClick={reset}
+                className="mt-10 text-sm font-semibold text-teal underline decoration-teal/40 underline-offset-8 transition-colors hover:decoration-teal"
+              >
+                Send another message
+              </button>,
+            ].map((el, i) => (
+              <motion.div
+                key={el.key}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: easeExpo, delay: 0.3 + i * 0.06 }}
+              >
+                {el}
+              </motion.div>
+            ))}
           </motion.div>
         ) : (
           <motion.form
@@ -142,7 +170,7 @@ export default function ContactForm() {
             className="grid gap-x-8 gap-y-10 md:grid-cols-2"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, transition: { duration: 0.2 } }}
             transition={{ duration: 0.6, ease: easeExpo }}
           >
             <Field id="name" label="Your name" error={showError('name')}>
@@ -295,6 +323,7 @@ export default function ContactForm() {
               </div>
               <MagneticButton
                 type="submit"
+                layoutId={reduced ? undefined : 'contact-send'}
                 variant="paper"
                 size="lg"
                 disabled={status === 'submitting'}
