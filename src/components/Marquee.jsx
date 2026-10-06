@@ -7,8 +7,9 @@ import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
  *
  * @param {number} duration  seconds for one full loop at rest
  * @param {1|-1}   direction 1 = leftward, -1 = rightward
+ * @param {boolean} pauseOnHover ease to a stop while a mouse is over it (and back up on leave)
  */
-export default function Marquee({ children, duration = 30, direction = 1, className = '' }) {
+export default function Marquee({ children, duration = 30, direction = 1, pauseOnHover = false, className = '' }) {
   const root = useRef(null);
   const track = useRef(null);
 
@@ -22,6 +23,14 @@ export default function Marquee({ children, duration = 30, direction = 1, classN
       let pos = 0;
       let scrollDir = 1;
       let boost = 0;
+      let hover = 1;
+      let hoverTarget = 1;
+      const onEnter = (e) => e.pointerType === 'mouse' && (hoverTarget = 0);
+      const onLeave = () => (hoverTarget = 1);
+      if (pauseOnHover) {
+        root.current.addEventListener('pointerenter', onEnter);
+        root.current.addEventListener('pointerleave', onLeave);
+      }
 
       const st = ScrollTrigger.create({
         trigger: root.current,
@@ -40,12 +49,19 @@ export default function Marquee({ children, duration = 30, direction = 1, classN
         if (!st.isActive) return;
         const dt = deltaMs / 1000;
         boost *= Math.pow(0.04, dt);
-        pos = wrap(pos - baseSpeed * (1 + boost) * direction * scrollDir * dt);
+        // Exponential approach: ~0.6s to stop, a touch longer to get going again.
+        hover += (hoverTarget - hover) * (1 - Math.pow(hoverTarget ? 0.02 : 0.005, dt));
+        pos = wrap(pos - baseSpeed * (1 + boost) * hover * direction * scrollDir * dt);
         setX(pos);
       };
       gsap.ticker.add(tick);
 
-      return () => gsap.ticker.remove(tick);
+      const el = root.current;
+      return () => {
+        gsap.ticker.remove(tick);
+        el.removeEventListener('pointerenter', onEnter);
+        el.removeEventListener('pointerleave', onLeave);
+      };
     },
     { scope: root },
   );
