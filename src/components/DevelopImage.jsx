@@ -72,6 +72,7 @@ export default function DevelopImage({
   className = '',
   imgClassName = '',
   loading = 'lazy',
+  fetchPriority,
   ...rest
 }) {
   const root = useRef(null);
@@ -111,7 +112,14 @@ export default function DevelopImage({
 
   return (
     <div ref={root} className={`overflow-hidden ${className}`} {...rest}>
-      <img src={src} alt={alt} loading={loading} decoding="async" className={`size-full object-cover ${imgClassName}`} />
+      <img
+        src={src}
+        alt={alt}
+        loading={loading}
+        fetchPriority={fetchPriority}
+        decoding="async"
+        className={`size-full object-cover ${imgClassName}`}
+      />
       {!reduced && (
         <div
           ref={veil}

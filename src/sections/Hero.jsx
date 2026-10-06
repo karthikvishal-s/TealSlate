@@ -97,6 +97,7 @@ function Footage({ reel, developed, still = false }) {
       developed={developed}
       inDuration={1400}
       loading="eager"
+      fetchPriority="high"
       className="kenburns absolute inset-0"
     />
   );
