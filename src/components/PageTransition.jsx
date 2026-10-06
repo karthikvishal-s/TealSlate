@@ -61,6 +61,10 @@ export function PageTransitionProvider({ children }) {
     [lenis],
   );
 
+  // After a page change, focus the main region so screen readers start from the new page
+  // (it is focusable via tabIndex -1 and never shows a ring).
+  const focusMain = () => document.getElementById('main')?.focus({ preventScroll: true });
+
   // A freshly mounted page's ScrollTriggers refresh during their first frames and can put
   // the scroll back where it was cached (the old page). Re-assert the landing until it holds.
   const settle = useCallback(
@@ -105,6 +109,7 @@ export function PageTransitionProvider({ children }) {
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       ScrollTrigger.refresh();
       await settle(hash);
+      focusMain();
       lenis?.start();
 
       if (!reduced) {
@@ -126,7 +131,7 @@ export function PageTransitionProvider({ children }) {
     if (busy.current) return;
     requestAnimationFrame(() => {
       ScrollTrigger.refresh();
-      settle(locationHash);
+      settle(locationHash).then(focusMain);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
