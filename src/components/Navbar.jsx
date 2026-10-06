@@ -229,13 +229,12 @@ export default function Navbar({ ready }) {
                       href={hrefFor(link.href)}
                       onClick={(e) => go(e, link.href)}
                       autoFocus={i === 0}
-                      className="flex items-baseline gap-4 font-display text-[clamp(2.75rem,12vw,5rem)] font-bold leading-[1.05] tracking-tight"
+                      className="block font-display text-[clamp(2.75rem,12vw,5rem)] font-bold leading-[1.05] tracking-tight"
                       variants={{
                         hidden: { y: '110%', transition: { duration: 0.4, ease: easeInOut } },
                         show: { y: '0%', transition: { duration: 0.6, ease: easeExpo } },
                       }}
                     >
-                      <span className="text-sm font-medium text-teal">0{i + 1}</span>
                       {link.label}
                     </motion.a>
                   </li>
