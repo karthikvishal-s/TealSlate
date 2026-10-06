@@ -82,4 +82,8 @@ This code, design, and content are proprietary. No permission is granted to copy
 
 The site has two pages, `/` (home) and `/contact`, using React Router. Moving between pages plays a short curtain transition instead of scrolling (see `src/components/PageTransition.jsx`); links to home sections from the contact page (Work, Services, and so on) land directly on that section.
 
-Because `/contact` is a client-side route, the host must serve `index.html` for unknown paths (an SPA fallback). `npm run dev` and `npm run preview` already do this. On static hosting add a rewrite, for example `/* /index.html 200` in `public/_redirects` on Netlify, or a `rewrites` rule in `vercel.json` on Vercel.
+Because `/contact` is a client-side route, the host must serve `index.html` for unknown paths (an SPA fallback). `npm run dev` and `npm run preview` already do this, and the repo ships the rule for the two common static hosts: `public/_redirects` (Netlify) and `vercel.json` (Vercel). Other hosts need the equivalent rewrite.
+
+Each page sets its own title, description, canonical URL and social tags with `usePageMeta` (`src/hooks/usePageMeta.js`); the home defaults live in `index.html`. `public/robots.txt` and `public/sitemap.xml` list both pages, and `index.html` carries Organization structured data. Update the domain in those files if it is not `tealslate.studio`.
+
+Links work like ordinary links: Cmd/Ctrl/Shift-click opens them in a new tab, and after a page change keyboard and screen-reader focus starts on the new page.
