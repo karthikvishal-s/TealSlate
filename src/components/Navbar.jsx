@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router';
 import { AnimatePresence, motion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { easeExpo, easeInOut } from '../lib/motion';
 import { useLenis } from '../hooks/useLenis';
+import { usePageNav } from './PageTransition';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { navLinks, site, socials } from '../data/site';
 import MagneticButton from './MagneticButton';
 import RollingText from './RollingText';
@@ -14,9 +17,15 @@ export default function Navbar({ ready }) {
   const inner = useRef(null);
   const menuButton = useRef(null);
   const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState(null);
+  const reduced = useReducedMotion();
   const openRef = useRef(open);
   openRef.current = open;
-  const { lenis, scrollTo } = useLenis();
+  const { lenis } = useLenis();
+  const { go: navigateTo, hrefFor } = usePageNav();
+  const { pathname } = useLocation();
+  // On the contact page the Contact link is the current one; at home it follows the scroll.
+  const active = pathname === '/contact' ? '/contact' : current;
 
   // Entrance after the preloader.
   useGSAP(
@@ -28,6 +37,27 @@ export default function Navbar({ ready }) {
       gsap.to(inner.current, { autoAlpha: 1, yPercent: 0, duration: 0.9, delay: 0.3, ease: 'expo.out' });
     },
     { scope: header, dependencies: [ready] },
+  );
+
+  // Which home section is under the middle of the screen (drives the sliding pill and
+  // aria-current). Rebuilt per page, since the sections come and go with the route.
+  // refreshPriority -1: measure after the pinned sections above have added their spacing.
+  useGSAP(
+    () => {
+      setCurrent(null);
+      navLinks.forEach(({ href }) => {
+        const section = href.startsWith('#') ? document.querySelector(href) : null;
+        if (!section) return;
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top 50%',
+          end: 'bottom 50%',
+          refreshPriority: -1,
+          onToggle: (self) => setCurrent((c) => (self.isActive ? href : c === href ? null : c)),
+        });
+      });
+    },
+    { dependencies: [pathname], revertOnUpdate: true },
   );
 
   // Hide on scroll down, reveal on scroll up.
@@ -80,9 +110,9 @@ export default function Navbar({ ready }) {
     if (open) {
       setOpen(false);
       // Wait for the overlay to start closing and the scroll lock to lift.
-      setTimeout(() => scrollTo(href), 350);
+      setTimeout(() => navigateTo(href), 350);
     } else {
-      scrollTo(href);
+      navigateTo(href);
     }
   };
 
@@ -95,7 +125,7 @@ export default function Navbar({ ready }) {
       >
         <div ref={inner} className="gutter flex h-20 items-center justify-between gap-6 md:h-24">
           <a
-            href="#top"
+            href="/"
             onClick={(e) => go(e, 0)}
             className="flex items-center gap-3 text-brand"
             aria-label={`${site.name}, back to top`}
@@ -108,7 +138,20 @@ export default function Navbar({ ready }) {
             <ul className="flex items-center gap-9 text-sm font-medium">
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} onClick={(e) => go(e, link.href)} className="group py-2">
+                  <a
+                    href={hrefFor(link.href)}
+                    onClick={(e) => go(e, link.href)}
+                    aria-current={active === link.href ? 'true' : undefined}
+                    className="group relative isolate inline-block py-3"
+                  >
+                    {active === link.href && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        aria-hidden="true"
+                        className="absolute -inset-x-3.5 -inset-y-0.5 -z-10 rounded-full bg-ink/[0.07]"
+                        transition={reduced ? { duration: 0 } : { duration: 0.5, ease: easeExpo }}
+                      />
+                    )}
                     <RollingText>{link.label}</RollingText>
                   </a>
                 </li>
@@ -118,8 +161,8 @@ export default function Navbar({ ready }) {
 
           <div className="flex items-center gap-3">
             <MagneticButton
-              href="#contact"
-              onClick={(e) => go(e, '#contact')}
+              href="/contact"
+              onClick={(e) => go(e, '/contact')}
               icon={ArrowUpRight}
               className="!h-12 max-sm:hidden"
             >
@@ -172,7 +215,7 @@ export default function Navbar({ ready }) {
                 {navLinks.map((link, i) => (
                   <li key={link.href} className="overflow-hidden">
                     <motion.a
-                      href={link.href}
+                      href={hrefFor(link.href)}
                       onClick={(e) => go(e, link.href)}
                       autoFocus={i === 0}
                       className="flex items-baseline gap-4 font-display text-[clamp(2.75rem,12vw,5rem)] font-bold leading-[1.05] tracking-tight"
