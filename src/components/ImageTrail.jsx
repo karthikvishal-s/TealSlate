@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useImperativeHandle, useRef } from 'react';
 import { animate } from 'motion/react';
 import { easeExpo, easeInOut } from '../lib/motion';
 
@@ -10,9 +10,22 @@ import { easeExpo, easeInOut } from '../lib/motion';
  * Listens on `targetRef` (the section) so it works under content layered on top.
  * While images are showing, `is-trailing` is set on the target so content above can
  * react (the hero uses it for a soft legibility halo on its text).
+ *
+ * `ref` exposes `setEnabled(bool)` to pause the trail (the hero turns it off mid-dive).
  */
-export default function ImageTrail({ images, targetRef, threshold = 90 }) {
+export default function ImageTrail({ images, targetRef, threshold = 90, ref }) {
   const layer = useRef(null);
+  const api = useRef({ enabled: true });
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setEnabled: (on) => {
+        api.current.enabled = on;
+      },
+    }),
+    [],
+  );
 
   useEffect(() => {
     const target = targetRef.current;
@@ -29,18 +42,8 @@ export default function ImageTrail({ images, targetRef, threshold = 90 }) {
       target.classList.toggle('is-trailing', on);
     };
 
-    const onMove = (e) => {
-      if (e.pointerType !== 'mouse') return;
-      const rect = target.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      if (!last) {
-        last = { x, y };
-        return;
-      }
-      if (Math.hypot(x - last.x, y - last.y) < threshold) return;
-
+    // Glide the next pooled image from one point to another, pop it in, then let it shrink away.
+    const fling = (from, to) => {
       const el = nodes[index % nodes.length];
       index += 1;
       el.style.zIndex = String((z += 1));
@@ -52,8 +55,8 @@ export default function ImageTrail({ images, targetRef, threshold = 90 }) {
       animate(
         el,
         {
-          x: [last.x - w / 2, x - w / 2],
-          y: [last.y - h / 2, y - h / 2],
+          x: [from.x - w / 2, to.x - w / 2],
+          y: [from.y - h / 2, to.y - h / 2],
           rotate: [tilt * 2, tilt],
           scale: [0.55, 1, 1, 0.3],
           opacity: [0, 1, 1, 0],
@@ -66,10 +69,27 @@ export default function ImageTrail({ images, targetRef, threshold = 90 }) {
         },
       );
 
-      last = { x, y };
       setTrailing(true);
       clearTimeout(idle);
       idle = setTimeout(() => setTrailing(false), 1300);
+    };
+
+    const onMove = (e) => {
+      if (e.pointerType !== 'mouse' || !api.current.enabled) {
+        last = null;
+        return;
+      }
+      const rect = target.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      if (!last) {
+        last = { x, y };
+        return;
+      }
+      if (Math.hypot(x - last.x, y - last.y) < threshold) return;
+      fling(last, { x, y });
+      last = { x, y };
     };
 
     const onLeave = () => {
