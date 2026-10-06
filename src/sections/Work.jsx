@@ -221,14 +221,13 @@ export default function Work() {
         </div>
       </div>
 
-      <div className="mb-14 flex flex-col gap-8 md:mb-20 md:flex-row md:items-end md:justify-between">
-        <div>
-          <SectionLabel>Selected work</SectionLabel>
-          <SplitTextReveal id="work-title" className="mt-6 font-display text-display font-bold">
-            Work that <span className="text-teal">moves</span> the needle
-          </SplitTextReveal>
-        </div>
-        <p className="max-w-sm text-base leading-relaxed text-muted">
+      {/* Headline and intro stacked, like the other section headers */}
+      <div className="mb-14 md:mb-20">
+        <SectionLabel>Selected work</SectionLabel>
+        <SplitTextReveal id="work-title" className="mt-6 font-display text-display font-bold">
+          Work that <span className="text-teal">moves</span> the needle
+        </SplitTextReveal>
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-muted md:text-lg">
           A few recent favourites across branding, digital, film, and growth. Full case studies available on request.
         </p>
       </div>
