@@ -90,6 +90,12 @@ export default function Navbar({ ready }) {
     { scope: header },
   );
 
+  // Any route change (including back/forward) closes the mobile menu, so it never stays
+  // open, with scrolling locked, over the new page.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
   // Lock scroll + Escape to close while the mobile menu is open.
   useEffect(() => {
     if (!open) return undefined;
