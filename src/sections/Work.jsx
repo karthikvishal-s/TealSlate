@@ -1,12 +1,12 @@
-import { useRef, useState } from 'react';
-import { motion, useSpring, useTransform, useVelocity } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
+import { animate, motion, useMotionValue, useSpring, useTransform, useVelocity } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { gsap, useGSAP, MOTION_OK } from '../lib/gsap';
-import { springFollow, easeExpo } from '../lib/motion';
+import { springSnappy, easeExpo } from '../lib/motion';
 import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useMousePosition } from '../hooks/useMousePosition';
-import { useLenis } from '../hooks/useLenis';
+import { usePageNav } from '../components/PageTransition';
 import { projects } from '../data/projects';
 import SectionLabel from '../components/SectionLabel';
 import SplitTextReveal from '../components/SplitTextReveal';
@@ -15,17 +15,32 @@ import Media from '../components/Media';
 import { LogoMark } from '../components/Logo';
 
 /**
- * Floating preview that trails the cursor with spring physics.
+ * Floating preview that trails the cursor on a tight spring.
  * All project images live in one vertical strip; switching projects slides the
  * strip, so the swap reads as one continuous motion rather than a hard cut.
- * The strip also settles from a slight zoom as the frame opens, for depth.
+ *
+ * Jelly: the frame leans (skew) and squashes with pointer speed and springs back when the
+ * pointer rests. It's all transforms on GPU layers (no filters), so it stays smooth on any
+ * screen. Switching projects adds a quick scale "cut".
  */
 function CursorPreview({ active, lastIndex }) {
   const { x, y } = useMousePosition();
-  const sx = useSpring(x, springFollow);
-  const sy = useSpring(y, springFollow);
+  const sx = useSpring(x, springSnappy);
+  const sy = useSpring(y, springSnappy);
+  const vx = useVelocity(sx);
+  const vy = useVelocity(sy);
   // Lean into horizontal movement for a physical feel.
-  const rotate = useTransform(useVelocity(sx), [-2500, 2500], [-10, 10], { clamp: true });
+  const rotate = useTransform(vx, [-3000, 3000], [-8, 8], { clamp: true });
+  const skewX = useTransform(vx, [-3000, 3000], [8, -8], { clamp: true });
+  const cut = useMotionValue(1);
+  const speed = useTransform(() => Math.min(1, Math.hypot(vx.get(), vy.get()) / 3000));
+  const scaleX = useTransform(() => (1 + speed.get() * 0.06) * cut.get());
+  const scaleY = useTransform(() => (1 - speed.get() * 0.04) * cut.get());
+
+  useEffect(() => {
+    const controls = animate(cut, [0.96, 1], { duration: 0.22, ease: easeExpo });
+    return () => controls.stop();
+  }, [lastIndex, cut]);
 
   return (
     <motion.div
@@ -33,29 +48,31 @@ function CursorPreview({ active, lastIndex }) {
       className="pointer-events-none fixed left-0 top-0 z-30"
       style={{ x: sx, y: sy, rotate }}
     >
-      <motion.div
-        className="h-[17rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl shadow-[0_30px_80px_-20px_rgb(0_0_0/0.6)] xl:h-[20rem] xl:w-[28rem]"
-        initial={false}
-        animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
-        transition={{ duration: 0.4, ease: easeExpo }}
-      >
+      <motion.div style={{ skewX, scaleX, scaleY }}>
         <motion.div
-          className="size-full"
+          className="h-[17rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl shadow-[0_30px_80px_-20px_rgb(0_0_0/0.6)] xl:h-[20rem] xl:w-[28rem]"
           initial={false}
-          animate={{ scale: active ? 1 : 1.3 }}
-          transition={{ duration: 0.7, ease: easeExpo }}
+          animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
+          transition={{ duration: 0.22, ease: easeExpo }}
         >
           <motion.div
             className="size-full"
             initial={false}
-            animate={{ y: `${-lastIndex * 100}%` }}
-            transition={{ duration: 0.5, ease: easeExpo }}
+            animate={{ scale: active ? 1 : 1.2 }}
+            transition={{ duration: 0.35, ease: easeExpo }}
           >
-            {projects.map((p) => (
-              <div key={p.id} className="size-full">
-                <Media image={p.image} gradient={p.gradient} label={p.name} />
-              </div>
-            ))}
+            <motion.div
+              className="size-full"
+              initial={false}
+              animate={{ y: `${-lastIndex * 100}%` }}
+              transition={{ duration: 0.28, ease: easeExpo }}
+            >
+              {projects.map((p) => (
+                <div key={p.id} className="size-full">
+                  <Media image={p.image} gradient={p.gradient} label={p.name} />
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
         </motion.div>
       </motion.div>
@@ -79,17 +96,17 @@ function RollingTitle({ text }) {
             {w > 0 && ' '}
             <span className="inline-block whitespace-nowrap">
               {word.split('').map((ch) => {
-                const delay = `${n++ * 18}ms`;
+                const delay = `${n++ * 10}ms`;
                 return (
                   <span key={n} className="relative -mb-[0.15em] inline-block overflow-hidden pb-[0.15em]">
                     <span
-                      className="inline-block transition-transform duration-500 ease-expo group-hover:-translate-y-[calc(100%+0.25em)]"
+                      className="inline-block transition-transform duration-300 ease-expo group-hover:-translate-y-[calc(100%+0.25em)]"
                       style={{ transitionDelay: delay }}
                     >
                       {ch}
                     </span>
                     <span
-                      className="absolute left-0 top-0 inline-block translate-y-[calc(100%+0.25em)] text-teal transition-transform duration-500 ease-expo group-hover:translate-y-0"
+                      className="absolute left-0 top-0 inline-block translate-y-[calc(100%+0.25em)] text-teal transition-transform duration-300 ease-expo group-hover:translate-y-0"
                       style={{ transitionDelay: delay }}
                     >
                       {ch}
@@ -120,7 +137,7 @@ export default function Work() {
   const [active, setActive] = useState(false);
   const [index, setIndex] = useState(0);
   const showPreview = !touch && !reduced;
-  const { scrollTo } = useLenis();
+  const { go } = usePageNav();
 
   useGSAP(
     () => {
@@ -206,7 +223,7 @@ export default function Work() {
 
       <div className="mb-14 flex flex-col gap-8 md:mb-20 md:flex-row md:items-end md:justify-between">
         <div>
-          <SectionLabel index="(03)">Selected work</SectionLabel>
+          <SectionLabel>Selected work</SectionLabel>
           <SplitTextReveal id="work-title" className="mt-6 font-display text-display font-bold">
             Work that <span className="text-teal">moves</span> the needle
           </SplitTextReveal>
@@ -236,7 +253,7 @@ export default function Work() {
             {/* Hover highlight: sweeps in from the edge the pointer entered, and out through the one it left */}
             <span
               aria-hidden="true"
-              className="absolute inset-y-0 -inset-x-3 -z-10 origin-top scale-y-0 rounded-2xl bg-paper/[0.05] transition-transform duration-500 ease-expo group-hover/row:scale-y-100 group-data-[edge=bottom]/row:origin-bottom md:-inset-x-6"
+              className="absolute inset-y-0 -inset-x-3 -z-10 origin-top scale-y-0 rounded-2xl bg-paper/[0.05] transition-transform duration-300 ease-expo group-hover/row:scale-y-100 group-data-[edge=bottom]/row:origin-bottom md:-inset-x-6"
             />
 
             <a
@@ -244,12 +261,12 @@ export default function Work() {
               data-cursor="view"
               // Placeholder links: swap `href` in src/data/projects.js for real case-study URLs.
               onClick={(e) => project.href === '#' && e.preventDefault()}
-              className="work-row-content group grid grid-cols-12 items-center gap-x-4 gap-y-2 py-7 transition-opacity duration-500 ease-expo md:py-10"
+              className="work-row-content group grid grid-cols-12 items-center gap-x-4 gap-y-2 py-7 transition-opacity duration-200 ease-expo md:py-10"
             >
               <span className="col-span-2 text-sm tabular-nums text-muted md:col-span-1">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <h3 className="col-span-10 font-display text-[clamp(1.9rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-tight transition-transform duration-500 ease-expo group-hover:translate-x-4 md:col-span-6">
+              <h3 className="col-span-10 font-display text-[clamp(1.9rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-tight transition-transform duration-300 ease-expo group-hover:translate-x-4 md:col-span-6">
                 <RollingTitle text={project.name} />
               </h3>
               <span className="col-span-7 col-start-3 text-sm text-muted md:col-span-3 md:col-start-auto">
@@ -259,7 +276,7 @@ export default function Work() {
                 {project.year}
                 <ArrowUpRight
                   aria-hidden="true"
-                  className="size-5 text-teal transition-transform duration-500 ease-expo group-hover:rotate-45"
+                  className="size-5 text-teal transition-transform duration-300 ease-expo group-hover:rotate-45"
                 />
               </span>
             </a>
@@ -278,10 +295,10 @@ export default function Work() {
 
       <div className="mt-14 flex justify-center">
         <MagneticButton
-          href="#contact"
+          href="/contact"
           onClick={(e) => {
             e.preventDefault();
-            scrollTo('#contact');
+            go('/contact');
           }}
           variant="outline-dark"
           size="lg"
