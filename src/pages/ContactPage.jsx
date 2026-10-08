@@ -1,8 +1,9 @@
+import { useEffect } from 'react';
 import { usePageMeta } from '../hooks/usePageMeta';
 import Contact from '../sections/Contact';
 
-/** The contact page: the dark contact panel, with room above it for the fixed navbar. */
-export default function ContactPage() {
+/** The contact page: one night panel from the top edge down, the navbar sitting on it. */
+export default function ContactPage({ ready }) {
   usePageMeta({
     title: "Contact | TealSlate: Let's make it move",
     description:
@@ -10,9 +11,18 @@ export default function ContactPage() {
     path: '/contact',
   });
 
-  return (
-    <div className="pt-24 md:pt-28">
-      <Contact />
-    </div>
-  );
+  // Night all the way out: overscroll bounce and the mobile browser chrome match the page.
+  useEffect(() => {
+    const html = document.documentElement;
+    const meta = document.head.querySelector('meta[name="theme-color"]');
+    const previous = meta?.getAttribute('content');
+    html.classList.add('is-night');
+    meta?.setAttribute('content', '#0B0F0E');
+    return () => {
+      html.classList.remove('is-night');
+      if (previous) meta?.setAttribute('content', previous);
+    };
+  }, []);
+
+  return <Contact ready={ready} />;
 }

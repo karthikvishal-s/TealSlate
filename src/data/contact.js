@@ -11,7 +11,7 @@ export const contact = {
     'Social Media Management',
     'Not sure yet',
   ],
-  budgetOptions: ['< $5k', '$5k – $15k', '$15k – $40k', '$40k – $100k', '$100k+'],
+  budgetOptions: ['Under ₹50k', '₹50k – ₹2L', '₹2L – ₹5L', '₹5L – ₹15L', '₹15L+'],
   successTitle: 'Message received.',
   successBody: 'Thanks for reaching out. Someone from the studio will be in touch within one business day.',
 };

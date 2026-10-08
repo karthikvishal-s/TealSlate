@@ -26,6 +26,8 @@ export default function Navbar({ ready }) {
   const { pathname } = useLocation();
   // On the contact page the Contact link is the current one; at home it follows the scroll.
   const active = pathname === '/contact' ? '/contact' : current;
+  // The contact page is night from the top edge, so the bar goes dark with it (the open menu is paper, so it stays light).
+  const dark = pathname === '/contact' && !open;
 
   // Entrance after the preloader.
   useGSAP(
@@ -128,7 +130,12 @@ export default function Navbar({ ready }) {
       <header
         ref={header}
         data-scrolled="false"
-        className="group/header fixed inset-x-0 top-0 z-50 transition-colors duration-300 data-[scrolled=true]:bg-paper/95 data-[scrolled=true]:shadow-[0_1px_0_rgb(20_33_31/0.08)]"
+        data-cursor-theme={dark ? 'dark' : undefined}
+        className={`group/header fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+          dark
+            ? 'text-paper data-[scrolled=true]:bg-night/90 data-[scrolled=true]:shadow-[0_1px_0_rgb(245_242_236/0.08)]'
+            : 'data-[scrolled=true]:bg-paper/95 data-[scrolled=true]:shadow-[0_1px_0_rgb(20_33_31/0.08)]'
+        }`}
       >
         <div ref={inner} className="gutter flex h-20 items-center justify-between gap-6 md:h-24">
           <a
@@ -156,7 +163,7 @@ export default function Navbar({ ready }) {
                       <motion.span
                         layoutId="nav-pill"
                         aria-hidden="true"
-                        className="absolute -inset-x-3.5 -inset-y-0.5 -z-10 rounded-full bg-ink/[0.07]"
+                        className={`absolute -inset-x-3.5 -inset-y-0.5 -z-10 rounded-full ${dark ? 'bg-paper/10' : 'bg-ink/[0.07]'}`}
                         transition={reduced ? { duration: 0 } : { duration: 0.5, ease: easeExpo }}
                       />
                     )}
@@ -187,15 +194,15 @@ export default function Navbar({ ready }) {
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? 'Close menu' : 'Open menu'}
-              className="relative grid size-12 place-items-center rounded-full border border-line lg:hidden"
+              className={`relative grid size-12 place-items-center rounded-full border transition-colors duration-300 lg:hidden ${dark ? 'border-paper/20' : 'border-line'}`}
             >
               <span
                 aria-hidden="true"
-                className={`absolute h-[1.5px] w-5 bg-ink transition-transform duration-500 ease-expo ${open ? 'rotate-45' : '-translate-y-[4px]'}`}
+                className={`absolute h-[1.5px] w-5 ${dark ? 'bg-paper' : 'bg-ink'} transition-[transform,background-color] duration-500 ease-expo ${open ? 'rotate-45' : '-translate-y-[4px]'}`}
               />
               <span
                 aria-hidden="true"
-                className={`absolute h-[1.5px] w-5 bg-ink transition-transform duration-500 ease-expo ${open ? '-rotate-45' : 'translate-y-[4px]'}`}
+                className={`absolute h-[1.5px] w-5 ${dark ? 'bg-paper' : 'bg-ink'} transition-[transform,background-color] duration-500 ease-expo ${open ? '-rotate-45' : 'translate-y-[4px]'}`}
               />
             </button>
           </div>

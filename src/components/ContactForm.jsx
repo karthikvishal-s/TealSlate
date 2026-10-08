@@ -23,16 +23,26 @@ function validate(v) {
 }
 
 const inputBase =
-  'peer w-full border-0 border-b bg-transparent px-0 py-3 text-lg text-current placeholder:text-muted/50 outline-none transition-colors duration-300 focus:border-teal focus-visible:outline-none aria-[invalid=true]:border-rose-400';
+  'peer block w-full border-0 border-b bg-transparent px-0 py-2.5 text-lg text-current placeholder:text-muted/50 outline-none transition-colors duration-300 focus-visible:outline-none aria-[invalid=true]:border-rose-400';
 
 function Field({ id, label, error, optional, children }) {
   return (
-    <div className="relative">
-      <label htmlFor={id} className="mb-1 flex items-baseline justify-between text-xs uppercase tracking-[0.22em] text-muted">
+    <div className="group/field relative">
+      <label
+        htmlFor={id}
+        className="mb-1 flex items-baseline justify-between text-xs uppercase tracking-[0.22em] text-muted transition-colors duration-300 group-focus-within/field:text-teal"
+      >
         {label}
         {optional && <span className="normal-case tracking-normal text-muted/60">Optional</span>}
       </label>
-      {children}
+      {/* On focus a teal line sweeps in over the hairline from the left */}
+      <div className="relative">
+        {children}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-teal transition-transform duration-700 ease-expo group-focus-within/field:scale-x-100"
+        />
+      </div>
       <AnimatePresence initial={false}>
         {error && (
           <motion.p
@@ -124,7 +134,7 @@ export default function ContactForm() {
             key="success"
             layoutId={reduced ? undefined : 'contact-send'}
             role="status"
-            className="flex min-h-[32rem] flex-col items-start justify-center border border-line bg-paper/[0.04] p-8 md:p-12"
+            className="flex min-h-[28rem] flex-col items-start justify-center border border-line bg-paper/[0.04] p-8 md:p-12"
             style={{ borderRadius: 24 }}
             initial={reduced ? { opacity: 0 } : false}
             animate={{ opacity: 1 }}
@@ -167,7 +177,7 @@ export default function ContactForm() {
             noValidate
             onSubmit={onSubmit}
             aria-label="Project enquiry"
-            className="grid gap-x-8 gap-y-10 md:grid-cols-2"
+            className="grid gap-x-8 gap-y-8 md:grid-cols-2 lg:gap-y-7"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, transition: { duration: 0.2 } }}
@@ -248,7 +258,7 @@ export default function ContactForm() {
               aria-invalid={showError('budget') ? true : undefined}
               aria-describedby={showError('budget') ? 'budget-error' : undefined}
             >
-              <legend className="mb-4 text-xs uppercase tracking-[0.22em] text-muted">Budget range</legend>
+              <legend className="mb-3 text-xs uppercase tracking-[0.22em] text-muted">Budget range</legend>
               <div className="flex flex-wrap gap-2.5">
                 {contact.budgetOptions.map((opt) => (
                   <label key={opt} className="relative">
@@ -261,7 +271,7 @@ export default function ContactForm() {
                       onBlur={blur}
                       className="peer sr-only"
                     />
-                    <span className="block rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-paper/40 peer-checked:border-teal peer-checked:bg-teal peer-checked:text-night peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-teal">
+                    <span className="block rounded-full border border-line px-5 py-2 text-sm font-medium transition-colors duration-300 hover:border-paper/40 peer-checked:border-teal peer-checked:bg-teal peer-checked:text-night peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-teal">
                       {opt}
                     </span>
                   </label>
@@ -289,7 +299,7 @@ export default function ContactForm() {
                 <textarea
                   id="message"
                   name="message"
-                  rows={4}
+                  rows={3}
                   placeholder="Tell us about your goals, timeline, and what success looks like."
                   value={values.message}
                   onChange={update}

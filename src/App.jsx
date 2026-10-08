@@ -77,7 +77,7 @@ export default function App() {
       >
         <Routes>
           <Route path="/" element={<Home ready={loaded} />} />
-          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/contact" element={<ContactPage ready={loaded} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
